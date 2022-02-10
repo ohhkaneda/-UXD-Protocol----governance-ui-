@@ -146,6 +146,20 @@ export interface RefreshReserveForm {
   mintName?: SupportedMintName
 }
 
+export interface SaberTribecaNewEscrowForm {
+  governedAccount?: GovernedMultiTypeAccount
+}
+
+export interface SaberTribecaLockForm {
+  governedAccount?: GovernedMultiTypeAccount
+  uiAmount?: number
+  durationSeconds?: number
+}
+
+export interface SaberTribecaCreateEscrowSbrATAForm {
+  governedAccount?: GovernedMultiTypeAccount
+}
+
 export enum Instructions {
   Transfer,
   ProgramUpgrade,
@@ -171,6 +185,9 @@ export enum Instructions {
   RefreshSolendReserve,
   Grant,
   Clawback,
+  SaberTribecaNewEscrow,
+  SaberTribecaLock,
+  SaberTribecaCreateEscrowSbrATA,
 }
 
 export interface InitializeControllerForm {

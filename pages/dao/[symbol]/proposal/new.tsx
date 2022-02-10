@@ -57,6 +57,9 @@ import RefreshReserve from './components/instructions/solend/RefreshReserve'
 import Grant from 'VoteStakeRegistry/components/instructions/Grant'
 import Clawback from 'VoteStakeRegistry/components/instructions/Clawback'
 import RemoveLiquidityRaydium from './components/instructions/raydium/RemoveLiquidity'
+import SaberTribecaNewEscrow from './components/instructions/saberTribeca/NewEscrow'
+import SaberTribecaLock from './components/instructions/saberTribeca/Lock'
+import SaberTribecaCreateEscrowSbrATA from './components/instructions/saberTribeca/CreateEscrowSbrATA'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -353,6 +356,14 @@ const New = () => {
             index={idx}
             governance={governance}
           />
+        )
+      case Instructions.SaberTribecaNewEscrow:
+        return <SaberTribecaNewEscrow index={idx} governance={governance} />
+      case Instructions.SaberTribecaLock:
+        return <SaberTribecaLock index={idx} governance={governance} />
+      case Instructions.SaberTribecaCreateEscrowSbrATA:
+        return (
+          <SaberTribecaCreateEscrowSbrATA index={idx} governance={governance} />
         )
       case Instructions.AddLiquidityRaydium:
         return <AddLiquidityRaydium index={idx} governance={governance} />
