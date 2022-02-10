@@ -58,6 +58,9 @@ import RefreshObligation from './components/instructions/Solend/RefreshObligatio
 import RefreshReserve from './components/instructions/Solend/RefreshReserve'
 import WithdrawObligationCollateralAndRedeemReserveLiquidity from './components/instructions/Solend/WithdrawObligationCollateralAndRedeemReserveLiquidity'
 import TokenTransferBetweenInternalGovernanceAccounts from './components/instructions/TokenTransferBetweenInternalGovernanceAccounts'
+import SaberTribecaNewEscrow from './components/instructions/saberTribeca/NewEscrow'
+import SaberTribecaLock from './components/instructions/saberTribeca/Lock'
+import SaberTribecaCreateEscrowSbrATA from './components/instructions/saberTribeca/CreateEscrowSbrATA'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -339,6 +342,14 @@ const New = () => {
             index={idx}
             governance={governance}
           />
+        )
+      case Instructions.SaberTribecaNewEscrow:
+        return <SaberTribecaNewEscrow index={idx} governance={governance} />
+      case Instructions.SaberTribecaLock:
+        return <SaberTribecaLock index={idx} governance={governance} />
+      case Instructions.SaberTribecaCreateEscrowSbrATA:
+        return (
+          <SaberTribecaCreateEscrowSbrATA index={idx} governance={governance} />
         )
       case Instructions.AddLiquidityRaydium:
         return <AddLiquidityRaydium index={idx} governance={governance} />
