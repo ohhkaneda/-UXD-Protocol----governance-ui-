@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useContext, useEffect, useState } from 'react'
 import * as yup from 'yup'
-import BigNumber from 'bignumber.js'
-import { BN } from '@project-serum/anchor'
 import { isFormValid } from '@utils/formValidation'
 import {
   UiInstruction,
@@ -18,7 +16,6 @@ import {
 import GovernedAccountSelect from '../../GovernedAccountSelect'
 import createMintWithMangoDepositoryInstruction from '@tools/sdk/uxdProtocol/createMintWithMangoDepositoryInstruction'
 import {
-  DEPOSITORY_MINTS,
   getDepositoryMintSymbols,
   getInsuranceMintSymbols,
 } from '@tools/sdk/uxdProtocol/uxdClient'
@@ -74,14 +71,8 @@ const MintWithMangoDepository = ({
     }
 
     const tx = await createMintWithMangoDepositoryInstruction({
-      collateralAmount: new BN(
-        new BigNumber(form.uiAmount)
-          .shiftedBy(
-            DEPOSITORY_MINTS[connection.cluster][form.collateralName].decimals
-          )
-          .toString()
-      ),
-      slippage: Number(form.slippage),
+      collateralUiAmount: form.uiAmount,
+      slippage: form.slippage,
       connection,
       authority: form.governedAccount?.governance.pubkey,
       depositoryMintName: form.collateralName,

@@ -1,7 +1,6 @@
 import { BN } from '@project-serum/anchor'
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
-  Token,
   TOKEN_PROGRAM_ID,
 } from '@solana/spl-token'
 import {
@@ -10,6 +9,7 @@ import {
   TransactionInstruction,
 } from '@solana/web3.js'
 import { SPL_TOKENS } from '@utils/splTokens'
+import { findATAAddrSync } from '@uxdprotocol/uxd-client'
 
 export async function wrapSolInstruction({
   lamports,
@@ -26,12 +26,15 @@ export async function wrapSolInstruction({
     owner.toString()
   )
 
+  const [toPubkey] = findATAAddrSync(owner, SPL_TOKENS.WSOL.mint)
+
+  /*
   const toPubkey = await Token.getAssociatedTokenAddress(
     ASSOCIATED_TOKEN_PROGRAM_ID,
     TOKEN_PROGRAM_ID,
     SPL_TOKENS.WSOL.mint,
     owner
-  )
+  )*/
 
   console.log({
     fromPubkey: owner.toString(),

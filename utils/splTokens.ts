@@ -2,6 +2,7 @@ import { PublicKey } from '@solana/web3.js'
 import SolendConfiguration, {
   SupportedCollateralMintNames as SolendSupportedCollateralMintNames,
 } from '@tools/sdk/solend/configuration'
+import { UXD_DECIMALS } from '@uxdprotocol/uxd-client'
 
 export type SplTokenInformation = {
   name: string
@@ -12,6 +13,7 @@ export type SplTokenInformation = {
 export type SupportedSplTokenNames =
   | 'USDC'
   | 'WSOL'
+  | 'UXD'
   | SolendSupportedCollateralMintNames
 
 export const SPL_TOKENS: {
@@ -27,6 +29,12 @@ export const SPL_TOKENS: {
     name: 'Wrapped SOL',
     mint: new PublicKey('So11111111111111111111111111111111111111112'),
     decimals: 9,
+  },
+
+  UXD: {
+    name: 'UXD',
+    mint: new PublicKey('7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT'),
+    decimals: UXD_DECIMALS,
   },
 
   ...SolendConfiguration.getSupportedCollateralMintsInformation(),

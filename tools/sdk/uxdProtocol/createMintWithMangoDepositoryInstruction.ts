@@ -1,49 +1,55 @@
-import { BN } from '@project-serum/anchor'
+import { TransactionInstruction, PublicKey } from '@solana/web3.js'
 import {
-  TransactionInstruction,
-  PublicKey,
-  ConfirmOptions,
-} from '@solana/web3.js'
-import { Controller, UXD_DECIMALS } from '@uxdprotocol/uxd-client'
+  Controller,
+  MangoDepository,
+  SOL_DECIMALS,
+  USDC_DECIMALS,
+  UXD_DECIMALS,
+} from '@uxdprotocol/uxd-client'
 import type { ConnectionContext } from 'utils/connection'
 import {
   uxdClient,
   initializeMango,
-  instantiateMangoDepository,
   getDepositoryMintKey,
   getInsuranceMintKey,
   UXD_PROGRAM_ID,
 } from './uxdClient'
 
 const createMintWithMangoDepositoryInstruction = async ({
-  collateralAmount,
+  collateralUiAmount,
   slippage,
   connection,
   authority,
   depositoryMintName,
   insuranceMintName,
 }: {
-  collateralAmount: BN
+  collateralUiAmount: number
   slippage: number
   connection: ConnectionContext
   authority: PublicKey
   depositoryMintName: string
   insuranceMintName: string
 }): Promise<TransactionInstruction> => {
+  /*
   const TXN_OPTS: ConfirmOptions = {
     commitment: 'confirmed',
     preflightCommitment: 'processed',
     skipPreflight: false,
   }
+  */
 
   const client = uxdClient(UXD_PROGRAM_ID)
 
   const mango = await initializeMango(connection.current, connection.cluster)
 
-  const depository = instantiateMangoDepository(
-    UXD_PROGRAM_ID,
+  const depository = new MangoDepository(
     getDepositoryMintKey(connection.cluster, depositoryMintName),
-    getInsuranceMintKey(connection.cluster, insuranceMintName)
+    depositoryMintName,
+    SOL_DECIMALS,
+    getInsuranceMintKey(connection.cluster, insuranceMintName),
+    insuranceMintName,
+    USDC_DECIMALS,
+    UXD_PROGRAM_ID
   )
 
   console.log('createMintWithMangoDepositoryInstruction', {
@@ -61,10 +67,7 @@ const createMintWithMangoDepositoryInstruction = async ({
     slippage,
     UXD_PROGRAM_ID: UXD_PROGRAM_ID.toString(),
     authority: authority.toString(),
-    collateralAmount: collateralAmount.toNumber(),
-  })
-
-  console.log('createMintWithMangoDepositoryInstruction', {
+    collateralAmount: collateralUiAmount,
     client,
     mango,
     depository,
@@ -72,19 +75,14 @@ const createMintWithMangoDepositoryInstruction = async ({
 
   const controller = new Controller('UXD', UXD_DECIMALS, UXD_PROGRAM_ID)
 
-  console.log('next', {
-    TXN_OPTS,
-    controller,
-  })
-
   return client.createMintWithMangoDepositoryInstruction(
-    collateralAmount.toNumber(),
+    collateralUiAmount,
     slippage,
     controller,
     depository,
     mango,
     authority,
-    TXN_OPTS
+    {} //  TXN_OPTS
   )
 }
 
