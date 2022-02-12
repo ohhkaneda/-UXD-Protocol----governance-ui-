@@ -146,6 +146,11 @@ export interface RefreshReserveForm {
   mintName?: SupportedMintName
 }
 
+export interface WrapSolForm {
+  governedAccount?: GovernedMultiTypeAccount
+  uiAmount?: number
+}
+
 export enum Instructions {
   Transfer,
   ProgramUpgrade,
@@ -169,8 +174,11 @@ export enum Instructions {
   WithdrawObligationCollateralAndRedeemReserveLiquidity,
   RefreshSolendObligation,
   RefreshSolendReserve,
+  UXDMintWithMangoDepository,
+  UXDRedeemFromMangoDepository,
   Grant,
   Clawback,
+  WrapSol,
 }
 
 export interface InitializeControllerForm {
@@ -214,6 +222,22 @@ export interface WithdrawInsuranceFromMangoDepositoryForm {
   programId: string | undefined
 }
 
+export interface UXDMintWithMangoDepositoryForm {
+  governedAccount?: GovernedProgramAccount
+  uiAmount?: number
+  collateralName?: string
+  slippage?: number
+  insuranceMintName?: string
+}
+
+export interface UXDRedeemFromMangoDepositoryForm {
+  governedAccount?: GovernedProgramAccount
+  uiAmount?: number
+  collateralName?: string
+  slippage?: number
+  insuranceMintName?: string
+}
+
 export enum UXDIntructions {
   InitializeController,
   SetRedeemableGlobalSupplyCap,
@@ -223,6 +247,8 @@ export enum UXDIntructions {
   WithdrawInsuranceFromMangoDepository,
   Grant,
   Clawback,
+  UXDMintWithMangoDepository,
+  UXDRedeemFromMangoDepository,
 }
 
 export type createParams = [

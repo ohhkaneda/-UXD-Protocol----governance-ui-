@@ -159,6 +159,11 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
+      id: Instructions.WrapSol,
+      name: 'Wrap SOL',
+      isVisible: canUseAnyInstruction,
+    },
+    {
       id: Instructions.CreateSolendObligationAccount,
       name: 'Solend: Create Obligation Account',
       isVisible: canUseAnyInstruction,
@@ -217,6 +222,18 @@ export default function useGovernanceAssets() {
       id: Instructions.WithdrawInsuranceFromMangoDepository,
       name: 'UXD: Withdraw Insurance From Mango Depository',
       isVisible: canUseUxdInstructions,
+    },
+    {
+      id: Instructions.UXDMintWithMangoDepository,
+      name: 'UXD: Mint From Mango Depository',
+      isVisible: canUseAnyInstruction,
+      //isVisible: canUseUxdInstructions,
+    },
+    {
+      id: Instructions.UXDRedeemFromMangoDepository,
+      name: 'UXD: Redeem From Mango Depository',
+      isVisible: canUseAnyInstruction,
+      //isVisible: canUseUxdInstructions,
     },
     {
       id: Instructions.AddLiquidityRaydium,

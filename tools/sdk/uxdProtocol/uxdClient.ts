@@ -11,6 +11,10 @@ import {
   UXDHelpers,
 } from '@uxdprotocol/uxd-client'
 
+export const UXD_PROGRAM_ID = new PublicKey(
+  'UXD8m9cvwk4RcSxnX2HZ9VudQCEeDH6fRnB4CAP57Dr'
+)
+
 export const DEPOSITORY_MINTS = {
   devnet: {
     BTC: {

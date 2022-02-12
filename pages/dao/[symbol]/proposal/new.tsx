@@ -57,6 +57,9 @@ import RefreshReserve from './components/instructions/solend/RefreshReserve'
 import Grant from 'VoteStakeRegistry/components/instructions/Grant'
 import Clawback from 'VoteStakeRegistry/components/instructions/Clawback'
 import RemoveLiquidityRaydium from './components/instructions/raydium/RemoveLiquidity'
+import UXDMintWithMangoDepository from './components/instructions/UXD/MintWithMangoDepository'
+import UXDRedeemFromMangoDepository from './components/instructions/UXD/RedeemFromMangoDepository'
+import WrapSol from './components/instructions/WrapSol'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -385,6 +388,14 @@ const New = () => {
             governance={governance}
           />
         )
+      case Instructions.UXDMintWithMangoDepository:
+        return (
+          <UXDMintWithMangoDepository index={idx} governance={governance} />
+        )
+      case Instructions.UXDRedeemFromMangoDepository:
+        return (
+          <UXDRedeemFromMangoDepository index={idx} governance={governance} />
+        )
       case Instructions.Mint:
         return <Mint index={idx} governance={governance}></Mint>
       case Instructions.Base64:
@@ -402,6 +413,8 @@ const New = () => {
         return <Grant index={idx} governance={governance}></Grant>
       case Instructions.Clawback:
         return <Clawback index={idx} governance={governance}></Clawback>
+      case Instructions.WrapSol:
+        return <WrapSol index={idx} governance={governance} />
       default:
         null
     }
