@@ -172,6 +172,7 @@ export interface SaberTribecaCreateGaugeVoteForm {
 export interface SaberTribecaGaugeSetVoteForm {
   governedAccount?: GovernedMultiTypeAccount
   gaugeName?: string
+  weight?: number
 }
 
 export interface SaberTribecaPrepareEpochGaugeVoterForm {
