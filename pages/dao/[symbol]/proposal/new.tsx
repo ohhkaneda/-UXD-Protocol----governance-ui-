@@ -67,6 +67,7 @@ import SaberTribecaSetGaugeVote from './components/instructions/saberTribeca/Set
 import SaberTribecaPrepareEpochGaugeVoter from './components/instructions/saberTribeca/PrepareEpochGaugeVoter'
 import SaberTribecaCreateEpochGauge from './components/instructions/saberTribeca/CreateEpochGauge'
 import SaberTribecaGaugeCommitVote from './components/instructions/saberTribeca/GaugeCommitVote'
+import SetProgramAuthority from './components/instructions/SetProgramAuthority'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
