@@ -57,6 +57,7 @@ import InitObligationAccount from './components/instructions/Solend/InitObligati
 import RefreshObligation from './components/instructions/Solend/RefreshObligation'
 import RefreshReserve from './components/instructions/Solend/RefreshReserve'
 import WithdrawObligationCollateralAndRedeemReserveLiquidity from './components/instructions/Solend/WithdrawObligationCollateralAndRedeemReserveLiquidity'
+import TokenTransferBetweenInternalGovernanceAccounts from './components/instructions/TokenTransferBetweenInternalGovernanceAccounts'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -335,6 +336,44 @@ const New = () => {
       case Instructions.WithdrawObligationCollateralAndRedeemReserveLiquidity:
         return (
           <WithdrawObligationCollateralAndRedeemReserveLiquidity
+            index={idx}
+            governance={governance}
+          />
+        )
+      case Instructions.AddLiquidityRaydium:
+        return <AddLiquidityRaydium index={idx} governance={governance} />
+      case Instructions.RemoveLiquidityRaydium:
+        return <RemoveLiquidityRaydium index={idx} governance={governance} />
+      case Instructions.InitializeController:
+        return <InitializeController index={idx} governance={governance} />
+      case Instructions.SetRedeemableGlobalSupplyCap:
+        return <SetRedeemGlobalSupplyCap index={idx} governance={governance} />
+      case Instructions.TokenTransferBetweenInternalGovernanceAccounts:
+        return (
+          <TokenTransferBetweenInternalGovernanceAccounts
+            index={idx}
+            governance={governance}
+          />
+        )
+      case Instructions.SetMangoDepositoriesRedeemableSoftCap:
+        return (
+          <SetMangoDepositoriesRedeemableSoftCap
+            index={idx}
+            governance={governance}
+          />
+        )
+      case Instructions.RegisterMangoDepository:
+        return <RegisterMangoDepository index={idx} governance={governance} />
+      case Instructions.DepositInsuranceToMangoDepository:
+        return (
+          <DepositInsuranceToMangoDepository
+            index={idx}
+            governance={governance}
+          />
+        )
+      case Instructions.WithdrawInsuranceFromMangoDepository:
+        return (
+          <WithdrawInsuranceFromMangoDepository
             index={idx}
             governance={governance}
           />
