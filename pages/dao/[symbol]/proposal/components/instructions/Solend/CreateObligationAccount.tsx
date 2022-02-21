@@ -31,8 +31,11 @@ const CreateObligationAccount = ({
   const connection = useWalletStore((s) => s.connection)
   const wallet = useWalletStore((s) => s.current)
   const { realmInfo } = useRealm()
+  const {
+    governedMultiTypeAccounts,
+    getGovernedAccountPublicKey,
+  } = useGovernedMultiTypeAccounts()
 
-  const { governedMultiTypeAccounts } = useGovernedMultiTypeAccounts()
   const shouldBeGoverned = index !== 0 && governance
   const programId: PublicKey | undefined = realmInfo?.programId
   const [form, setForm] = useState<CreateSolendObligationAccountForm>({})
@@ -53,6 +56,12 @@ const CreateObligationAccount = ({
   async function getInstruction(): Promise<UiInstruction> {
     const isValid = await validateInstruction()
 
+    const invalid = {
+      serializedInstruction: '',
+      isValid: false,
+      governance: form.governedAccount?.governance,
+    }
+
     if (
       !connection ||
       !isValid ||
@@ -60,16 +69,16 @@ const CreateObligationAccount = ({
       !form.governedAccount?.governance?.account ||
       !wallet?.publicKey
     ) {
-      return {
-        serializedInstruction: '',
-        isValid: false,
-        governance: form.governedAccount?.governance,
-      }
+      return invalid
     }
+
+    const pubkey = getGovernedAccountPublicKey(form.governedAccount)
+
+    if (!pubkey) return invalid
 
     const tx = await createObligationAccount({
       fundingAddress: wallet.publicKey,
-      walletAddress: form.governedAccount.governance.pubkey,
+      walletAddress: pubkey,
     })
 
     return {
