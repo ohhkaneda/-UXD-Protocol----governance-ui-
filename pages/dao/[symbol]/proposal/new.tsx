@@ -324,6 +324,9 @@ const New = () => {
         return (
           <ProgramUpgrade index={idx} governance={governance}></ProgramUpgrade>
         )
+      case Instructions.SetProgramAuthority:
+        return <SetProgramAuthority index={idx} governance={governance} />
+        return <ProgramUpgrade index={idx} governance={governance} />
       case Instructions.CreateAssociatedTokenAccount:
         return (
           <CreateAssociatedTokenAccount index={idx} governance={governance} />
@@ -342,46 +345,13 @@ const New = () => {
       case Instructions.RefreshSolendObligation:
         return <RefreshObligation index={idx} governance={governance} />
       case Instructions.RefreshSolendReserve:
-        return <RefreshReserve index={idx} governance={governance} />
+        return <RefreshReserve index={idx} />
       case Instructions.WithdrawObligationCollateralAndRedeemReserveLiquidity:
         return (
           <WithdrawObligationCollateralAndRedeemReserveLiquidity
             index={idx}
             governance={governance}
           />
-        )
-      case Instructions.SaberTribecaNewEscrow:
-        return <SaberTribecaNewEscrow index={idx} governance={governance} />
-      case Instructions.SaberTribecaLock:
-        return <SaberTribecaLock index={idx} governance={governance} />
-      case Instructions.SaberTribecaCreateEscrowSbrATA:
-        return (
-          <SaberTribecaCreateEscrowSbrATA index={idx} governance={governance} />
-        )
-      case Instructions.SaberTribecaCreateGaugeVoter:
-        return (
-          <SaberTribecaCreateGaugeVoter index={idx} governance={governance} />
-        )
-      case Instructions.SaberTribecaCreateGaugeVote:
-        return (
-          <SaberTribecaCreateGaugeVote index={idx} governance={governance} />
-        )
-      case Instructions.SaberTribecaGaugeSetVote:
-        return <SaberTribecaSetGaugeVote index={idx} governance={governance} />
-      case Instructions.SaberTribecaPrepareEpochGaugeVoter:
-        return (
-          <SaberTribecaPrepareEpochGaugeVoter
-            index={idx}
-            governance={governance}
-          />
-        )
-      case Instructions.SaberTribecaCreateEpochGauge:
-        return (
-          <SaberTribecaCreateEpochGauge index={idx} governance={governance} />
-        )
-      case Instructions.SaberTribecaGaugeCommitVote:
-        return (
-          <SaberTribecaGaugeCommitVote index={idx} governance={governance} />
         )
       case Instructions.AddLiquidityRaydium:
         return <AddLiquidityRaydium index={idx} governance={governance} />
@@ -422,11 +392,11 @@ const New = () => {
           />
         )
       case Instructions.Mint:
-        return <Mint index={idx} governance={governance}></Mint>
+        return <Mint index={idx} governance={governance} />
       case Instructions.Base64:
-        return <CustomBase64 index={idx} governance={governance}></CustomBase64>
+        return <CustomBase64 index={idx} governance={governance} />
       case Instructions.None:
-        return <Empty index={idx} governance={governance}></Empty>
+        return <Empty index={idx} governance={governance} />
       case Instructions.MangoMakeChangeMaxAccounts:
         return (
           <MakeChangeMaxAccounts
@@ -442,9 +412,42 @@ const New = () => {
           ></MakeChangeReferralFeeParams>
         )
       case Instructions.Grant:
-        return <Grant index={idx} governance={governance}></Grant>
+        return <Grant index={idx} governance={governance} />
       case Instructions.Clawback:
-        return <Clawback index={idx} governance={governance}></Clawback>
+        return <Clawback index={idx} governance={governance} />
+      case Instructions.SaberTribecaNewEscrow:
+        return <SaberTribecaNewEscrow index={idx} governance={governance} />
+      case Instructions.SaberTribecaLock:
+        return <SaberTribecaLock index={idx} governance={governance} />
+      case Instructions.SaberTribecaCreateEscrowSbrATA:
+        return (
+          <SaberTribecaCreateEscrowSbrATA index={idx} governance={governance} />
+        )
+      case Instructions.SaberTribecaCreateGaugeVoter:
+        return (
+          <SaberTribecaCreateGaugeVoter index={idx} governance={governance} />
+        )
+      case Instructions.SaberTribecaCreateGaugeVote:
+        return (
+          <SaberTribecaCreateGaugeVote index={idx} governance={governance} />
+        )
+      case Instructions.SaberTribecaGaugeSetVote:
+        return <SaberTribecaSetGaugeVote index={idx} governance={governance} />
+      case Instructions.SaberTribecaPrepareEpochGaugeVoter:
+        return (
+          <SaberTribecaPrepareEpochGaugeVoter
+            index={idx}
+            governance={governance}
+          />
+        )
+      case Instructions.SaberTribecaCreateEpochGauge:
+        return (
+          <SaberTribecaCreateEpochGauge index={idx} governance={governance} />
+        )
+      case Instructions.SaberTribecaGaugeCommitVote:
+        return (
+          <SaberTribecaGaugeCommitVote index={idx} governance={governance} />
+        )
       default:
         null
     }

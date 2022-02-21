@@ -32,10 +32,6 @@ const CreateObligationAccount = ({
   const wallet = useWalletStore((s) => s.current)
   const { realmInfo } = useRealm()
 
-  // Hardcoded gate used to be clear about what cluster is supported for now
-  if (connection.cluster !== 'mainnet') {
-    return <>This instruction does not support {connection.cluster}</>
-  }
   const { governedMultiTypeAccounts } = useGovernedMultiTypeAccounts()
   const shouldBeGoverned = index !== 0 && governance
   const programId: PublicKey | undefined = realmInfo?.programId
@@ -99,6 +95,11 @@ const CreateObligationAccount = ({
       index
     )
   }, [form])
+
+  // Hardcoded gate used to be clear about what cluster is supported for now
+  if (connection.cluster !== 'mainnet') {
+    return <>This instruction does not support {connection.cluster}</>
+  }
 
   const schema = yup.object().shape({
     governedAccount: yup
