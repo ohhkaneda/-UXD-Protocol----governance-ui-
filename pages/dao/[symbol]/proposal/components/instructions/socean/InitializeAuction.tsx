@@ -18,15 +18,15 @@ import useSoceanPrograms from '@hooks/useSoceanPrograms'
 import Input from '@components/inputs/Input'
 import {
   Connection,
-  Keypair,
   PublicKey,
   SystemProgram,
   TransactionInstruction,
 } from '@solana/web3.js'
 import { initializeAuction } from '@tools/sdk/socean/initializeAuction'
 import { BN } from '@project-serum/anchor'
-import { createAssociatedTokenAccount } from '@utils/associated'
 import soceanConfiguration from '@tools/sdk/socean/configuration'
+import { SPLToken } from '@saberhq/token-utils'
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 
 const InitializeAuction = ({
   index,
@@ -111,11 +111,13 @@ const InitializeAuction = ({
 
     if (!pubkey) return invalid
 
-    const auction = Keypair.generate()
+    const auction = new PublicKey(
+      '7gosT4aHXuFkHuJqCiKR1x5qFDWmvjcZ511B2gAvizmu'
+    ) //Keypair.generate()
 
     const createAuctionTx = await createInstruction({
       authority: wallet.publicKey,
-      newAccountPubkey: auction.publicKey,
+      newAccountPubkey: auction,
       connection: connection.current,
       size: 224,
       programId:
@@ -132,12 +134,12 @@ const InitializeAuction = ({
       }
     )*/
 
-    console.log('auction Pubkey', auction.publicKey.toString())
+    console.log('auction Pubkey', auction.toString())
 
     const { tx, auctionAuthority, auctionPool } = await initializeAuction({
       cluster: connection.cluster,
       program: programs.DescendingAuction,
-      auction: auction.publicKey,
+      auction,
       authority: pubkey,
       paymentMint: form.paymentMint,
       paymentDestination: form.paymentDestination,
@@ -156,13 +158,30 @@ const InitializeAuction = ({
       programId: SystemProgram.programId,
     })
 
-    const [createAuctionPoolATATx] = await createAssociatedTokenAccount(
+    const initAuctionPoolAccountTx = SPLToken.createInitAccountInstruction(
+      TOKEN_PROGRAM_ID,
+      form.saleMint,
+      auctionPool,
+      auctionAuthority
+    )
+
+    /*
+    const createAuctionPoolTxs = await createTokenAccountInstructions(
+      connection.current,
       wallet.publicKey,
       auctionPool,
       form.saleMint,
       auctionAuthority
-    )
+    )*/
 
+    /*
+    const [createAuctionPoolATATx] = await createAssociatedTokenAccount(
+      wallet.publicKey,
+      auction.publicKey, // <---
+      form.saleMint,
+      auctionAuthority
+    )
+*/
     // TODO!!! Set auctionAuthority as owner of the Auction Pool ATA
 
     return {
@@ -173,7 +192,8 @@ const InitializeAuction = ({
         createAuctionTx,
         // assignAuctionAccountToDescendingAuctionProgramTx,
         createAuctionPoolTx,
-        createAuctionPoolATATx,
+        initAuctionPoolAccountTx,
+        //...createAuctionPoolTxs,
       ],
     }
   }
