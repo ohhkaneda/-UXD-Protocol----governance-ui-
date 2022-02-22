@@ -67,7 +67,9 @@ const NewEscrow = ({
       return invalid
     }
 
-    const pubkey = getGovernedAccountPublicKey(form.governedAccount)
+    const pubkey = getGovernedAccountPublicKey(form.governedAccount, true)
+
+    console.log('--------> publickey', pubkey?.toString())
 
     if (!pubkey) return invalid
 

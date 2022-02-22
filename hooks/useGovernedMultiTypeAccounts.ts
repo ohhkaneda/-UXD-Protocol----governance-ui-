@@ -64,31 +64,33 @@ export default function useGovernedMultiTypeAccounts() {
     }
   }, [getGovernedMultiTypeAccounts])
 
-  const getGovernedAccountPublicKey = useCallback(
-    (
-      governedAccount: GovernedMultiTypeAccount
-    ): PublicKey | null | undefined => {
-      const accountType = governedAccount.governance.account.accountType
+  const getGovernedAccountPublicKey = useCallback((
+    governedAccount: GovernedMultiTypeAccount,
 
-      switch (accountType) {
-        case GovernanceAccountType.MintGovernanceV1:
-        case GovernanceAccountType.MintGovernanceV2:
-          return governedAccount.governance.account.governedAccount
-        case GovernanceAccountType.TokenGovernanceV1:
-        case GovernanceAccountType.TokenGovernanceV2:
-          return governedAccount.isSol
-            ? governedAccount.transferAddress
-            : // We deal with the owner of the account
-              governedAccount.governance.pubkey
-        case GovernanceAccountType.ProgramGovernanceV1:
-        case GovernanceAccountType.ProgramGovernanceV2:
-          return governedAccount.governance.account.governedAccount
-        default:
-          return governedAccount.governance.pubkey
+    // can force the fact to use the owner for SOL Token Governance
+    forceToUseSolTokenGovernanceOwner?: boolean
+  ): PublicKey | null | undefined => {
+    const accountType = governedAccount.governance.account.accountType
+
+    switch (accountType) {
+      case GovernanceAccountType.MintGovernanceV1:
+      case GovernanceAccountType.MintGovernanceV2:
+        return governedAccount.governance.account.governedAccount
+      case GovernanceAccountType.TokenGovernanceV1:
+      case GovernanceAccountType.TokenGovernanceV2: {
+        if (governedAccount.isSol && !forceToUseSolTokenGovernanceOwner) {
+          return governedAccount.transferAddress
+        }
+
+        return governedAccount.governance.pubkey
       }
-    },
-    []
-  )
+      case GovernanceAccountType.ProgramGovernanceV1:
+      case GovernanceAccountType.ProgramGovernanceV2:
+        return governedAccount.governance.account.governedAccount
+      default:
+        return governedAccount.governance.pubkey
+    }
+  }, [])
 
   return {
     governedMultiTypeAccounts,

@@ -68,7 +68,7 @@ const CreateEscrowSbrATA = ({
       return invalid
     }
 
-    const pubkey = getGovernedAccountPublicKey(form.governedAccount)
+    const pubkey = getGovernedAccountPublicKey(form.governedAccount, true)
 
     if (!pubkey) return invalid
 
