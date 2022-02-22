@@ -208,6 +208,20 @@ export interface SaberTribecaGaugeCommitVoteForm {
   gaugeName?: string
 }
 
+export interface SoceanMintBondedTokensForm {
+  governedAccount?: GovernedMultiTypeAccount
+  uiAmount?: number
+  depositFrom?: PublicKey
+  bondPool?: PublicKey
+  bondedMint?: PublicKey
+  mintTo?: PublicKey
+}
+
+export interface SoceanCreateBondedMintATAForm {
+  governedAccount?: GovernedMultiTypeAccount
+  bondedMint?: PublicKey
+}
+
 export enum Instructions {
   Transfer,
   ProgramUpgrade,
@@ -244,6 +258,8 @@ export enum Instructions {
   SaberTribecaPrepareEpochGaugeVoter,
   SaberTribecaCreateEpochGauge,
   SaberTribecaGaugeCommitVote,
+  SoceanMintBondedTokens,
+  SoceanCreateBondedMintATA,
 }
 
 export interface InitializeControllerForm {

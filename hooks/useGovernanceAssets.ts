@@ -148,6 +148,16 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
+      id: Instructions.SoceanCreateBondedMintATA,
+      name: 'Socean: Create Bonded Mint ATA',
+      isVisible: canUseAnyInstruction,
+    },
+    {
+      id: Instructions.SoceanMintBondedTokens,
+      name: 'Socean: Mint Bonded Tokens',
+      isVisible: canUseAnyInstruction,
+    },
+    {
       id: Instructions.SaberTribecaNewEscrow,
       name: 'Saber Tribeca: New Escrow',
       isVisible: canUseAnyInstruction,
