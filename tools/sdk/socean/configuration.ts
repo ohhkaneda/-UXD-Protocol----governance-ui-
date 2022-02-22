@@ -2,10 +2,15 @@ import { EndpointTypes } from '@models/types'
 import { newProgramMap } from '@saberhq/anchor-contrib'
 import { SolanaAugmentedProvider } from '@saberhq/solana-contrib'
 import { PublicKey } from '@solana/web3.js'
+import {
+  DescendingAuctionProgram,
+  DescendingAuctionJSON,
+} from './programs/descending-auction'
 import { BondingProgram, BondingJSON } from './programs/bonding'
 
 export type SoceanPrograms = {
   Bonding: BondingProgram
+  DescendingAuction: DescendingAuctionProgram
 }
 
 export type SupportedCluster = Extract<EndpointTypes, 'devnet' | 'mainnet'>
@@ -21,6 +26,12 @@ class SoceanConfiguration {
     mainnet: new PublicKey('bon4Kh3x1uQK16w9b9DKgz3Aw4AP1pZxBJk55Q6Sosb'),
   }
 
+  public readonly descendingAuctionProgramId: MultiClusterPubkey = {
+    devnet: new PublicKey('CwuWwv57X9Yerfhkh9oEDJzr1qgyDFYr2mkyZ3HH8jjJ'),
+
+    mainnet: new PublicKey('desGPJHB9jXNpbqrV4j6Zcpvf4Zu8ijyYpowBFVDMtF'),
+  }
+
   public loadPrograms(
     provider: SolanaAugmentedProvider,
     cluster: SupportedCluster
@@ -31,11 +42,13 @@ class SoceanConfiguration {
       {
         // IDLs
         Bonding: BondingJSON,
+        DescendingAuction: DescendingAuctionJSON,
       },
 
       {
         // Addresses
         Bonding: this.bondingProgramId[cluster],
+        DescendingAuction: this.descendingAuctionProgramId[cluster],
       }
     )
   }

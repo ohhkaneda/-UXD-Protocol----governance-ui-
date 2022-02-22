@@ -69,7 +69,7 @@ import SaberTribecaCreateEpochGauge from './components/instructions/saberTribeca
 import SaberTribecaGaugeCommitVote from './components/instructions/saberTribeca/GaugeCommitVote'
 import SetProgramAuthority from './components/instructions/SetProgramAuthority'
 import SoceanMintBondedTokens from './components/instructions/socean/MintBondedTokens'
-import SoceanCreateBondedMintATA from './components/instructions/socean/CreateBondedMintATA'
+import SoceanInitializeAuction from './components/instructions/socean/InitializeAuction'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -450,10 +450,10 @@ const New = () => {
         return (
           <SaberTribecaGaugeCommitVote index={idx} governance={governance} />
         )
-      case Instructions.SoceanCreateBondedMintATA:
-        return <SoceanCreateBondedMintATA index={idx} governance={governance} />
       case Instructions.SoceanMintBondedTokens:
         return <SoceanMintBondedTokens index={idx} governance={governance} />
+      case Instructions.SoceanInitializeAuction:
+        return <SoceanInitializeAuction index={idx} governance={governance} />
       default:
         null
     }

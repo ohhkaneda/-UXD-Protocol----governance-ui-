@@ -3,8 +3,6 @@ import type { AnchorTypes } from '@saberhq/anchor-contrib'
 import type { Bonding } from '@soceanfi/bonding/dist/idl/idl'
 import { IDL } from '@soceanfi/bonding/dist/idl/idl'
 
-export * from '@soceanfi/bonding/dist/idl/idl'
-
 export type BondingTypes = AnchorTypes<
   Bonding,
   {

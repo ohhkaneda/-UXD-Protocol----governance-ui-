@@ -23,6 +23,7 @@ import useWalletStore from 'stores/useWalletStore'
 
 import { NewProposalContext } from '../../new'
 import GovernedAccountSelect from '../GovernedAccountSelect'
+import Input from '@components/inputs/Input'
 
 const CreateAssociatedTokenAccount = ({
   index,
@@ -76,9 +77,19 @@ const CreateAssociatedTokenAccount = ({
       return invalid
     }
 
-    const pubkey = getGovernedAccountPublicKey(form.governedAccount)
+    const pubkey = getGovernedAccountPublicKey(form.governedAccount, true)
 
     if (!pubkey) {
+      return invalid
+    }
+
+    const mint =
+      form.splTokenMintUIName === 'custom'
+        ? form.customMint
+        : getSplTokenMintAddressByUIName(form.splTokenMintUIName)
+
+    if (!mint) {
+      console.log('Cannot find appropriate mint to create ATA for')
       return invalid
     }
 
@@ -90,7 +101,7 @@ const CreateAssociatedTokenAccount = ({
       pubkey,
 
       // splTokenMintAddress
-      getSplTokenMintAddressByUIName(form.splTokenMintUIName)
+      mint
     )
 
     return {
@@ -123,6 +134,15 @@ const CreateAssociatedTokenAccount = ({
       .nullable()
       .required('Governed account is required'),
     splTokenMintUIName: yup.string().required('SPL Token Mint is required'),
+    customMint: yup.string().test((value?: string) => {
+      if (form.splTokenMintUIName === 'custom' && !value) {
+        return new yup.ValidationError(
+          'custom mint must be set when custom is selected'
+        )
+      }
+
+      return true
+    }),
   })
 
   return (
@@ -157,7 +177,26 @@ const CreateAssociatedTokenAccount = ({
             </div>
           </Select.Option>
         ))}
+
+        <Select.Option key="custom" value="custom">
+          Custom
+        </Select.Option>
       </Select>
+
+      {form.splTokenMintUIName === 'custom' ? (
+        <Input
+          label="Custom Mint"
+          value={form.customMint}
+          type="string"
+          onChange={(evt) =>
+            handleSetForm({
+              value: new PublicKey(evt.target.value),
+              propertyName: 'customMint',
+            })
+          }
+          error={formErrors['customMint']}
+        />
+      ) : null}
     </>
   )
 }

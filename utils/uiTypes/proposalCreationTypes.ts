@@ -124,7 +124,8 @@ export interface EmptyInstructionForm {
 
 export interface CreateAssociatedTokenAccountForm {
   governedAccount?: GovernedMultiTypeAccount
-  splTokenMintUIName?: SplTokenUIName
+  splTokenMintUIName?: SplTokenUIName | 'custom'
+  customMint?: PublicKey
 }
 
 export interface CreateSolendObligationAccountForm {
@@ -217,9 +218,15 @@ export interface SoceanMintBondedTokensForm {
   mintTo?: PublicKey
 }
 
-export interface SoceanCreateBondedMintATAForm {
+export interface SoceanInitializeAuctionForm {
   governedAccount?: GovernedMultiTypeAccount
-  bondedMint?: PublicKey
+  paymentMint?: PublicKey
+  paymentDestination?: PublicKey
+  saleMint?: PublicKey
+  startTimestamp?: number
+  endTimestamp?: number
+  ceilPrice?: number
+  floorPrice?: number
 }
 
 export enum Instructions {
@@ -259,7 +266,7 @@ export enum Instructions {
   SaberTribecaCreateEpochGauge,
   SaberTribecaGaugeCommitVote,
   SoceanMintBondedTokens,
-  SoceanCreateBondedMintATA,
+  SoceanInitializeAuction,
 }
 
 export interface InitializeControllerForm {

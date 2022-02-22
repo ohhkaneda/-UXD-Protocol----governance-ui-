@@ -148,13 +148,13 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
-      id: Instructions.SoceanCreateBondedMintATA,
-      name: 'Socean: Create Bonded Mint ATA',
+      id: Instructions.SoceanMintBondedTokens,
+      name: 'Socean: Mint Bonded Tokens',
       isVisible: canUseAnyInstruction,
     },
     {
-      id: Instructions.SoceanMintBondedTokens,
-      name: 'Socean: Mint Bonded Tokens',
+      id: Instructions.SoceanInitializeAuction,
+      name: 'Socean: Initialize Auction',
       isVisible: canUseAnyInstruction,
     },
     {
