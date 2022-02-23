@@ -32,6 +32,19 @@ export interface InstructionDataWithHoldUpTime {
   holdUpTime: number | undefined
   prerequisiteInstructions: TransactionInstruction[]
   chunkSplitByDefault?: boolean
+  additionalSigners?: Keypair[]
+}
+
+function getSignersFromInstructionsData(
+  instructionsData: InstructionDataWithHoldUpTime[]
+): Keypair[] {
+  return instructionsData.reduce((signers, instructionData) => {
+    if (!instructionData.additionalSigners) {
+      return signers
+    }
+
+    return [...signers, ...instructionData.additionalSigners]
+  }, [])
 }
 
 export class InstructionDataWithHoldUpTime {
@@ -69,7 +82,7 @@ export const createProposal = async (
   client?: VsrClient
 ): Promise<PublicKey> => {
   const instructions: TransactionInstruction[] = []
-  const signers: Keypair[] = []
+  const signers: Keypair[] = getSignersFromInstructionsData(instructionsData)
   const governanceAuthority = walletPubkey
   const signatory = walletPubkey
   const payer = walletPubkey
@@ -175,6 +188,20 @@ export const createProposal = async (
       signatory,
       signatoryRecordAddress,
       undefined
+    )
+
+    signers.forEach((signer) =>
+      withSignOffProposal(
+        insertInstructions, // SingOff proposal needs to be executed after inserting instructions hence we add it to insertInstructions
+        programId,
+        programVersion,
+        realm.pubkey,
+        governance,
+        proposalAddress,
+        signer.publicKey,
+        signatoryRecordAddress,
+        undefined
+      )
     )
   }
 

@@ -3,7 +3,7 @@ import { Governance, InstructionData } from '@solana/spl-governance'
 import { ProgramAccount } from '@solana/spl-governance'
 import { RpcContext } from '@solana/spl-governance'
 import { MintInfo } from '@solana/spl-token'
-import { PublicKey, TransactionInstruction } from '@solana/web3.js'
+import { Keypair, PublicKey, TransactionInstruction } from '@solana/web3.js'
 import { SupportedMintName } from '@tools/sdk/solend/configuration'
 import { SplTokenUIName } from '@utils/splTokens'
 import { getNameOf } from '@tools/core/script'
@@ -23,6 +23,7 @@ export interface UiInstruction {
   customHoldUpTime?: number
   prerequisiteInstructions?: TransactionInstruction[]
   chunkSplitByDefault?: boolean
+  additionalSigners?: Keypair[]
 }
 export interface SplTokenTransferForm {
   destinationAccount: string
@@ -229,6 +230,21 @@ export interface SoceanInitializeAuctionForm {
   floorPrice?: number
 }
 
+export interface SoceanDepositToAuctionPoolForm {
+  governedAccount?: GovernedMultiTypeAccount
+  uiDepositAmount?: number
+  auction?: PublicKey
+  sourceAccount?: PublicKey
+  saleMint?: PublicKey
+}
+
+export interface SoceanCloseAuctionForm {
+  governedAccount?: GovernedMultiTypeAccount
+  auction?: PublicKey
+  saleMint?: PublicKey
+  destinationAccount?: PublicKey
+}
+
 export enum Instructions {
   Transfer,
   ProgramUpgrade,
@@ -267,6 +283,8 @@ export enum Instructions {
   SaberTribecaGaugeCommitVote,
   SoceanMintBondedTokens,
   SoceanInitializeAuction,
+  SoceanDepositToAuctionPool,
+  SoceanCloseAuction,
 }
 
 export interface InitializeControllerForm {

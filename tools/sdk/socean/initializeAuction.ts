@@ -38,11 +38,7 @@ export async function initializeAuction({
   endTimestamp: BN
   ceilPrice: BN
   floorPrice: BN
-}): Promise<{
-  auctionAuthority: PublicKey
-  auctionPool: PublicKey
-  tx: TransactionInstruction
-}> {
+}): Promise<TransactionInstruction> {
   const descendingAuctionProgramId =
     soceanConfiguration.descendingAuctionProgramId[cluster]
 
@@ -76,30 +72,26 @@ export async function initializeAuction({
     auctionPoolBump,
   })
 
-  return {
-    auctionAuthority,
-    auctionPool,
-    tx: program.instruction.initializeAuction(
-      startTimestamp,
-      endTimestamp,
-      ceilPrice,
-      floorPrice,
-      auctionAuthorityBump,
-      auctionPoolBump,
-      {
-        accounts: {
-          auction,
-          auctionAuthority,
-          authority,
-          paymentMint,
-          paymentDestination,
-          saleMint,
-          auctionPool,
-          tokenProgram: TOKEN_PROGRAM_ID,
-          systemProgram: SystemProgram.programId,
-          rent: SYSVAR_RENT_PUBKEY,
-        },
-      }
-    ),
-  }
+  return program.instruction.initializeAuction(
+    startTimestamp,
+    endTimestamp,
+    ceilPrice,
+    floorPrice,
+    auctionAuthorityBump,
+    auctionPoolBump,
+    {
+      accounts: {
+        auction,
+        auctionAuthority,
+        authority,
+        paymentMint,
+        paymentDestination,
+        saleMint,
+        auctionPool,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+        rent: SYSVAR_RENT_PUBKEY,
+      },
+    }
+  )
 }

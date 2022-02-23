@@ -3,7 +3,7 @@ import * as yup from 'yup'
 import { isFormValid } from '@utils/formValidation'
 import {
   UiInstruction,
-  SoceanInitializeAuctionForm,
+  SoceanCloseAuctionForm,
 } from '@utils/uiTypes/proposalCreationTypes'
 import { NewProposalContext } from '../../../new'
 import useWalletStore from 'stores/useWalletStore'
@@ -17,10 +17,9 @@ import useGovernedMultiTypeAccounts from '@hooks/useGovernedMultiTypeAccounts'
 import useSoceanPrograms from '@hooks/useSoceanPrograms'
 import Input from '@components/inputs/Input'
 import { Keypair, PublicKey } from '@solana/web3.js'
-import { initializeAuction } from '@tools/sdk/socean/initializeAuction'
-import { BN } from '@project-serum/anchor'
+import { closeAuction } from '@tools/sdk/socean/closeAuction'
 
-const InitializeAuction = ({
+const CloseAuction = ({
   index,
   governance,
 }: {
@@ -36,7 +35,7 @@ const InitializeAuction = ({
   const { programs } = useSoceanPrograms()
 
   const shouldBeGoverned = index !== 0 && governance
-  const [form, setForm] = useState<SoceanInitializeAuctionForm>({})
+  const [form, setForm] = useState<SoceanCloseAuctionForm>({})
   const [formErrors, setFormErrors] = useState({})
   const { handleSetInstructions } = useContext(NewProposalContext)
 
@@ -66,13 +65,9 @@ const InitializeAuction = ({
       !form.governedAccount?.governance?.account ||
       !wallet?.publicKey ||
       !programs ||
-      !form.paymentMint ||
-      !form.paymentDestination ||
+      !form.auction ||
       !form.saleMint ||
-      !form.startTimestamp ||
-      !form.endTimestamp ||
-      !form.ceilPrice ||
-      !form.floorPrice
+      !form.destinationAccount
     ) {
       return invalid
     }
@@ -85,18 +80,13 @@ const InitializeAuction = ({
 
     console.log('auction Pubkey', auction.toString())
 
-    const tx = await initializeAuction({
+    const tx = await closeAuction({
       cluster: connection.cluster,
       program: programs.DescendingAuction,
-      auction: auction.publicKey,
+      auction: form.auction,
       authority: pubkey,
-      paymentMint: form.paymentMint,
-      paymentDestination: form.paymentDestination,
       saleMint: form.saleMint,
-      startTimestamp: new BN(form.startTimestamp),
-      endTimestamp: new BN(form.endTimestamp),
-      ceilPrice: new BN(form.ceilPrice),
-      floorPrice: new BN(form.floorPrice),
+      destinationAccount: form.destinationAccount,
     })
 
     return {
@@ -122,32 +112,11 @@ const InitializeAuction = ({
       .object()
       .nullable()
       .required('Governed account is required'),
-    paymentMint: yup.string().required('Payment mint is required'),
-    paymentDestination: yup
-      .string()
-      .required('Payment destination is required'),
+    auction: yup.string().required('Auction is required'),
     saleMint: yup.string().required('Sale mint is required'),
-    startTimestamp: yup.string().required('Start timestamp is required'),
-    endTimestamp: yup.string().required('End timestamp is required'),
-    ceilPrice: yup
-      .number()
-      .moreThan(0, 'Ceil price should be more than 0')
-      .required('Ceil price is required'),
-    floorPrice: yup
-      .number()
-      .test((value?: number) => {
-        if (value === void 0 || form.ceilPrice === void 0) return false
-
-        if (value > form.ceilPrice) {
-          return new yup.ValidationError(
-            'floor price must be smaller than ceil price'
-          )
-        }
-
-        return true
-      })
-      .moreThan(0, 'Floor price should be more than 0')
-      .required('Floor price is required'),
+    destinationAccount: yup
+      .string()
+      .required('Destination account is required'),
   })
 
   return (
@@ -165,29 +134,16 @@ const InitializeAuction = ({
       />
 
       <Input
-        label="Payment Mint"
-        value={form.paymentMint}
+        label="Auction"
+        value={form.auction}
         type="string"
         onChange={(evt) =>
           handleSetForm({
             value: new PublicKey(evt.target.value),
-            propertyName: 'paymentMint',
+            propertyName: 'auction',
           })
         }
-        error={formErrors['paymentMint']}
-      />
-
-      <Input
-        label="Payment Destination"
-        value={form.paymentDestination}
-        type="string"
-        onChange={(evt) =>
-          handleSetForm({
-            value: new PublicKey(evt.target.value),
-            propertyName: 'paymentDestination',
-          })
-        }
-        error={formErrors['paymentDestination']}
+        error={formErrors['auction']}
       />
 
       <Input
@@ -204,60 +160,19 @@ const InitializeAuction = ({
       />
 
       <Input
-        label="Start Timestamp"
-        value={form.startTimestamp}
+        label="Destination Account"
+        value={form.destinationAccount}
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: evt.target.value,
-            propertyName: 'startTimestamp',
+            value: new PublicKey(evt.target.value),
+            propertyName: 'destinationAccount',
           })
         }
-        error={formErrors['startTimestamp']}
-      />
-
-      <Input
-        label="End Timestamp"
-        value={form.endTimestamp}
-        type="string"
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'endTimestamp',
-          })
-        }
-        error={formErrors['endTimestamp']}
-      />
-
-      <Input
-        label="Ceil Price"
-        value={form.ceilPrice}
-        type="number"
-        min="0"
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'ceilPrice',
-          })
-        }
-        error={formErrors['ceilPrice']}
-      />
-
-      <Input
-        label="Floor Price"
-        value={form.floorPrice}
-        type="number"
-        min="0"
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'floorPrice',
-          })
-        }
-        error={formErrors['floorPrice']}
+        error={formErrors['destinationAccount']}
       />
     </>
   )
 }
 
-export default InitializeAuction
+export default CloseAuction

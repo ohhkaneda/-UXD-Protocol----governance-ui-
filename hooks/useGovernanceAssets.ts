@@ -158,6 +158,16 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
+      id: Instructions.SoceanDepositToAuctionPool,
+      name: 'Socean: Deposit to Auction',
+      isVisible: canUseAnyInstruction,
+    },
+    {
+      id: Instructions.SoceanCloseAuction,
+      name: 'Socean: Close Auction',
+      isVisible: canUseAnyInstruction,
+    },
+    {
       id: Instructions.SaberTribecaNewEscrow,
       name: 'Saber Tribeca: New Escrow',
       isVisible: canUseAnyInstruction,

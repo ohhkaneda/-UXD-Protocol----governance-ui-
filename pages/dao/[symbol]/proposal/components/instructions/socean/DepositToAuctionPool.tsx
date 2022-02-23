@@ -3,7 +3,7 @@ import * as yup from 'yup'
 import { isFormValid } from '@utils/formValidation'
 import {
   UiInstruction,
-  SoceanInitializeAuctionForm,
+  SoceanDepositToAuctionPoolForm,
 } from '@utils/uiTypes/proposalCreationTypes'
 import { NewProposalContext } from '../../../new'
 import useWalletStore from 'stores/useWalletStore'
@@ -17,10 +17,10 @@ import useGovernedMultiTypeAccounts from '@hooks/useGovernedMultiTypeAccounts'
 import useSoceanPrograms from '@hooks/useSoceanPrograms'
 import Input from '@components/inputs/Input'
 import { Keypair, PublicKey } from '@solana/web3.js'
-import { initializeAuction } from '@tools/sdk/socean/initializeAuction'
 import { BN } from '@project-serum/anchor'
+import { depositToAuctionPool } from '@tools/sdk/socean/depositToAuctionPool'
 
-const InitializeAuction = ({
+const DepositToAuctionPool = ({
   index,
   governance,
 }: {
@@ -36,7 +36,7 @@ const InitializeAuction = ({
   const { programs } = useSoceanPrograms()
 
   const shouldBeGoverned = index !== 0 && governance
-  const [form, setForm] = useState<SoceanInitializeAuctionForm>({})
+  const [form, setForm] = useState<SoceanDepositToAuctionPoolForm>({})
   const [formErrors, setFormErrors] = useState({})
   const { handleSetInstructions } = useContext(NewProposalContext)
 
@@ -66,13 +66,10 @@ const InitializeAuction = ({
       !form.governedAccount?.governance?.account ||
       !wallet?.publicKey ||
       !programs ||
-      !form.paymentMint ||
-      !form.paymentDestination ||
-      !form.saleMint ||
-      !form.startTimestamp ||
-      !form.endTimestamp ||
-      !form.ceilPrice ||
-      !form.floorPrice
+      !form.uiDepositAmount ||
+      !form.auction ||
+      !form.sourceAccount ||
+      !form.saleMint
     ) {
       return invalid
     }
@@ -85,18 +82,14 @@ const InitializeAuction = ({
 
     console.log('auction Pubkey', auction.toString())
 
-    const tx = await initializeAuction({
+    const tx = await depositToAuctionPool({
       cluster: connection.cluster,
       program: programs.DescendingAuction,
-      auction: auction.publicKey,
+      depositAmount: new BN(form.uiDepositAmount),
+      auction: form.auction,
       authority: pubkey,
-      paymentMint: form.paymentMint,
-      paymentDestination: form.paymentDestination,
+      sourceAccount: form.sourceAccount,
       saleMint: form.saleMint,
-      startTimestamp: new BN(form.startTimestamp),
-      endTimestamp: new BN(form.endTimestamp),
-      ceilPrice: new BN(form.ceilPrice),
-      floorPrice: new BN(form.floorPrice),
     })
 
     return {
@@ -122,32 +115,13 @@ const InitializeAuction = ({
       .object()
       .nullable()
       .required('Governed account is required'),
-    paymentMint: yup.string().required('Payment mint is required'),
-    paymentDestination: yup
-      .string()
-      .required('Payment destination is required'),
+    auction: yup.string().required('Auction is required'),
+    sourceAccount: yup.string().required('Source account is required'),
     saleMint: yup.string().required('Sale mint is required'),
-    startTimestamp: yup.string().required('Start timestamp is required'),
-    endTimestamp: yup.string().required('End timestamp is required'),
-    ceilPrice: yup
+    depositAmount: yup
       .number()
-      .moreThan(0, 'Ceil price should be more than 0')
-      .required('Ceil price is required'),
-    floorPrice: yup
-      .number()
-      .test((value?: number) => {
-        if (value === void 0 || form.ceilPrice === void 0) return false
-
-        if (value > form.ceilPrice) {
-          return new yup.ValidationError(
-            'floor price must be smaller than ceil price'
-          )
-        }
-
-        return true
-      })
-      .moreThan(0, 'Floor price should be more than 0')
-      .required('Floor price is required'),
+      .moreThan(0, 'Deposit amount should be more than 0')
+      .required('Deposit amount is required'),
   })
 
   return (
@@ -165,29 +139,29 @@ const InitializeAuction = ({
       />
 
       <Input
-        label="Payment Mint"
-        value={form.paymentMint}
+        label="Auction"
+        value={form.auction}
         type="string"
         onChange={(evt) =>
           handleSetForm({
             value: new PublicKey(evt.target.value),
-            propertyName: 'paymentMint',
+            propertyName: 'auction',
           })
         }
-        error={formErrors['paymentMint']}
+        error={formErrors['auction']}
       />
 
       <Input
-        label="Payment Destination"
-        value={form.paymentDestination}
+        label="Source account"
+        value={form.sourceAccount}
         type="string"
         onChange={(evt) =>
           handleSetForm({
             value: new PublicKey(evt.target.value),
-            propertyName: 'paymentDestination',
+            propertyName: 'sourceAccount',
           })
         }
-        error={formErrors['paymentDestination']}
+        error={formErrors['sourceAccount']}
       />
 
       <Input
@@ -204,60 +178,20 @@ const InitializeAuction = ({
       />
 
       <Input
-        label="Start Timestamp"
-        value={form.startTimestamp}
-        type="string"
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'startTimestamp',
-          })
-        }
-        error={formErrors['startTimestamp']}
-      />
-
-      <Input
-        label="End Timestamp"
-        value={form.endTimestamp}
-        type="string"
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'endTimestamp',
-          })
-        }
-        error={formErrors['endTimestamp']}
-      />
-
-      <Input
-        label="Ceil Price"
-        value={form.ceilPrice}
+        label="Deposit Amount"
+        value={form.uiDepositAmount}
         type="number"
         min="0"
         onChange={(evt) =>
           handleSetForm({
             value: evt.target.value,
-            propertyName: 'ceilPrice',
+            propertyName: 'uiDepositAmount',
           })
         }
-        error={formErrors['ceilPrice']}
-      />
-
-      <Input
-        label="Floor Price"
-        value={form.floorPrice}
-        type="number"
-        min="0"
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'floorPrice',
-          })
-        }
-        error={formErrors['floorPrice']}
+        error={formErrors['uiDepositAmount']}
       />
     </>
   )
 }
 
-export default InitializeAuction
+export default DepositToAuctionPool
