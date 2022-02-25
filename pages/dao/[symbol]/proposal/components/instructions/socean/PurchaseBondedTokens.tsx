@@ -3,7 +3,7 @@ import * as yup from 'yup'
 import { isFormValid } from '@utils/formValidation'
 import {
   UiInstruction,
-  SoceanCloseAuctionForm,
+  SoceanPurchaseBondedTokensForm,
 } from '@utils/uiTypes/proposalCreationTypes'
 import { NewProposalContext } from '../../../new'
 import useWalletStore from 'stores/useWalletStore'
@@ -16,10 +16,11 @@ import GovernedAccountSelect from '../../GovernedAccountSelect'
 import useGovernedMultiTypeAccounts from '@hooks/useGovernedMultiTypeAccounts'
 import useSoceanPrograms from '@hooks/useSoceanPrograms'
 import Input from '@components/inputs/Input'
-import { Keypair, PublicKey } from '@solana/web3.js'
-import { closeAuction } from '@tools/sdk/socean/closeAuction'
+import { PublicKey } from '@solana/web3.js'
+import { BN } from '@project-serum/anchor'
+import { purchase } from '@tools/sdk/socean/purchase'
 
-const CloseAuction = ({
+const PurchaseBondedTokens = ({
   index,
   governance,
 }: {
@@ -35,7 +36,7 @@ const CloseAuction = ({
   const { programs } = useSoceanPrograms()
 
   const shouldBeGoverned = index !== 0 && governance
-  const [form, setForm] = useState<SoceanCloseAuctionForm>({})
+  const [form, setForm] = useState<SoceanPurchaseBondedTokensForm>({})
   const [formErrors, setFormErrors] = useState({})
   const { handleSetInstructions } = useContext(NewProposalContext)
 
@@ -67,7 +68,13 @@ const CloseAuction = ({
       !programs ||
       !form.auction ||
       !form.bondedMint ||
-      !form.destinationAccount
+      !form.paymentDestination ||
+      !form.buyer ||
+      !form.paymentSource ||
+      !form.saleDestination ||
+      !form.nativePurchaseAmount ||
+      !form.nativeExpectedPayment ||
+      !form.slippageTolerance
     ) {
       return invalid
     }
@@ -76,24 +83,24 @@ const CloseAuction = ({
 
     if (!pubkey) return invalid
 
-    const auction = Keypair.generate()
-
-    console.log('auction Pubkey', auction.toString())
-
-    const tx = await closeAuction({
+    const tx = await purchase({
       cluster: connection.cluster,
       program: programs.DescendingAuction,
       auction: form.auction,
-      authority: pubkey,
       bondedMint: form.bondedMint,
-      destinationAccount: form.destinationAccount,
+      paymentDestination: form.paymentDestination,
+      buyer: form.buyer,
+      paymentSource: form.paymentSource,
+      saleDestination: form.saleDestination,
+      purchaseAmount: new BN(form.nativePurchaseAmount),
+      expectedPayment: new BN(form.nativeExpectedPayment),
+      slippageTolerance: new BN(form.slippageTolerance),
     })
 
     return {
       serializedInstruction: serializeInstructionToBase64(tx),
       isValid: true,
       governance: form.governedAccount.governance,
-      additionalSigners: [auction],
     }
   }
 
@@ -114,9 +121,24 @@ const CloseAuction = ({
       .required('Governed account is required'),
     auction: yup.string().required('Auction is required'),
     bondedMint: yup.string().required('Bonded mint is required'),
-    destinationAccount: yup
+    paymentDestination: yup
       .string()
-      .required('Destination account is required'),
+      .required('Payment destination is required'),
+    buyer: yup.string().required('Buyer is required'),
+    paymentSource: yup.string().required('Payment source is required'),
+    saleDestination: yup.string().required('Sale destination is required'),
+    nativePurchaseAmount: yup
+      .number()
+      .moreThan(0, 'Purchase amount should be more than 0')
+      .required('Purchase amount is required'),
+    nativeExpectedPayment: yup
+      .number()
+      .moreThan(0, 'Expected payment should be more than 0')
+      .required('Expected payment is required'),
+    slippageTolerance: yup
+      .number()
+      .moreThan(0, 'Slippage tolerance should be more than 0')
+      .required('Slippage tolerance is required'),
   })
 
   return (
@@ -160,19 +182,100 @@ const CloseAuction = ({
       />
 
       <Input
-        label="Destination Account (Bonded mint TA/ATA)"
-        value={form.destinationAccount}
+        label="Payment Destination"
+        value={form.paymentDestination}
         type="string"
         onChange={(evt) =>
           handleSetForm({
             value: new PublicKey(evt.target.value),
-            propertyName: 'destinationAccount',
+            propertyName: 'paymentDestination',
           })
         }
-        error={formErrors['destinationAccount']}
+        error={formErrors['paymentDestination']}
+      />
+
+      <Input
+        label="Buyer"
+        value={form.buyer}
+        type="string"
+        onChange={(evt) =>
+          handleSetForm({
+            value: new PublicKey(evt.target.value),
+            propertyName: 'buyer',
+          })
+        }
+        error={formErrors['buyer']}
+      />
+
+      <Input
+        label="Payment Source"
+        value={form.paymentSource}
+        type="string"
+        onChange={(evt) =>
+          handleSetForm({
+            value: new PublicKey(evt.target.value),
+            propertyName: 'paymentSource',
+          })
+        }
+        error={formErrors['paymentSource']}
+      />
+
+      <Input
+        label="Sale Destination (bonded token TA/ATA)"
+        value={form.saleDestination}
+        type="string"
+        onChange={(evt) =>
+          handleSetForm({
+            value: new PublicKey(evt.target.value),
+            propertyName: 'saleDestination',
+          })
+        }
+        error={formErrors['saleDestination']}
+      />
+
+      <Input
+        label="Native Purchase Amount"
+        value={form.nativePurchaseAmount}
+        type="number"
+        min="0"
+        onChange={(evt) =>
+          handleSetForm({
+            value: evt.target.value,
+            propertyName: 'nativePurchaseAmount',
+          })
+        }
+        error={formErrors['nativePurchaseAmount']}
+      />
+
+      <Input
+        label="Native Expected Payment"
+        value={form.nativeExpectedPayment}
+        type="number"
+        min="0"
+        onChange={(evt) =>
+          handleSetForm({
+            value: evt.target.value,
+            propertyName: 'nativeExpectedPayment',
+          })
+        }
+        error={formErrors['nativeExpectedPayment']}
+      />
+
+      <Input
+        label="Slippage Tolerance (100 = 10%)"
+        value={form.slippageTolerance}
+        type="number"
+        min="0"
+        onChange={(evt) =>
+          handleSetForm({
+            value: evt.target.value,
+            propertyName: 'slippageTolerance',
+          })
+        }
+        error={formErrors['slippageTolerance']}
       />
     </>
   )
 }
 
-export default CloseAuction
+export default PurchaseBondedTokens

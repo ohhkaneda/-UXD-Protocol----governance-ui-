@@ -219,30 +219,40 @@ export interface SoceanMintBondedTokensForm {
   mintTo?: PublicKey
 }
 
-export interface SoceanInitializeAuctionForm {
-  governedAccount?: GovernedMultiTypeAccount
-  paymentMint?: PublicKey
-  paymentDestination?: PublicKey
-  saleMint?: PublicKey
-  startTimestamp?: number
-  endTimestamp?: number
-  ceilPrice?: number
-  floorPrice?: number
-}
-
 export interface SoceanDepositToAuctionPoolForm {
   governedAccount?: GovernedMultiTypeAccount
-  uiDepositAmount?: number
+  nativeDepositAmount?: number
   auction?: PublicKey
   sourceAccount?: PublicKey
-  saleMint?: PublicKey
+  bondedMint?: PublicKey
 }
 
 export interface SoceanCloseAuctionForm {
   governedAccount?: GovernedMultiTypeAccount
   auction?: PublicKey
-  saleMint?: PublicKey
+  bondedMint?: PublicKey
   destinationAccount?: PublicKey
+}
+
+export interface SoceanPurchaseBondedTokensForm {
+  governedAccount?: GovernedMultiTypeAccount
+  auction?: PublicKey
+  bondedMint?: PublicKey
+  paymentDestination?: PublicKey
+  buyer?: PublicKey
+  paymentSource?: PublicKey
+  saleDestination?: PublicKey
+  nativePurchaseAmount?: number
+  nativeExpectedPayment?: number
+  slippageTolerance?: number
+}
+
+export interface SoceanCancelVestForm {
+  governedAccount?: GovernedMultiTypeAccount
+  bondPool?: PublicKey
+  bondedMint?: PublicKey
+  userBondedAccount?: PublicKey
+  userTargetAccount?: PublicKey
 }
 
 export enum Instructions {
@@ -282,9 +292,10 @@ export enum Instructions {
   SaberTribecaCreateEpochGauge,
   SaberTribecaGaugeCommitVote,
   SoceanMintBondedTokens,
-  SoceanInitializeAuction,
   SoceanDepositToAuctionPool,
   SoceanCloseAuction,
+  SoceanPurchaseBondedTokens,
+  SoceanCancelVest,
 }
 
 export interface InitializeControllerForm {

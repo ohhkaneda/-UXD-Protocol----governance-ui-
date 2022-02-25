@@ -153,18 +153,23 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
-      id: Instructions.SoceanInitializeAuction,
-      name: 'Socean: Initialize Auction',
-      isVisible: canUseAnyInstruction,
-    },
-    {
       id: Instructions.SoceanDepositToAuctionPool,
       name: 'Socean: Deposit to Auction',
       isVisible: canUseAnyInstruction,
     },
     {
+      id: Instructions.SoceanPurchaseBondedTokens,
+      name: 'Socean: Purchase Bonded Tokens',
+      isVisible: canUseAnyInstruction,
+    },
+    {
       id: Instructions.SoceanCloseAuction,
       name: 'Socean: Close Auction',
+      isVisible: canUseAnyInstruction,
+    },
+    {
+      id: Instructions.SoceanCancelVest,
+      name: 'Socean: Cancel Vest',
       isVisible: canUseAnyInstruction,
     },
     {

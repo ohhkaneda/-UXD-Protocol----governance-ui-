@@ -1,7 +1,10 @@
 import { DescendingAuctionProgram } from './programs/descending-auction'
 import { PublicKey, TransactionInstruction } from '@solana/web3.js'
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
-import socean from '@soceanfi/descending-auction'
+import {
+  findAuctionAuthority,
+  findAuctionPool,
+} from '@soceanfi/descending-auction'
 import { EndpointTypes } from '@models/types'
 import soceanConfiguration from './configuration'
 import { BN } from '@project-serum/anchor'
@@ -13,7 +16,7 @@ export async function depositToAuctionPool({
   auction,
   authority,
   sourceAccount,
-  saleMint,
+  bondedMint,
 }: {
   cluster: EndpointTypes
   program: DescendingAuctionProgram
@@ -21,7 +24,7 @@ export async function depositToAuctionPool({
   auction: PublicKey
   authority: PublicKey
   sourceAccount: PublicKey
-  saleMint: PublicKey
+  bondedMint: PublicKey
 }): Promise<TransactionInstruction> {
   const descendingAuctionProgramId =
     soceanConfiguration.descendingAuctionProgramId[cluster]
@@ -33,9 +36,17 @@ export async function depositToAuctionPool({
   }
 
   const [[auctionAuthority], [auctionPool]] = await Promise.all([
-    socean.findAuctionAuthority(descendingAuctionProgramId, auction),
-    socean.findAuctionPool(descendingAuctionProgramId, auction, saleMint),
+    findAuctionAuthority(descendingAuctionProgramId, auction),
+    findAuctionPool(descendingAuctionProgramId, auction, bondedMint),
   ])
+
+  console.log('Deposit to auction pool', {
+    auction: auction.toString(),
+    auctionPool: auctionPool.toString(),
+    auctionAuthority: auctionAuthority.toString(),
+    authority: authority.toString(),
+    sourceAccount: sourceAccount.toString(),
+  })
 
   return program.instruction.depositToAuctionPool(depositAmount, {
     accounts: {

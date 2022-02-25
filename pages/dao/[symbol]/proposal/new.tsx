@@ -69,9 +69,10 @@ import SaberTribecaCreateEpochGauge from './components/instructions/saberTribeca
 import SaberTribecaGaugeCommitVote from './components/instructions/saberTribeca/GaugeCommitVote'
 import SetProgramAuthority from './components/instructions/SetProgramAuthority'
 import SoceanMintBondedTokens from './components/instructions/socean/MintBondedTokens'
-import SoceanInitializeAuction from './components/instructions/socean/InitializeAuction'
 import SoceanDepositToAuctionPool from './components/instructions/socean/DepositToAuctionPool'
 import SoceanCloseAuction from './components/instructions/socean/CloseAuction'
+import SoceanPurchaseBondedTokens from './components/instructions/socean/PurchaseBondedTokens'
+import SoceanCancelVest from './components/instructions/socean/CancelVest'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -242,7 +243,6 @@ const New = () => {
             : selectedGovernance?.account?.config.minInstructionHoldUpTime,
           prerequisiteInstructions: x.prerequisiteInstructions || [],
           chunkSplitByDefault: x.chunkSplitByDefault || false,
-          additionalSigners: x.additionalSigners,
         }
       })
 
@@ -455,14 +455,18 @@ const New = () => {
         )
       case Instructions.SoceanMintBondedTokens:
         return <SoceanMintBondedTokens index={idx} governance={governance} />
-      case Instructions.SoceanInitializeAuction:
-        return <SoceanInitializeAuction index={idx} governance={governance} />
       case Instructions.SoceanDepositToAuctionPool:
         return (
           <SoceanDepositToAuctionPool index={idx} governance={governance} />
         )
       case Instructions.SoceanCloseAuction:
         return <SoceanCloseAuction index={idx} governance={governance} />
+      case Instructions.SoceanPurchaseBondedTokens:
+        return (
+          <SoceanPurchaseBondedTokens index={idx} governance={governance} />
+        )
+      case Instructions.SoceanCancelVest:
+        return <SoceanCancelVest index={idx} governance={governance} />
       default:
         null
     }

@@ -16,7 +16,7 @@ import GovernedAccountSelect from '../../GovernedAccountSelect'
 import useGovernedMultiTypeAccounts from '@hooks/useGovernedMultiTypeAccounts'
 import useSoceanPrograms from '@hooks/useSoceanPrograms'
 import Input from '@components/inputs/Input'
-import { Keypair, PublicKey } from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
 import { BN } from '@project-serum/anchor'
 import { depositToAuctionPool } from '@tools/sdk/socean/depositToAuctionPool'
 
@@ -66,10 +66,10 @@ const DepositToAuctionPool = ({
       !form.governedAccount?.governance?.account ||
       !wallet?.publicKey ||
       !programs ||
-      !form.uiDepositAmount ||
+      !form.nativeDepositAmount ||
       !form.auction ||
       !form.sourceAccount ||
-      !form.saleMint
+      !form.bondedMint
     ) {
       return invalid
     }
@@ -78,25 +78,20 @@ const DepositToAuctionPool = ({
 
     if (!pubkey) return invalid
 
-    const auction = Keypair.generate()
-
-    console.log('auction Pubkey', auction.toString())
-
     const tx = await depositToAuctionPool({
       cluster: connection.cluster,
       program: programs.DescendingAuction,
-      depositAmount: new BN(form.uiDepositAmount),
+      depositAmount: new BN(form.nativeDepositAmount),
       auction: form.auction,
       authority: pubkey,
       sourceAccount: form.sourceAccount,
-      saleMint: form.saleMint,
+      bondedMint: form.bondedMint,
     })
 
     return {
       serializedInstruction: serializeInstructionToBase64(tx),
       isValid: true,
       governance: form.governedAccount.governance,
-      additionalSigners: [auction],
     }
   }
 
@@ -117,11 +112,11 @@ const DepositToAuctionPool = ({
       .required('Governed account is required'),
     auction: yup.string().required('Auction is required'),
     sourceAccount: yup.string().required('Source account is required'),
-    saleMint: yup.string().required('Sale mint is required'),
-    depositAmount: yup
+    bondedMint: yup.string().required('Bonded mint is required'),
+    nativeDepositAmount: yup
       .number()
-      .moreThan(0, 'Deposit amount should be more than 0')
-      .required('Deposit amount is required'),
+      .moreThan(0, 'Native deposit amount should be more than 0')
+      .required('Native deposit amount is required'),
   })
 
   return (
@@ -152,7 +147,7 @@ const DepositToAuctionPool = ({
       />
 
       <Input
-        label="Source account"
+        label="Source account (bonded mint TA/ATA)"
         value={form.sourceAccount}
         type="string"
         onChange={(evt) =>
@@ -165,30 +160,30 @@ const DepositToAuctionPool = ({
       />
 
       <Input
-        label="Sale Mint"
-        value={form.saleMint}
+        label="Bonded Mint"
+        value={form.bondedMint}
         type="string"
         onChange={(evt) =>
           handleSetForm({
             value: new PublicKey(evt.target.value),
-            propertyName: 'saleMint',
+            propertyName: 'bondedMint',
           })
         }
-        error={formErrors['saleMint']}
+        error={formErrors['bondedMint']}
       />
 
       <Input
-        label="Deposit Amount"
-        value={form.uiDepositAmount}
+        label="Native Deposit Amount"
+        value={form.nativeDepositAmount}
         type="number"
         min="0"
         onChange={(evt) =>
           handleSetForm({
             value: evt.target.value,
-            propertyName: 'uiDepositAmount',
+            propertyName: 'nativeDepositAmount',
           })
         }
-        error={formErrors['uiDepositAmount']}
+        error={formErrors['nativeDepositAmount']}
       />
     </>
   )

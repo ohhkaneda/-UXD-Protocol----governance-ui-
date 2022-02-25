@@ -3,7 +3,7 @@ import * as yup from 'yup'
 import { isFormValid } from '@utils/formValidation'
 import {
   UiInstruction,
-  SoceanInitializeAuctionForm,
+  SoceanCancelVestForm,
 } from '@utils/uiTypes/proposalCreationTypes'
 import { NewProposalContext } from '../../../new'
 import useWalletStore from 'stores/useWalletStore'
@@ -16,11 +16,10 @@ import GovernedAccountSelect from '../../GovernedAccountSelect'
 import useGovernedMultiTypeAccounts from '@hooks/useGovernedMultiTypeAccounts'
 import useSoceanPrograms from '@hooks/useSoceanPrograms'
 import Input from '@components/inputs/Input'
-import { Keypair, PublicKey } from '@solana/web3.js'
-import { initializeAuction } from '@tools/sdk/socean/initializeAuction'
-import { BN } from '@project-serum/anchor'
+import { PublicKey } from '@solana/web3.js'
+import { cancelVest } from '@tools/sdk/socean/cancelVest'
 
-const InitializeAuction = ({
+const CancelVest = ({
   index,
   governance,
 }: {
@@ -36,7 +35,7 @@ const InitializeAuction = ({
   const { programs } = useSoceanPrograms()
 
   const shouldBeGoverned = index !== 0 && governance
-  const [form, setForm] = useState<SoceanInitializeAuctionForm>({})
+  const [form, setForm] = useState<SoceanCancelVestForm>({})
   const [formErrors, setFormErrors] = useState({})
   const { handleSetInstructions } = useContext(NewProposalContext)
 
@@ -66,13 +65,10 @@ const InitializeAuction = ({
       !form.governedAccount?.governance?.account ||
       !wallet?.publicKey ||
       !programs ||
-      !form.paymentMint ||
-      !form.paymentDestination ||
-      !form.saleMint ||
-      !form.startTimestamp ||
-      !form.endTimestamp ||
-      !form.ceilPrice ||
-      !form.floorPrice
+      !form.bondPool ||
+      !form.bondedMint ||
+      !form.userBondedAccount ||
+      !form.userTargetAccount
     ) {
       return invalid
     }
@@ -81,29 +77,20 @@ const InitializeAuction = ({
 
     if (!pubkey) return invalid
 
-    const auction = Keypair.generate()
-
-    console.log('auction Pubkey', auction.toString())
-
-    const tx = await initializeAuction({
+    const tx = await cancelVest({
       cluster: connection.cluster,
-      program: programs.DescendingAuction,
-      auction: auction.publicKey,
+      program: programs.Bonding,
       authority: pubkey,
-      paymentMint: form.paymentMint,
-      paymentDestination: form.paymentDestination,
-      saleMint: form.saleMint,
-      startTimestamp: new BN(form.startTimestamp),
-      endTimestamp: new BN(form.endTimestamp),
-      ceilPrice: new BN(form.ceilPrice),
-      floorPrice: new BN(form.floorPrice),
+      bondPool: form.bondPool,
+      bondedMint: form.bondedMint,
+      userBondedAccount: form.userBondedAccount,
+      userTargetAccount: form.userTargetAccount,
     })
 
     return {
       serializedInstruction: serializeInstructionToBase64(tx),
       isValid: true,
       governance: form.governedAccount.governance,
-      additionalSigners: [auction],
     }
   }
 
@@ -122,32 +109,11 @@ const InitializeAuction = ({
       .object()
       .nullable()
       .required('Governed account is required'),
-    paymentMint: yup.string().required('Payment mint is required'),
-    paymentDestination: yup
-      .string()
-      .required('Payment destination is required'),
-    saleMint: yup.string().required('Sale mint is required'),
-    startTimestamp: yup.string().required('Start timestamp is required'),
-    endTimestamp: yup.string().required('End timestamp is required'),
-    ceilPrice: yup
-      .number()
-      .moreThan(0, 'Ceil price should be more than 0')
-      .required('Ceil price is required'),
-    floorPrice: yup
-      .number()
-      .test((value?: number) => {
-        if (value === void 0 || form.ceilPrice === void 0) return false
 
-        if (value > form.ceilPrice) {
-          return new yup.ValidationError(
-            'floor price must be smaller than ceil price'
-          )
-        }
-
-        return true
-      })
-      .moreThan(0, 'Floor price should be more than 0')
-      .required('Floor price is required'),
+    bondPool: yup.string().required('Bond Pool is required'),
+    bondedMint: yup.string().required('Bonded Mint is required'),
+    userBondedAccount: yup.string().required('User Bonded Account is required'),
+    userTargetAccount: yup.string().required('User Target Account is required'),
   })
 
   return (
@@ -165,99 +131,58 @@ const InitializeAuction = ({
       />
 
       <Input
-        label="Payment Mint"
-        value={form.paymentMint}
+        label="Bond Pool"
+        value={form.bondPool}
         type="string"
         onChange={(evt) =>
           handleSetForm({
             value: new PublicKey(evt.target.value),
-            propertyName: 'paymentMint',
+            propertyName: 'bondPool',
           })
         }
-        error={formErrors['paymentMint']}
+        error={formErrors['bondPool']}
       />
 
       <Input
-        label="Payment Destination"
-        value={form.paymentDestination}
+        label="Bonded Mint"
+        value={form.bondedMint}
         type="string"
         onChange={(evt) =>
           handleSetForm({
             value: new PublicKey(evt.target.value),
-            propertyName: 'paymentDestination',
+            propertyName: 'bondedMint',
           })
         }
-        error={formErrors['paymentDestination']}
+        error={formErrors['bondedMint']}
       />
 
       <Input
-        label="Sale Mint"
-        value={form.saleMint}
+        label="User Bonded Account"
+        value={form.userBondedAccount}
         type="string"
         onChange={(evt) =>
           handleSetForm({
             value: new PublicKey(evt.target.value),
-            propertyName: 'saleMint',
+            propertyName: 'userBondedAccount',
           })
         }
-        error={formErrors['saleMint']}
+        error={formErrors['userBondedAccount']}
       />
 
       <Input
-        label="Start Timestamp"
-        value={form.startTimestamp}
+        label="User Target Account"
+        value={form.userTargetAccount}
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: evt.target.value,
-            propertyName: 'startTimestamp',
+            value: new PublicKey(evt.target.value),
+            propertyName: 'userTargetAccount',
           })
         }
-        error={formErrors['startTimestamp']}
-      />
-
-      <Input
-        label="End Timestamp"
-        value={form.endTimestamp}
-        type="string"
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'endTimestamp',
-          })
-        }
-        error={formErrors['endTimestamp']}
-      />
-
-      <Input
-        label="Ceil Price"
-        value={form.ceilPrice}
-        type="number"
-        min="0"
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'ceilPrice',
-          })
-        }
-        error={formErrors['ceilPrice']}
-      />
-
-      <Input
-        label="Floor Price"
-        value={form.floorPrice}
-        type="number"
-        min="0"
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'floorPrice',
-          })
-        }
-        error={formErrors['floorPrice']}
+        error={formErrors['userTargetAccount']}
       />
     </>
   )
 }
 
-export default InitializeAuction
+export default CancelVest

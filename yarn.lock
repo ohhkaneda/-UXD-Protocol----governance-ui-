@@ -1781,10 +1781,10 @@
   dependencies:
     "@project-serum/anchor" "0.20.1"
 
-"@soceanfi/descending-auction@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@soceanfi/descending-auction/-/descending-auction-0.2.0.tgz#8065f530501c9691b14f425fe5785505702f86ed"
-  integrity sha512-F8+3uZsKA67EnD3pX/6Qr3APWm8LqlNp/Q/N8Qb9rJ2khIVobq74kved4gTe2ATJi2FKJiqoU9bZ542v7UNAhQ==
+"@soceanfi/descending-auction@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@soceanfi/descending-auction/-/descending-auction-0.2.1.tgz#1af6043ce3a764ea6bd383accd4ed074c993eb7e"
+  integrity sha512-c+3suYUFAzig6xevxCNX42FZHgqYGemM+awya3WymqYYYLa5UdnI7kXYDO7RzwqfrQCG6n+fT2WS6rUcDJBiaQ==
   dependencies:
     "@project-serum/anchor" "0.20.1"
     dayjs "^1.10.7"

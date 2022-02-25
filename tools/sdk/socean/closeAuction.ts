@@ -1,7 +1,10 @@
 import { DescendingAuctionProgram } from './programs/descending-auction'
 import { PublicKey, TransactionInstruction } from '@solana/web3.js'
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
-import socean from '@soceanfi/descending-auction'
+import {
+  findAuctionAuthority,
+  findAuctionPool,
+} from '@soceanfi/descending-auction'
 import { EndpointTypes } from '@models/types'
 import soceanConfiguration from './configuration'
 
@@ -10,14 +13,14 @@ export async function closeAuction({
   program,
   auction,
   authority,
-  saleMint,
+  bondedMint,
   destinationAccount,
 }: {
   cluster: EndpointTypes
   program: DescendingAuctionProgram
   auction: PublicKey
   authority: PublicKey
-  saleMint: PublicKey
+  bondedMint: PublicKey
   destinationAccount: PublicKey
 }): Promise<TransactionInstruction> {
   const descendingAuctionProgramId =
@@ -28,9 +31,17 @@ export async function closeAuction({
   }
 
   const [[auctionAuthority], [auctionPool]] = await Promise.all([
-    socean.findAuctionAuthority(descendingAuctionProgramId, auction),
-    socean.findAuctionPool(descendingAuctionProgramId, auction, saleMint),
+    findAuctionAuthority(descendingAuctionProgramId, auction),
+    findAuctionPool(descendingAuctionProgramId, auction, bondedMint),
   ])
+
+  console.log('closeAuction', {
+    auction: auction.toString(),
+    auctionPool: auctionPool.toString(),
+    auctionAuthority: auctionAuthority.toString(),
+    authority: authority.toString(),
+    destinationAccount: destinationAccount.toString(),
+  })
 
   return program.instruction.closeAuction({
     accounts: {
