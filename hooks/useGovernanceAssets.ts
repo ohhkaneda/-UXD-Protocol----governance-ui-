@@ -168,6 +168,11 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
+      id: Instructions.SoceanVest,
+      name: 'Socean: Vest',
+      isVisible: canUseAnyInstruction,
+    },
+    {
       id: Instructions.SoceanCancelVest,
       name: 'Socean: Cancel Vest',
       isVisible: canUseAnyInstruction,

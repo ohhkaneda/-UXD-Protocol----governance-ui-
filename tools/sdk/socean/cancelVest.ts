@@ -1,10 +1,4 @@
-import {
-  createHoldingPDA,
-  createVestingPDA,
-  findHoldingPDA,
-  findVaultPDA,
-  findVestingPDA,
-} from '@soceanfi/bonding'
+import { findHoldingPDA, findVaultPDA, findVestingPDA } from '@soceanfi/bonding'
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { PublicKey, TransactionInstruction } from '@solana/web3.js'
 import { BondingProgram } from './programs'
@@ -38,16 +32,12 @@ export async function cancelVest({
     )
   }
 
-  const [[vault], [vesting, bumpVesting]] = await Promise.all([
+  const [[vault], [vesting]] = await Promise.all([
     findVaultPDA(bondingProgramId, bondPool),
     findVestingPDA(bondingProgramId, bondPool, authority, INDEX_MAGIC_NUMBER),
   ])
 
-  await createVestingPDA(bondingProgramId, bondPool, authority, 0, bumpVesting)
-
-  const [holding, bumpHolding] = await findHoldingPDA(bondingProgramId, vesting)
-
-  await createHoldingPDA(bondingProgramId, vesting, bumpHolding)
+  const [holding] = await findHoldingPDA(bondingProgramId, vesting)
 
   console.log('Cancel vest', {
     vault: vault.toString(),

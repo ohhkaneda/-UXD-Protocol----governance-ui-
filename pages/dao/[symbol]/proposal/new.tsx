@@ -73,6 +73,7 @@ import SoceanDepositToAuctionPool from './components/instructions/socean/Deposit
 import SoceanCloseAuction from './components/instructions/socean/CloseAuction'
 import SoceanPurchaseBondedTokens from './components/instructions/socean/PurchaseBondedTokens'
 import SoceanCancelVest from './components/instructions/socean/CancelVest'
+import SoceanVest from './components/instructions/socean/Vest'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -467,6 +468,8 @@ const New = () => {
         )
       case Instructions.SoceanCancelVest:
         return <SoceanCancelVest index={idx} governance={governance} />
+      case Instructions.SoceanVest:
+        return <SoceanVest index={idx} governance={governance} />
       default:
         null
     }

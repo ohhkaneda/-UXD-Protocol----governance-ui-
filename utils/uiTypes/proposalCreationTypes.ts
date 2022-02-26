@@ -255,6 +255,14 @@ export interface SoceanCancelVestForm {
   userTargetAccount?: PublicKey
 }
 
+export interface SoceanVestForm {
+  governedAccount?: GovernedMultiTypeAccount
+  bondPool?: PublicKey
+  bondedMint?: PublicKey
+  userBondedAccount?: PublicKey
+  nativeAmount?: number
+}
+
 export enum Instructions {
   Transfer,
   ProgramUpgrade,
@@ -296,6 +304,7 @@ export enum Instructions {
   SoceanCloseAuction,
   SoceanPurchaseBondedTokens,
   SoceanCancelVest,
+  SoceanVest,
 }
 
 export interface InitializeControllerForm {
