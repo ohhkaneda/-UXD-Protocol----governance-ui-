@@ -16,6 +16,7 @@ const INDEX_MAGIC_NUMBER = 0
 export async function vest({
   cluster,
   program,
+  payer,
   authority,
   bondPool,
   bondedMint,
@@ -24,6 +25,7 @@ export async function vest({
 }: {
   cluster: EndpointTypes
   program: BondingProgram
+  payer: PublicKey
   authority: PublicKey
   bondPool: PublicKey
   bondedMint: PublicKey
@@ -69,6 +71,7 @@ export async function vest({
     amount,
     {
       accounts: {
+        payer,
         user: authority,
         userBondedAccount,
         vesting,

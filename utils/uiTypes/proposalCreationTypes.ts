@@ -260,7 +260,7 @@ export interface SoceanVestForm {
   bondPool?: string
   bondedMint?: string
   userBondedAccount?: string
-  nativeAmount?: number
+  uiAmount?: number
 }
 
 export enum Instructions {

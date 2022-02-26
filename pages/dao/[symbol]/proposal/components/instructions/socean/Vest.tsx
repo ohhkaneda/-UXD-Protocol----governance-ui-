@@ -19,6 +19,8 @@ import Input from '@components/inputs/Input'
 import { PublicKey } from '@solana/web3.js'
 import { vest } from '@tools/sdk/socean/vest'
 import { BN } from '@project-serum/anchor'
+import { tryGetTokenMint } from '@utils/tokens'
+import BigNumber from 'bignumber.js'
 
 const Vest = ({
   index,
@@ -69,7 +71,7 @@ const Vest = ({
       !form.bondPool ||
       !form.bondedMint ||
       !form.userBondedAccount ||
-      form.nativeAmount === void 0
+      form.uiAmount === void 0
     ) {
       return invalid
     }
@@ -78,14 +80,26 @@ const Vest = ({
 
     if (!pubkey) return invalid
 
+    const mintInfo = await tryGetTokenMint(
+      connection.current,
+      new PublicKey(form.userBondedAccount)
+    )
+
+    if (!mintInfo) throw new Error('Cannot load userBondedAccount mint info')
+
     const tx = await vest({
       cluster: connection.cluster,
+      payer: wallet.publicKey,
       program: programs.Bonding,
       authority: pubkey,
       bondPool: new PublicKey(form.bondPool),
       bondedMint: new PublicKey(form.bondedMint),
       userBondedAccount: new PublicKey(form.userBondedAccount),
-      amount: new BN(form.nativeAmount),
+      amount: new BN(
+        new BigNumber(form.uiAmount)
+          .shiftedBy(mintInfo.account.decimals)
+          .toString()
+      ),
     })
 
     return {
@@ -114,7 +128,7 @@ const Vest = ({
     bondPool: yup.string().required('Bond Pool is required'),
     bondedMint: yup.string().required('Bonded Mint is required'),
     userBondedAccount: yup.string().required('User Bonded Account is required'),
-    nativeAmount: yup.number().required('Amount is required'),
+    uiAmount: yup.number().required('Amount is required'),
   })
 
   return (
@@ -171,17 +185,17 @@ const Vest = ({
       />
 
       <Input
-        label="Native Amount"
-        value={form.nativeAmount}
+        label="Amount"
+        value={form.uiAmount}
         type="number"
         min="0"
         onChange={(evt) =>
           handleSetForm({
             value: evt.target.value,
-            propertyName: 'nativeAmount',
+            propertyName: 'uiAmount',
           })
         }
-        error={formErrors['nativeAmount']}
+        error={formErrors['uiAmount']}
       />
     </>
   )

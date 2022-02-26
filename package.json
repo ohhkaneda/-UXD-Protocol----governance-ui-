@@ -38,7 +38,7 @@
     "@raydium-io/raydium-sdk": "^1.0.1-beta.26",
     "@saberhq/anchor-contrib": "^1.12.40",
     "@saberhq/token-utils": "^1.12.40",
-    "@soceanfi/bonding": "^0.2.0",
+    "@soceanfi/bonding": "^0.3.0",
     "@soceanfi/descending-auction": "^0.2.1",
     "@solana/spl-governance": "^0.0.28",
     "@solana/spl-token": "^0.1.3",

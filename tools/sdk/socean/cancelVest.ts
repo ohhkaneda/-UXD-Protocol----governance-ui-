@@ -10,6 +10,7 @@ const INDEX_MAGIC_NUMBER = 0
 export async function cancelVest({
   cluster,
   program,
+  refundRentTo,
   authority,
   bondPool,
   bondedMint,
@@ -18,6 +19,7 @@ export async function cancelVest({
 }: {
   cluster: EndpointTypes
   program: BondingProgram
+  refundRentTo: PublicKey
   authority: PublicKey
   bondPool: PublicKey
   bondedMint: PublicKey
@@ -52,6 +54,7 @@ export async function cancelVest({
 
   return program.instruction.cancelVest({
     accounts: {
+      refundRentTo,
       user: authority,
       userBondedAccount,
       userTargetAccount,

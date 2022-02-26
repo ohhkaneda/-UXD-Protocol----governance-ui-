@@ -80,6 +80,7 @@ const CancelVest = ({
     const tx = await cancelVest({
       cluster: connection.cluster,
       program: programs.Bonding,
+      refundRentTo: wallet.publicKey,
       authority: pubkey,
       bondPool: new PublicKey(form.bondPool),
       bondedMint: new PublicKey(form.bondedMint),
