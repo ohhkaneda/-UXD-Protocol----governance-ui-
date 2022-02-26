@@ -81,7 +81,10 @@ const MintBondedTokens = ({
 
     if (!pubkey) return invalid
 
-    const mintInfo = await tryGetTokenMint(connection.current, form.depositFrom)
+    const mintInfo = await tryGetTokenMint(
+      connection.current,
+      new PublicKey(form.depositFrom)
+    )
 
     if (!mintInfo) throw new Error('Cannot load depositFrom mint info')
 
@@ -93,11 +96,11 @@ const MintBondedTokens = ({
           .shiftedBy(mintInfo.account.decimals)
           .toString()
       ),
-      depositFrom: form.depositFrom,
+      depositFrom: new PublicKey(form.depositFrom),
       authority: pubkey,
-      bondPool: form.bondPool,
-      bondedMint: form.bondedMint,
-      mintTo: form.mintTo,
+      bondPool: new PublicKey(form.bondPool),
+      bondedMint: new PublicKey(form.bondedMint),
+      mintTo: new PublicKey(form.mintTo),
     })
 
     return {
@@ -152,7 +155,7 @@ const MintBondedTokens = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'bondPool',
           })
         }
@@ -165,7 +168,7 @@ const MintBondedTokens = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'bondedMint',
           })
         }
@@ -178,7 +181,7 @@ const MintBondedTokens = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'depositFrom',
           })
         }
@@ -191,7 +194,7 @@ const MintBondedTokens = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'mintTo',
           })
         }

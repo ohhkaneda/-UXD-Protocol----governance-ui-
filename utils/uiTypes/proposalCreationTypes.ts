@@ -213,35 +213,35 @@ export interface SaberTribecaGaugeCommitVoteForm {
 export interface SoceanMintBondedTokensForm {
   governedAccount?: GovernedMultiTypeAccount
   uiAmount?: number
-  depositFrom?: PublicKey
-  bondPool?: PublicKey
-  bondedMint?: PublicKey
-  mintTo?: PublicKey
+  depositFrom?: string
+  bondPool?: string
+  bondedMint?: string
+  mintTo?: string
 }
 
 export interface SoceanDepositToAuctionPoolForm {
   governedAccount?: GovernedMultiTypeAccount
   nativeDepositAmount?: number
-  auction?: PublicKey
-  sourceAccount?: PublicKey
-  bondedMint?: PublicKey
+  auction?: string
+  sourceAccount?: string
+  bondedMint?: string
 }
 
 export interface SoceanCloseAuctionForm {
   governedAccount?: GovernedMultiTypeAccount
-  auction?: PublicKey
-  bondedMint?: PublicKey
-  destinationAccount?: PublicKey
+  auction?: string
+  bondedMint?: string
+  destinationAccount?: string
 }
 
 export interface SoceanPurchaseBondedTokensForm {
   governedAccount?: GovernedMultiTypeAccount
-  auction?: PublicKey
-  bondedMint?: PublicKey
-  paymentDestination?: PublicKey
-  buyer?: PublicKey
-  paymentSource?: PublicKey
-  saleDestination?: PublicKey
+  auction?: string
+  bondedMint?: string
+  paymentDestination?: string
+  buyer?: string
+  paymentSource?: string
+  saleDestination?: string
   nativePurchaseAmount?: number
   nativeExpectedPayment?: number
   slippageTolerance?: number
@@ -249,17 +249,17 @@ export interface SoceanPurchaseBondedTokensForm {
 
 export interface SoceanCancelVestForm {
   governedAccount?: GovernedMultiTypeAccount
-  bondPool?: PublicKey
-  bondedMint?: PublicKey
-  userBondedAccount?: PublicKey
-  userTargetAccount?: PublicKey
+  bondPool?: string
+  bondedMint?: string
+  userBondedAccount?: string
+  userTargetAccount?: string
 }
 
 export interface SoceanVestForm {
   governedAccount?: GovernedMultiTypeAccount
-  bondPool?: PublicKey
-  bondedMint?: PublicKey
-  userBondedAccount?: PublicKey
+  bondPool?: string
+  bondedMint?: string
+  userBondedAccount?: string
   nativeAmount?: number
 }
 

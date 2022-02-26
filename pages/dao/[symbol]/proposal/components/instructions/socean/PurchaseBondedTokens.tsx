@@ -86,12 +86,12 @@ const PurchaseBondedTokens = ({
     const tx = await purchase({
       cluster: connection.cluster,
       program: programs.DescendingAuction,
-      auction: form.auction,
-      bondedMint: form.bondedMint,
-      paymentDestination: form.paymentDestination,
-      buyer: form.buyer,
-      paymentSource: form.paymentSource,
-      saleDestination: form.saleDestination,
+      auction: new PublicKey(form.auction),
+      bondedMint: new PublicKey(form.bondedMint),
+      paymentDestination: new PublicKey(form.paymentDestination),
+      buyer: new PublicKey(form.buyer),
+      paymentSource: new PublicKey(form.paymentSource),
+      saleDestination: new PublicKey(form.saleDestination),
       purchaseAmount: new BN(form.nativePurchaseAmount),
       expectedPayment: new BN(form.nativeExpectedPayment),
       slippageTolerance: new BN(form.slippageTolerance),
@@ -161,7 +161,7 @@ const PurchaseBondedTokens = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'auction',
           })
         }
@@ -174,7 +174,7 @@ const PurchaseBondedTokens = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'bondedMint',
           })
         }
@@ -187,7 +187,7 @@ const PurchaseBondedTokens = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'paymentDestination',
           })
         }
@@ -200,7 +200,7 @@ const PurchaseBondedTokens = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'buyer',
           })
         }
@@ -213,7 +213,7 @@ const PurchaseBondedTokens = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'paymentSource',
           })
         }
@@ -226,7 +226,7 @@ const PurchaseBondedTokens = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'saleDestination',
           })
         }

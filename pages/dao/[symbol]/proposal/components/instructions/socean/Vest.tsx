@@ -82,9 +82,9 @@ const Vest = ({
       cluster: connection.cluster,
       program: programs.Bonding,
       authority: pubkey,
-      bondPool: form.bondPool,
-      bondedMint: form.bondedMint,
-      userBondedAccount: form.userBondedAccount,
+      bondPool: new PublicKey(form.bondPool),
+      bondedMint: new PublicKey(form.bondedMint),
+      userBondedAccount: new PublicKey(form.userBondedAccount),
       amount: new BN(form.nativeAmount),
     })
 
@@ -137,7 +137,7 @@ const Vest = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'bondPool',
           })
         }
@@ -150,7 +150,7 @@ const Vest = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'bondedMint',
           })
         }
@@ -163,7 +163,7 @@ const Vest = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'userBondedAccount',
           })
         }

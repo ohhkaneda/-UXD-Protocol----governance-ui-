@@ -83,10 +83,10 @@ const CloseAuction = ({
     const tx = await closeAuction({
       cluster: connection.cluster,
       program: programs.DescendingAuction,
-      auction: form.auction,
+      auction: new PublicKey(form.auction),
       authority: pubkey,
-      bondedMint: form.bondedMint,
-      destinationAccount: form.destinationAccount,
+      bondedMint: new PublicKey(form.bondedMint),
+      destinationAccount: new PublicKey(form.destinationAccount),
     })
 
     return {
@@ -139,7 +139,7 @@ const CloseAuction = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'auction',
           })
         }
@@ -152,7 +152,7 @@ const CloseAuction = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'bondedMint',
           })
         }
@@ -165,7 +165,7 @@ const CloseAuction = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'destinationAccount',
           })
         }

@@ -82,10 +82,10 @@ const DepositToAuctionPool = ({
       cluster: connection.cluster,
       program: programs.DescendingAuction,
       depositAmount: new BN(form.nativeDepositAmount),
-      auction: form.auction,
+      auction: new PublicKey(form.auction),
       authority: pubkey,
-      sourceAccount: form.sourceAccount,
-      bondedMint: form.bondedMint,
+      sourceAccount: new PublicKey(form.sourceAccount),
+      bondedMint: new PublicKey(form.bondedMint),
     })
 
     return {
@@ -139,7 +139,7 @@ const DepositToAuctionPool = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'auction',
           })
         }
@@ -152,7 +152,7 @@ const DepositToAuctionPool = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'sourceAccount',
           })
         }
@@ -165,7 +165,7 @@ const DepositToAuctionPool = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'bondedMint',
           })
         }

@@ -81,10 +81,10 @@ const CancelVest = ({
       cluster: connection.cluster,
       program: programs.Bonding,
       authority: pubkey,
-      bondPool: form.bondPool,
-      bondedMint: form.bondedMint,
-      userBondedAccount: form.userBondedAccount,
-      userTargetAccount: form.userTargetAccount,
+      bondPool: new PublicKey(form.bondPool),
+      bondedMint: new PublicKey(form.bondedMint),
+      userBondedAccount: new PublicKey(form.userBondedAccount),
+      userTargetAccount: new PublicKey(form.userTargetAccount),
     })
 
     return {
@@ -136,7 +136,7 @@ const CancelVest = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'bondPool',
           })
         }
@@ -149,7 +149,7 @@ const CancelVest = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'bondedMint',
           })
         }
@@ -162,7 +162,7 @@ const CancelVest = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'userBondedAccount',
           })
         }
@@ -175,7 +175,7 @@ const CancelVest = ({
         type="string"
         onChange={(evt) =>
           handleSetForm({
-            value: new PublicKey(evt.target.value),
+            value: evt.target.value,
             propertyName: 'userTargetAccount',
           })
         }
