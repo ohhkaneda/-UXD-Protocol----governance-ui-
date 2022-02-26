@@ -19,6 +19,8 @@ import Input from '@components/inputs/Input'
 import { PublicKey } from '@solana/web3.js'
 import { BN } from '@project-serum/anchor'
 import { purchase } from '@tools/sdk/socean/purchase'
+import { tryGetTokenMint } from '@utils/tokens'
+import BigNumber from 'bignumber.js'
 
 const PurchaseBondedTokens = ({
   index,
@@ -72,8 +74,8 @@ const PurchaseBondedTokens = ({
       !form.buyer ||
       !form.paymentSource ||
       !form.saleDestination ||
-      !form.nativePurchaseAmount ||
-      !form.nativeExpectedPayment ||
+      !form.uiPurchaseAmount ||
+      !form.uiExpectedPayment ||
       !form.slippageTolerance
     ) {
       return invalid
@@ -82,6 +84,14 @@ const PurchaseBondedTokens = ({
     const pubkey = getGovernedAccountPublicKey(form.governedAccount, true)
 
     if (!pubkey) return invalid
+
+    const [paymentMintInfo, saleMintInfo] = await Promise.all([
+      tryGetTokenMint(connection.current, new PublicKey(form.paymentSource)),
+      tryGetTokenMint(connection.current, new PublicKey(form.saleDestination)),
+    ])
+
+    if (!paymentMintInfo) throw new Error('Cannot load paymentSource mint info')
+    if (!saleMintInfo) throw new Error('Cannot load saleDestination mint info')
 
     const tx = await purchase({
       cluster: connection.cluster,
@@ -92,8 +102,19 @@ const PurchaseBondedTokens = ({
       buyer: new PublicKey(form.buyer),
       paymentSource: new PublicKey(form.paymentSource),
       saleDestination: new PublicKey(form.saleDestination),
-      purchaseAmount: new BN(form.nativePurchaseAmount),
-      expectedPayment: new BN(form.nativeExpectedPayment),
+
+      purchaseAmount: new BN(
+        new BigNumber(form.uiPurchaseAmount)
+          .shiftedBy(paymentMintInfo.account.decimals)
+          .toString()
+      ),
+
+      expectedPayment: new BN(
+        new BigNumber(form.uiExpectedPayment)
+          .shiftedBy(saleMintInfo.account.decimals)
+          .toString()
+      ),
+
       slippageTolerance: new BN(form.slippageTolerance),
     })
 
@@ -127,11 +148,11 @@ const PurchaseBondedTokens = ({
     buyer: yup.string().required('Buyer is required'),
     paymentSource: yup.string().required('Payment source is required'),
     saleDestination: yup.string().required('Sale destination is required'),
-    nativePurchaseAmount: yup
+    uiPurchaseAmount: yup
       .number()
       .moreThan(0, 'Purchase amount should be more than 0')
       .required('Purchase amount is required'),
-    nativeExpectedPayment: yup
+    uiExpectedPayment: yup
       .number()
       .moreThan(0, 'Expected payment should be more than 0')
       .required('Expected payment is required'),
@@ -182,7 +203,7 @@ const PurchaseBondedTokens = ({
       />
 
       <Input
-        label="Payment Destination"
+        label="Payment Destination (payment token TA/ATA)"
         value={form.paymentDestination}
         type="string"
         onChange={(evt) =>
@@ -208,7 +229,7 @@ const PurchaseBondedTokens = ({
       />
 
       <Input
-        label="Payment Source"
+        label="Payment Source (payment token TA/ATA)"
         value={form.paymentSource}
         type="string"
         onChange={(evt) =>
@@ -234,31 +255,31 @@ const PurchaseBondedTokens = ({
       />
 
       <Input
-        label="Native Purchase Amount"
-        value={form.nativePurchaseAmount}
+        label="Purchase Amount"
+        value={form.uiPurchaseAmount}
         type="number"
         min="0"
         onChange={(evt) =>
           handleSetForm({
             value: evt.target.value,
-            propertyName: 'nativePurchaseAmount',
+            propertyName: 'uiPurchaseAmount',
           })
         }
-        error={formErrors['nativePurchaseAmount']}
+        error={formErrors['uiPurchaseAmount']}
       />
 
       <Input
-        label="Native Expected Payment"
-        value={form.nativeExpectedPayment}
+        label="Expected Payment"
+        value={form.uiExpectedPayment}
         type="number"
         min="0"
         onChange={(evt) =>
           handleSetForm({
             value: evt.target.value,
-            propertyName: 'nativeExpectedPayment',
+            propertyName: 'uiExpectedPayment',
           })
         }
-        error={formErrors['nativeExpectedPayment']}
+        error={formErrors['uiExpectedPayment']}
       />
 
       <Input

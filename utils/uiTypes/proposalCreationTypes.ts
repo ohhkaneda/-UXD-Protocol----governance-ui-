@@ -221,7 +221,7 @@ export interface SoceanMintBondedTokensForm {
 
 export interface SoceanDepositToAuctionPoolForm {
   governedAccount?: GovernedMultiTypeAccount
-  nativeDepositAmount?: number
+  uiDepositAmount?: number
   auction?: string
   sourceAccount?: string
   bondedMint?: string
@@ -242,8 +242,8 @@ export interface SoceanPurchaseBondedTokensForm {
   buyer?: string
   paymentSource?: string
   saleDestination?: string
-  nativePurchaseAmount?: number
-  nativeExpectedPayment?: number
+  uiPurchaseAmount?: number
+  uiExpectedPayment?: number
   slippageTolerance?: number
 }
 

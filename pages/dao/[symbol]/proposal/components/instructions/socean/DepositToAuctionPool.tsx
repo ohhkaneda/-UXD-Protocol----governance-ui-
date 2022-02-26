@@ -19,6 +19,8 @@ import Input from '@components/inputs/Input'
 import { PublicKey } from '@solana/web3.js'
 import { BN } from '@project-serum/anchor'
 import { depositToAuctionPool } from '@tools/sdk/socean/depositToAuctionPool'
+import { tryGetTokenMint } from '@utils/tokens'
+import BigNumber from 'bignumber.js'
 
 const DepositToAuctionPool = ({
   index,
@@ -66,7 +68,7 @@ const DepositToAuctionPool = ({
       !form.governedAccount?.governance?.account ||
       !wallet?.publicKey ||
       !programs ||
-      !form.nativeDepositAmount ||
+      !form.uiDepositAmount ||
       !form.auction ||
       !form.sourceAccount ||
       !form.bondedMint
@@ -78,10 +80,23 @@ const DepositToAuctionPool = ({
 
     if (!pubkey) return invalid
 
+    const mintInfo = await tryGetTokenMint(
+      connection.current,
+      new PublicKey(form.sourceAccount)
+    )
+
+    if (!mintInfo) throw new Error('Cannot load sourceAccount mint info')
+
     const tx = await depositToAuctionPool({
       cluster: connection.cluster,
       program: programs.DescendingAuction,
-      depositAmount: new BN(form.nativeDepositAmount),
+
+      depositAmount: new BN(
+        new BigNumber(form.uiDepositAmount)
+          .shiftedBy(mintInfo.account.decimals)
+          .toString()
+      ),
+
       auction: new PublicKey(form.auction),
       authority: pubkey,
       sourceAccount: new PublicKey(form.sourceAccount),
@@ -113,10 +128,10 @@ const DepositToAuctionPool = ({
     auction: yup.string().required('Auction is required'),
     sourceAccount: yup.string().required('Source account is required'),
     bondedMint: yup.string().required('Bonded mint is required'),
-    nativeDepositAmount: yup
+    uiDepositAmount: yup
       .number()
-      .moreThan(0, 'Native deposit amount should be more than 0')
-      .required('Native deposit amount is required'),
+      .moreThan(0, 'Deposit amount should be more than 0')
+      .required('Deposit amount is required'),
   })
 
   return (
@@ -173,17 +188,17 @@ const DepositToAuctionPool = ({
       />
 
       <Input
-        label="Native Deposit Amount"
-        value={form.nativeDepositAmount}
+        label="Deposit Amount"
+        value={form.uiDepositAmount}
         type="number"
         min="0"
         onChange={(evt) =>
           handleSetForm({
             value: evt.target.value,
-            propertyName: 'nativeDepositAmount',
+            propertyName: 'uiDepositAmount',
           })
         }
-        error={formErrors['nativeDepositAmount']}
+        error={formErrors['uiDepositAmount']}
       />
     </>
   )

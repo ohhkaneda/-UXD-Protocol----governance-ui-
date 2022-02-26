@@ -72,6 +72,7 @@ export async function mintBondedTokens({
     bondMintAuthority: bondMintAuthority.toString(),
     bondPool: bondPool.toString(),
     tokenProgram: TOKEN_PROGRAM_ID.toString(),
+    amount: amount.toString(),
   })
 
   return program.instruction.deposit(amount, {

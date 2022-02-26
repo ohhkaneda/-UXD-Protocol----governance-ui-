@@ -176,7 +176,7 @@ const MintBondedTokens = ({
       />
 
       <Input
-        label="Deposit From"
+        label="Deposit From (Sale mint TA/ATA)"
         value={form.depositFrom}
         type="string"
         onChange={(evt) =>
@@ -189,7 +189,7 @@ const MintBondedTokens = ({
       />
 
       <Input
-        label="Mint to"
+        label="Mint to  (Bonded mint TA/ATA)"
         value={form.mintTo}
         type="string"
         onChange={(evt) =>

@@ -46,6 +46,7 @@ export async function depositToAuctionPool({
     auctionAuthority: auctionAuthority.toString(),
     authority: authority.toString(),
     sourceAccount: sourceAccount.toString(),
+    depositAmount: depositAmount.toString(),
   })
 
   return program.instruction.depositToAuctionPool(depositAmount, {
