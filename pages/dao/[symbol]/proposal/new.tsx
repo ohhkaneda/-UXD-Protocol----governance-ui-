@@ -57,7 +57,6 @@ import InitObligationAccount from './components/instructions/Solend/InitObligati
 import RefreshObligation from './components/instructions/Solend/RefreshObligation'
 import RefreshReserve from './components/instructions/Solend/RefreshReserve'
 import WithdrawObligationCollateralAndRedeemReserveLiquidity from './components/instructions/Solend/WithdrawObligationCollateralAndRedeemReserveLiquidity'
-import TokenTransferBetweenInternalGovernanceAccounts from './components/instructions/TokenTransferBetweenInternalGovernanceAccounts'
 import SaberTribecaNewEscrow from './components/instructions/saberTribeca/NewEscrow'
 import SaberTribecaLock from './components/instructions/saberTribeca/Lock'
 import SaberTribecaCreateEscrowSbrATA from './components/instructions/saberTribeca/CreateEscrowSbrATA'
@@ -74,6 +73,15 @@ import SoceanCloseAuction from './components/instructions/socean/CloseAuction'
 import SoceanPurchaseBondedTokens from './components/instructions/socean/PurchaseBondedTokens'
 import SoceanCancelVest from './components/instructions/socean/CancelVest'
 import SoceanVest from './components/instructions/socean/Vest'
+import AddLiquidityRaydium from './components/instructions/raydium/AddLiquidity'
+import RemoveLiquidityRaydium from './components/instructions/raydium/RemoveLiquidity'
+import InitializeController from './components/instructions/UXD/InitializeController'
+import SetMangoDepositoriesRedeemableSoftCap from './components/instructions/UXD/SetMangoDepositoriesRedeemableSoftCap'
+import RegisterMangoDepository from './components/instructions/UXD/RegisterMangoDepository'
+import DepositInsuranceToMangoDepository from './components/instructions/UXD/DepositInsuranceToMangoDepository'
+import WithdrawInsuranceFromMangoDepository from './components/instructions/UXD/WithdrawInsuranceFromMangoDepository'
+import SetRedeemGlobalSupplyCap from './components/instructions/UXD/SetRedeemGlobalSupplyCap'
+import TokenTransferBetweenInternalGovernanceAccounts from './components/instructions/TokenTransferBetweenInternalGovernanceAccounts'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -351,7 +359,7 @@ const New = () => {
       case Instructions.RefreshSolendObligation:
         return <RefreshObligation index={idx} governance={governance} />
       case Instructions.RefreshSolendReserve:
-        return <RefreshReserve index={idx} />
+        return <RefreshReserve index={idx} governance={governance} />
       case Instructions.WithdrawObligationCollateralAndRedeemReserveLiquidity:
         return (
           <WithdrawObligationCollateralAndRedeemReserveLiquidity
