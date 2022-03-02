@@ -105,13 +105,13 @@ const PurchaseBondedTokens = ({
 
       purchaseAmount: new BN(
         new BigNumber(form.uiPurchaseAmount)
-          .shiftedBy(paymentMintInfo.account.decimals)
+          .shiftedBy(saleMintInfo.account.decimals)
           .toString()
       ),
 
       expectedPayment: new BN(
         new BigNumber(form.uiExpectedPayment)
-          .shiftedBy(saleMintInfo.account.decimals)
+          .shiftedBy(paymentMintInfo.account.decimals)
           .toString()
       ),
 

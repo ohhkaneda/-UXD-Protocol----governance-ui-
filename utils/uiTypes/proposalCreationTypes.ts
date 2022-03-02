@@ -15,6 +15,7 @@ import {
 } from '@utils/tokens'
 import { DepositWithMintAccount, Voter } from 'VoteStakeRegistry/sdk/accounts'
 import { LockupKind } from 'VoteStakeRegistry/tools/types'
+import { SupportedSaberPoolNames } from '@tools/sdk/saberPools/configuration'
 
 export interface UiInstruction {
   serializedInstruction: string
@@ -263,6 +264,16 @@ export interface SoceanVestForm {
   uiAmount?: number
 }
 
+export interface SaberPoolsDepositForm {
+  governedAccount?: GovernedMultiTypeAccount
+  poolName?: SupportedSaberPoolNames
+  sourceA?: string
+  sourceB?: string
+  uiTokenAmountA?: number
+  uiTokenAmountB?: number
+  uiMinimumPoolTokenAmount?: number
+}
+
 export enum Instructions {
   Transfer,
   ProgramUpgrade,
@@ -305,6 +316,7 @@ export enum Instructions {
   SoceanPurchaseBondedTokens,
   SoceanCancelVest,
   SoceanVest,
+  SaberPoolsDeposit,
 }
 
 export interface InitializeControllerForm {

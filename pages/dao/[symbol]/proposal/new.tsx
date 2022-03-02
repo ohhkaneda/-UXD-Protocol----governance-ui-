@@ -82,6 +82,7 @@ import DepositInsuranceToMangoDepository from './components/instructions/UXD/Dep
 import WithdrawInsuranceFromMangoDepository from './components/instructions/UXD/WithdrawInsuranceFromMangoDepository'
 import SetRedeemGlobalSupplyCap from './components/instructions/UXD/SetRedeemGlobalSupplyCap'
 import TokenTransferBetweenInternalGovernanceAccounts from './components/instructions/TokenTransferBetweenInternalGovernanceAccounts'
+import SaberPoolsDeposit from './components/instructions/saberPools/Deposit'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -478,6 +479,8 @@ const New = () => {
         return <SoceanCancelVest index={idx} governance={governance} />
       case Instructions.SoceanVest:
         return <SoceanVest index={idx} governance={governance} />
+      case Instructions.SaberPoolsDeposit:
+        return <SaberPoolsDeposit index={idx} governance={governance} />
       default:
         null
     }

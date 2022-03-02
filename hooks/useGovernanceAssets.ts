@@ -148,6 +148,11 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
+      id: Instructions.SaberPoolsDeposit,
+      name: 'Saber Pools: Deposit',
+      isVisible: canUseAnyInstruction,
+    },
+    {
       id: Instructions.SoceanMintBondedTokens,
       name: 'Socean: Mint Bonded Tokens',
       isVisible: canUseAnyInstruction,

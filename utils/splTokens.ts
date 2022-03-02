@@ -4,6 +4,9 @@ import solendConfiguration, {
 } from '@tools/sdk/solend/configuration'
 
 import saberTribecaConfiguration from '../tools/sdk/saberTribeca/configuration'
+import saberPoolsConfiguration, {
+  SupportedSaberPoolNames,
+} from '../tools/sdk/saberPools/configuration'
 
 export type SplTokenInformation = {
   name: string
@@ -16,7 +19,9 @@ export type SupportedSplTokenNames =
   | 'WSOL'
   | 'SBR'
   | 'UXP'
+  | 'UXD'
   | SolendSupportedCollateralMintNames
+  | SupportedSaberPoolNames
 
 export const SPL_TOKENS: {
   [key in SupportedSplTokenNames]: SplTokenInformation
@@ -39,9 +44,16 @@ export const SPL_TOKENS: {
     decimals: 9,
   },
 
+  UXD: {
+    name: 'UXD',
+    mint: new PublicKey('7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT'),
+    decimals: 6,
+  },
+
   SBR: saberTribecaConfiguration.saberToken,
 
   ...solendConfiguration.getSupportedCollateralMintsInformation(),
+  ...saberPoolsConfiguration.getPoolsTokens(),
 } as const
 
 export type SplTokenUIName = typeof SPL_TOKENS[keyof typeof SPL_TOKENS]['name']
