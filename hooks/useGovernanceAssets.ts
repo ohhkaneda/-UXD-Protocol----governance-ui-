@@ -153,6 +153,11 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
+      id: Instructions.SaberPoolsWithdrawOne,
+      name: 'Saber Pools: Withdraw One',
+      isVisible: canUseAnyInstruction,
+    },
+    {
       id: Instructions.SoceanMintBondedTokens,
       name: 'Socean: Mint Bonded Tokens',
       isVisible: canUseAnyInstruction,
@@ -228,36 +233,6 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
-      id: Instructions.CreateSolendObligationAccount,
-      name: 'Solend: Create Obligation Account',
-      isVisible: canUseAnyInstruction,
-    },
-    {
-      id: Instructions.InitSolendObligationAccount,
-      name: 'Solend: Init Obligation Account',
-      isVisible: canUseAnyInstruction,
-    },
-    {
-      id: Instructions.DepositReserveLiquidityAndObligationCollateral,
-      name: 'Solend: Deposit Funds',
-      isVisible: canUseAnyInstruction,
-    },
-    {
-      id: Instructions.RefreshSolendReserve,
-      name: 'Solend: Refresh Reserve',
-      isVisible: canUseAnyInstruction,
-    },
-    {
-      id: Instructions.RefreshSolendObligation,
-      name: 'Solend: Refresh Obligation',
-      isVisible: canUseAnyInstruction,
-    },
-    {
-      id: Instructions.WithdrawObligationCollateralAndRedeemReserveLiquidity,
-      name: 'Solend: Withdraw Funds',
-      isVisible: canUseAnyInstruction,
-    },
-    {
       id: Instructions.InitializeController,
       name: 'UXD: Initialize Controller',
       isVisible: canUseUxdInstructions,
@@ -317,11 +292,6 @@ export default function useGovernanceAssets() {
         realm?.account.config.useCommunityVoterWeightAddin,
     },
     {
-      id: Instructions.CreateAssociatedTokenAccount,
-      name: 'Create Associated Token Account',
-      isVisible: canUseAnyInstruction,
-    },
-    {
       id: Instructions.CreateSolendObligationAccount,
       name: 'Solend: Create Obligation Account',
       isVisible: canUseAnyInstruction,
@@ -344,11 +314,6 @@ export default function useGovernanceAssets() {
     {
       id: Instructions.RefreshSolendObligation,
       name: 'Solend: Refresh Obligation',
-      isVisible: canUseAnyInstruction,
-    },
-    {
-      id: Instructions.WithdrawObligationCollateralAndRedeemReserveLiquidity,
-      name: 'Solend: Withdraw Funds',
       isVisible: canUseAnyInstruction,
     },
     {

@@ -274,6 +274,15 @@ export interface SaberPoolsDepositForm {
   uiMinimumPoolTokenAmount?: number
 }
 
+export interface SaberPoolsWithdrawOneForm {
+  governedAccount?: GovernedMultiTypeAccount
+  poolName?: SupportedSaberPoolNames
+  destinationAccount?: PublicKey
+  baseTokenName?: string
+  uiPoolTokenAmount?: number
+  uiMinimumTokenAmount?: number
+}
+
 export enum Instructions {
   Transfer,
   ProgramUpgrade,
@@ -317,6 +326,7 @@ export enum Instructions {
   SoceanCancelVest,
   SoceanVest,
   SaberPoolsDeposit,
+  SaberPoolsWithdrawOne,
 }
 
 export interface InitializeControllerForm {

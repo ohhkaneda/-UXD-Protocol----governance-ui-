@@ -83,6 +83,7 @@ import WithdrawInsuranceFromMangoDepository from './components/instructions/UXD/
 import SetRedeemGlobalSupplyCap from './components/instructions/UXD/SetRedeemGlobalSupplyCap'
 import TokenTransferBetweenInternalGovernanceAccounts from './components/instructions/TokenTransferBetweenInternalGovernanceAccounts'
 import SaberPoolsDeposit from './components/instructions/saberPools/Deposit'
+import SaberPoolsWithdrawOne from './components/instructions/saberPools/WithdrawOne'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -165,11 +166,11 @@ const New = () => {
   const getAvailableInstructionsForIndex = (index) => {
     if (index === 0) {
       return availableInstructions
-    } else {
-      return availableInstructions.filter((x) =>
-        customInstructionFilterForSelectedGovernance(x.id)
-      )
     }
+
+    return availableInstructions.filter((x) =>
+      customInstructionFilterForSelectedGovernance(x.id)
+    )
   }
   const [instructionsData, setInstructions] = useState<
     ComponentInstructionData[]
@@ -341,7 +342,6 @@ const New = () => {
         )
       case Instructions.SetProgramAuthority:
         return <SetProgramAuthority index={idx} governance={governance} />
-        return <ProgramUpgrade index={idx} governance={governance} />
       case Instructions.CreateAssociatedTokenAccount:
         return (
           <CreateAssociatedTokenAccount index={idx} governance={governance} />
@@ -481,6 +481,8 @@ const New = () => {
         return <SoceanVest index={idx} governance={governance} />
       case Instructions.SaberPoolsDeposit:
         return <SaberPoolsDeposit index={idx} governance={governance} />
+      case Instructions.SaberPoolsWithdrawOne:
+        return <SaberPoolsWithdrawOne index={idx} governance={governance} />
       default:
         null
     }
