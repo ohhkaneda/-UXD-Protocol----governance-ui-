@@ -32,6 +32,15 @@ class SoceanConfiguration {
     mainnet: new PublicKey('desGPJHB9jXNpbqrV4j6Zcpvf4Zu8ijyYpowBFVDMtF'),
   }
 
+  public readonly bondingProgramInstructions = {
+    mintBondedTokens: 242,
+  }
+
+  public readonly descendingAuctionProgramInstructions = {
+    depositToAuctionPool: 177,
+    purchase: 21,
+  }
+
   public loadPrograms(
     provider: SolanaAugmentedProvider,
     cluster: SupportedCluster

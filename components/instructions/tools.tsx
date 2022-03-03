@@ -21,6 +21,8 @@ import { SOLEND_PROGRAM_INSTRUCTIONS } from './programs/solend'
 import { ATA_PROGRAM_INSTRUCTIONS } from './programs/associatedTokenAccount'
 import { SABER_TRIBECA_PROGRAM_INSTRUCTIONS } from './programs/saberTribeca'
 import { SABER_POOLS_PROGRAM_INSTRUCTIONS } from './programs/saberPools'
+import { SOCEAN_PROGRAM_INSTRUCTIONS } from './programs/socean'
+
 /**
  * Default governance program id instance
  */
@@ -172,6 +174,7 @@ export const INSTRUCTION_DESCRIPTORS = {
   ...VOTE_STAKE_REGISTRY_INSTRUCTIONS,
   ...SABER_TRIBECA_PROGRAM_INSTRUCTIONS,
   ...SABER_POOLS_PROGRAM_INSTRUCTIONS,
+  ...SOCEAN_PROGRAM_INSTRUCTIONS,
 }
 
 export async function getInstructionDescriptor(
