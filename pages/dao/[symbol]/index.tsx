@@ -21,6 +21,7 @@ import useTreasuryAccountStore from 'stores/useTreasuryAccountStore'
 import { usePrevious } from '@hooks/usePrevious'
 import TokenBalanceCardWrapper from '@components/TokenBalance/TokenBalanceCardWrapper'
 import ApproveAllBtn from './proposal/components/ApproveAllBtn'
+import HotWallet from '@components/HotWallet/HotWallet'
 
 const compareProposals = (
   p1: Proposal,
@@ -68,14 +69,7 @@ function getVotingStateRank(
 }
 
 const REALM = () => {
-  const {
-    realm,
-    realmInfo,
-    proposals,
-    realmTokenAccount,
-    ownTokenRecord,
-    governances,
-  } = useRealm()
+  const { realm, realmInfo, proposals, governances } = useRealm()
   const { nftsGovernedTokenAccounts } = useGovernanceAssets()
   const prevStringifyNftsGovernedTokenAccounts = usePrevious(
     JSON.stringify(nftsGovernedTokenAccounts)
@@ -87,7 +81,6 @@ const REALM = () => {
     Object.entries(proposals)
   )
   const [filteredProposals, setFilteredProposals] = useState(displayedProposals)
-  const wallet = useWalletStore((s) => s.current)
 
   const allProposals = Object.entries(proposals).sort((a, b) =>
     compareProposals(b[1].account, a[1].account, governances)
@@ -122,7 +115,7 @@ const REALM = () => {
     }
   }, [JSON.stringify(nftsGovernedTokenAccounts)])
   // DEBUG print remove
-  console.log(
+  /*console.log(
     'governance page tokenAccount',
     realmTokenAccount && realmTokenAccount.publicKey.toBase58()
   )
@@ -135,7 +128,7 @@ const REALM = () => {
   console.log(
     'governance page tokenRecord',
     wallet?.connected && ownTokenRecord
-  )
+  )*/
 
   return (
     <>
@@ -183,6 +176,8 @@ const REALM = () => {
           <TokenBalanceCardWrapper />
 
           <NFTSCompactWrapper />
+
+          <HotWallet />
 
           <AccountsCompactWrapper />
 
