@@ -66,7 +66,7 @@ export function InstructionPanel() {
       : PlayState.Unplayed
   )
 
-  if (Object.values(instructions).length === 0) {
+  if (!Object.values(instructions).length) {
     return null
   }
 

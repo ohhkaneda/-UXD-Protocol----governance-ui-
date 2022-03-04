@@ -38,14 +38,14 @@ const AccountItem = ({
         className="flex items-start text-fgd-1 hover:bg-bkg-3 p-3 w-full cursor-pointer"
         onClick={handleGoToAccountOverview}
       >
-        {logo ? (
+        {logo && (
           <img
             className={`flex-shrink-0 h-6 w-6 mr-2.5 mt-1 ${
               isSol && 'rounded-full'
             }`}
             src={logo}
           />
-        ) : null}
+        )}
 
         <div className="w-full">
           <div className="flex items-start justify-between mb-1">
@@ -54,10 +54,8 @@ const AccountItem = ({
           <div className="text-fgd-3 text-xs flex flex-col">
             {amountFormatted} {symbol}
           </div>
-          {displayPrice ? (
+          {displayPrice && (
             <div className="mt-0.5 text-fgd-3 text-xs">${displayPrice}</div>
-          ) : (
-            ''
           )}
         </div>
       </div>

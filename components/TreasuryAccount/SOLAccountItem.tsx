@@ -71,7 +71,7 @@ const SOLAccountItem = ({
     </div>
   ) : null
 
-  const accountDetail = Object.values(ownedTokenAccountsInfo || {}).map(
+  const accountDetail = Object.values(ownedTokenAccountsInfo ?? {}).map(
     ({ pubkey, mintName, uiAmount, isATA }) => {
       const linkRef = createRef<HTMLAnchorElement>()
 
@@ -90,11 +90,11 @@ const SOLAccountItem = ({
           </div>
 
           <div className="flex ml-10">
-            {isATA ? (
+            {isATA && (
               <span className="flex justify-center items-center text-green h-5 w-50 text-xs p-1">
                 Associated Token Account
               </span>
-            ) : null}
+            )}
           </div>
 
           <a
@@ -118,12 +118,12 @@ const SOLAccountItem = ({
         className="flex items-start text-fgd-1 hover:bg-bkg-3 p-3 w-full cursor-pointer"
         onClick={handleGoToAccountOverview}
       >
-        {logo ? (
+        {logo && (
           <img
             className="flex-shrink-0 h-6 w-6 mr-2.5 mt-1 rounded-full"
             src={logo}
           />
-        ) : null}
+        )}
 
         <div className="w-full">
           <div className="flex items-start justify-between mb-1">
@@ -132,10 +132,8 @@ const SOLAccountItem = ({
           <div className="text-fgd-3 text-xs flex flex-col">
             {amountFormatted} {symbol}
           </div>
-          {displayPrice ? (
+          {displayPrice && (
             <div className="mt-0.5 text-fgd-3 text-xs">${displayPrice}</div>
-          ) : (
-            ''
           )}
         </div>
       </div>
