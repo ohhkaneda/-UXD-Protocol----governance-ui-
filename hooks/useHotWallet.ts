@@ -97,7 +97,7 @@ const useHotWallet = () => {
         }
       })
     )
-  }, [connection])
+  }, [connection, JSON.stringify(tokenService._tokenPriceToUSDlist)])
 
   useEffect(() => {
     loadTokenAccounts()
@@ -105,6 +105,8 @@ const useHotWallet = () => {
 
   return {
     tokenAccountsInfo,
+    hotWalletAddress: SOL_TREASURY_OWNER,
+    hotWalletName: `SOL Treasury's Owner`,
   }
 }
 

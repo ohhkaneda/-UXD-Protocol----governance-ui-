@@ -1,9 +1,10 @@
 import useHotWallet from '@hooks/useHotWallet'
 import HotWalletAccount from './HotWalletAccount'
 import { FireIcon } from '@heroicons/react/outline'
+import HotWalletName from './HotWalletName'
 
 const HotWallet = () => {
-  const { tokenAccountsInfo } = useHotWallet()
+  const { tokenAccountsInfo, hotWalletAddress, hotWalletName } = useHotWallet()
 
   return (
     <div className="bg-bkg-2 p-4 md:p-6 rounded-lg transition-all">
@@ -11,6 +12,11 @@ const HotWallet = () => {
         <FireIcon className="flex-shrink-0 h-5 mr-1 text-primary-light w-5" />
         Hot Wallet
       </h3>
+
+      <HotWalletName
+        hotWalletAddress={hotWalletAddress}
+        hotWalletName={hotWalletName}
+      />
 
       <div style={{ maxHeight: '350px' }} className="overflow-y-auto space-y-3">
         {tokenAccountsInfo?.map((tokenAccountInfo) => (
