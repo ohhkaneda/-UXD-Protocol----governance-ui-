@@ -3,41 +3,39 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from '@solana/web3.js'
-import saberTribecaConfiguration, {
-  SaberTribecaPrograms,
-} from './configuration'
+import ATribecaConfiguration, { TribecaPrograms } from './ATribecaConfiguration'
 
 export async function prepareEpochGaugeVoterInstruction({
   programs,
   authority,
   payer,
+  tribecaConfiguration,
 }: {
-  programs: SaberTribecaPrograms
+  programs: TribecaPrograms
   authority: PublicKey
   payer: PublicKey
+  tribecaConfiguration: ATribecaConfiguration
 }): Promise<TransactionInstruction> {
   const {
     currentRewardsEpoch,
     locker,
-  } = await saberTribecaConfiguration.fetchGaugemeister(programs.Gauge)
+  } = await tribecaConfiguration.fetchGaugemeister(programs.Gauge)
 
-  const [escrow] = await saberTribecaConfiguration.findEscrowAddress(authority)
+  const [escrow] = await tribecaConfiguration.findEscrowAddress(authority)
 
-  const [gaugeVoter] = await saberTribecaConfiguration.findGaugeVoterAddress(
-    escrow
-  )
+  const [gaugeVoter] = await tribecaConfiguration.findGaugeVoterAddress(escrow)
 
   const [
     epochGaugeVoter,
     bump,
-  ] = await saberTribecaConfiguration.findEpochGaugeVoterAddress(
+  ] = await tribecaConfiguration.findEpochGaugeVoterAddress(
     gaugeVoter,
     currentRewardsEpoch + 1
   )
 
   return programs.Gauge.instruction.prepareEpochGaugeVoter(bump, {
     accounts: {
-      gaugemeister: saberTribecaConfiguration.gaugemeister,
+      gaugemeister: ATribecaConfiguration.gaugemeister,
       locker,
       escrow,
       gaugeVoter,

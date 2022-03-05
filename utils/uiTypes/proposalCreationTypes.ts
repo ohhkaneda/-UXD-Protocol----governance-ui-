@@ -168,45 +168,45 @@ export interface TokenTransferBetweenInternalGovernanceAccountsForm {
   uiAmount?: number
 }
 
-export interface SaberTribecaNewEscrowForm {
+export interface TribecaNewEscrowForm {
   governedAccount?: GovernedMultiTypeAccount
 }
 
-export interface SaberTribecaLockForm {
+export interface TribecaLockForm {
   governedAccount?: GovernedMultiTypeAccount
   uiAmount?: number
   durationSeconds?: number
 }
 
-export interface SaberTribecaCreateEscrowSbrATAForm {
+export interface TribecaCreateEscrowSbrATAForm {
   governedAccount?: GovernedMultiTypeAccount
 }
 
-export interface SaberTribecaCreateGaugeVoterForm {
+export interface TribecaCreateGaugeVoterForm {
   governedAccount?: GovernedMultiTypeAccount
 }
 
-export interface SaberTribecaCreateGaugeVoteForm {
+export interface TribecaCreateGaugeVoteForm {
   governedAccount?: GovernedMultiTypeAccount
   gaugeName?: string
 }
 
-export interface SaberTribecaGaugeSetVoteForm {
+export interface TribecaGaugeSetVoteForm {
   governedAccount?: GovernedMultiTypeAccount
   gaugeName?: string
   weight?: number
 }
 
-export interface SaberTribecaPrepareEpochGaugeVoterForm {
+export interface TribecaPrepareEpochGaugeVoterForm {
   governedAccount?: GovernedMultiTypeAccount
 }
 
-export interface SaberTribecaCreateEpochGaugeForm {
+export interface TribecaCreateEpochGaugeForm {
   governedAccount?: GovernedMultiTypeAccount
   gaugeName?: string
 }
 
-export interface SaberTribecaGaugeCommitVoteForm {
+export interface TribecaGaugeCommitVoteForm {
   governedAccount?: GovernedMultiTypeAccount
   gaugeName?: string
 }
@@ -310,15 +310,15 @@ export enum Instructions {
   Grant,
   Clawback,
   TokenTransferBetweenInternalGovernanceAccounts,
-  SaberTribecaNewEscrow,
-  SaberTribecaLock,
-  SaberTribecaCreateEscrowSbrATA,
-  SaberTribecaCreateGaugeVoter,
-  SaberTribecaCreateGaugeVote,
-  SaberTribecaGaugeSetVote,
-  SaberTribecaPrepareEpochGaugeVoter,
-  SaberTribecaCreateEpochGauge,
-  SaberTribecaGaugeCommitVote,
+  TribecaNewEscrow,
+  TribecaLock,
+  TribecaCreateEscrowSbrATA,
+  TribecaCreateGaugeVoter,
+  TribecaCreateGaugeVote,
+  TribecaGaugeSetVote,
+  TribecaPrepareEpochGaugeVoter,
+  TribecaCreateEpochGauge,
+  TribecaGaugeCommitVote,
   SoceanMintBondedTokens,
   SoceanDepositToAuctionPool,
   SoceanCloseAuction,

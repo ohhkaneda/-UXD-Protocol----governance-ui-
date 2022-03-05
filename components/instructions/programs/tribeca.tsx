@@ -1,12 +1,12 @@
 import { nu64, struct, u8 } from 'buffer-layout'
 import { AccountMetaData } from '@solana/spl-governance'
 import { Connection } from '@solana/web3.js'
-import saberTribecaConfiguration from '@tools/sdk/saberTribeca/configuration'
+import ATribecaConfiguration from '@tools/sdk/tribeca/ATribecaConfiguration'
 
-export const SABER_TRIBECA_PROGRAM_INSTRUCTIONS = {
-  [saberTribecaConfiguration.gaugeProgramId.toBase58()]: {
-    [saberTribecaConfiguration.gaugeInstructions.createGaugeVoter]: {
-      name: 'Saber Tribeca - Create Gauge Voter',
+export const TRIBECA_PROGRAM_INSTRUCTIONS = {
+  [ATribecaConfiguration.gaugeProgramId.toBase58()]: {
+    [ATribecaConfiguration.gaugeInstructions.createGaugeVoter]: {
+      name: 'Tribeca - Create Gauge Voter',
       accounts: [
         'Gauge Voter',
         'Gaugemeister',
@@ -32,8 +32,8 @@ export const SABER_TRIBECA_PROGRAM_INSTRUCTIONS = {
       },
     },
 
-    [saberTribecaConfiguration.gaugeInstructions.createGaugeVote]: {
-      name: 'Saber Tribeca - Create Gauge Vote',
+    [ATribecaConfiguration.gaugeInstructions.createGaugeVote]: {
+      name: 'Tribeca - Create Gauge Vote',
       accounts: [
         'Gauge Vote',
         'Gauge Voter',
@@ -72,9 +72,9 @@ export const SABER_TRIBECA_PROGRAM_INSTRUCTIONS = {
     },
   },
 
-  [saberTribecaConfiguration.lockedVoterProgramId.toBase58()]: {
-    [saberTribecaConfiguration.lockedVoterInstructions.newEscrow]: {
-      name: 'Saber Tribeca - New Escrow',
+  [ATribecaConfiguration.lockedVoterProgramId.toBase58()]: {
+    [ATribecaConfiguration.lockedVoterInstructions.newEscrow]: {
+      name: 'Tribeca - New Escrow',
       accounts: ['Locker', 'Escrow', 'Escrow Owner', 'Payer', 'System Program'],
       getDataUI: (
         _connection: Connection,
@@ -94,8 +94,8 @@ export const SABER_TRIBECA_PROGRAM_INSTRUCTIONS = {
       },
     },
 
-    [saberTribecaConfiguration.lockedVoterInstructions.lock]: {
-      name: 'Saber Tribeca - Lock',
+    [ATribecaConfiguration.lockedVoterInstructions.lock]: {
+      name: 'Tribeca - Lock',
       accounts: [
         'Locker',
         'Escrow',

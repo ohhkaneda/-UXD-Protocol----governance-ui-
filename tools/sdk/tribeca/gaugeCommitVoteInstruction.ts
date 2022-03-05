@@ -3,46 +3,44 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from '@solana/web3.js'
-import saberTribecaConfiguration, {
-  SaberTribecaPrograms,
-} from './configuration'
+import ATribecaConfiguration, { TribecaPrograms } from './ATribecaConfiguration'
 
 export async function gaugeCommitVoteInstruction({
   programs,
   gauge,
   authority,
   payer,
+  tribecaConfiguration,
 }: {
-  programs: SaberTribecaPrograms
+  programs: TribecaPrograms
   gauge: PublicKey
   authority: PublicKey
   payer: PublicKey
+  tribecaConfiguration: ATribecaConfiguration
 }): Promise<TransactionInstruction> {
-  const {
-    currentRewardsEpoch,
-  } = await saberTribecaConfiguration.fetchGaugemeister(programs.Gauge)
-
-  const [escrow] = await saberTribecaConfiguration.findEscrowAddress(authority)
-
-  const [gaugeVoter] = await saberTribecaConfiguration.findGaugeVoterAddress(
-    escrow
+  const { currentRewardsEpoch } = await tribecaConfiguration.fetchGaugemeister(
+    programs.Gauge
   )
 
-  const [gaugeVote] = await saberTribecaConfiguration.findGaugeVoteAddress(
+  const [escrow] = await tribecaConfiguration.findEscrowAddress(authority)
+
+  const [gaugeVoter] = await tribecaConfiguration.findGaugeVoterAddress(escrow)
+
+  const [gaugeVote] = await tribecaConfiguration.findGaugeVoteAddress(
     gaugeVoter,
     gauge
   )
 
   const votingEpoch = currentRewardsEpoch + 1
 
-  const [epochGauge] = await saberTribecaConfiguration.findEpochGaugeAddress(
+  const [epochGauge] = await tribecaConfiguration.findEpochGaugeAddress(
     gauge,
     votingEpoch
   )
 
   const [
     epochGaugeVoter,
-  ] = await saberTribecaConfiguration.findEpochGaugeVoterAddress(
+  ] = await tribecaConfiguration.findEpochGaugeVoterAddress(
     gaugeVoter,
     votingEpoch
   )
@@ -50,14 +48,14 @@ export async function gaugeCommitVoteInstruction({
   const [
     epochGaugeVote,
     voteBump,
-  ] = await saberTribecaConfiguration.findEpochGaugeVoteAddress(
+  ] = await tribecaConfiguration.findEpochGaugeVoteAddress(
     gaugeVote,
     votingEpoch
   )
 
   return programs.Gauge.instruction.gaugeCommitVote(voteBump, {
     accounts: {
-      gaugemeister: saberTribecaConfiguration.gaugemeister,
+      gaugemeister: ATribecaConfiguration.gaugemeister,
       gauge,
       gaugeVoter,
       gaugeVote,

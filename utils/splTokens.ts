@@ -3,10 +3,14 @@ import solendConfiguration, {
   SupportedCollateralMintNames as SolendSupportedCollateralMintNames,
 } from '@tools/sdk/solend/configuration'
 
-import saberTribecaConfiguration from '../tools/sdk/saberTribeca/configuration'
 import saberPoolsConfiguration, {
   SupportedSaberPoolNames,
-} from '../tools/sdk/saberPools/configuration'
+} from '@tools/sdk/saberPools/configuration'
+
+import {
+  saberTribecaConfiguration,
+  sunnyTribecaConfiguration,
+} from '@tools/sdk/tribeca/configurations'
 
 export type SplTokenInformation = {
   name: string
@@ -18,6 +22,7 @@ export type SupportedSplTokenNames =
   | 'USDC'
   | 'WSOL'
   | 'SBR'
+  | 'SUNNY'
   | 'UXP'
   | 'UXD'
   | SolendSupportedCollateralMintNames
@@ -50,7 +55,9 @@ export const SPL_TOKENS: {
     decimals: 6,
   },
 
-  SBR: saberTribecaConfiguration.saberToken,
+  SBR: saberTribecaConfiguration.token,
+
+  SUNNY: sunnyTribecaConfiguration.token,
 
   ...solendConfiguration.getSupportedCollateralMintsInformation(),
   ...saberPoolsConfiguration.getPoolsTokens(),

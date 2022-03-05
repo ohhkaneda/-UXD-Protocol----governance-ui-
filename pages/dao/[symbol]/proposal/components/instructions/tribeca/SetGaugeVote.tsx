@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useContext, useEffect, useState } from 'react'
 import * as yup from 'yup'
 import { isFormValid } from '@utils/formValidation'
 import {
   UiInstruction,
-  SaberTribecaLockForm,
+  TribecaGaugeSetVoteForm,
 } from '@utils/uiTypes/proposalCreationTypes'
 import { NewProposalContext } from '../../../new'
 import useWalletStore from 'stores/useWalletStore'
@@ -15,14 +14,14 @@ import {
 } from '@solana/spl-governance'
 import GovernedAccountSelect from '../../GovernedAccountSelect'
 import useGovernedMultiTypeAccounts from '@hooks/useGovernedMultiTypeAccounts'
-import saberTribecaConfiguration from '@tools/sdk/saberTribeca/configuration'
+import useTribecaGauge from '@hooks/useTribecaGauge'
+import { gaugeSetVoteInstruction } from '@tools/sdk/tribeca/gaugeSetVoteInstruction'
 import Input from '@components/inputs/Input'
-import { lockInstruction } from '@tools/sdk/saberTribeca/lockInstruction'
-import { BigNumber } from 'bignumber.js'
-import { BN } from '@project-serum/anchor'
-import useSaberTribecaLockerData from '@hooks/useSaberTribecaLockerData'
+import GaugeSelect from './GaugeSelect'
+import ATribecaConfiguration from '@tools/sdk/tribeca/ATribecaConfiguration'
+import GovernorSelect from './GovernorSelect'
 
-const Lock = ({
+const SetGaugeVote = ({
   index,
   governance,
 }: {
@@ -32,14 +31,19 @@ const Lock = ({
   const connection = useWalletStore((s) => s.connection)
   const wallet = useWalletStore((s) => s.current)
 
+  const [
+    tribecaConfiguration,
+    setTribecaConfiguration,
+  ] = useState<ATribecaConfiguration | null>(null)
+
   const {
     governedMultiTypeAccounts,
     getGovernedAccountPublicKey,
   } = useGovernedMultiTypeAccounts()
-  const { programs, lockerData } = useSaberTribecaLockerData()
+  const { gauges, programs } = useTribecaGauge(tribecaConfiguration)
 
   const shouldBeGoverned = index !== 0 && governance
-  const [form, setForm] = useState<SaberTribecaLockForm>({})
+  const [form, setForm] = useState<TribecaGaugeSetVoteForm>({})
   const [formErrors, setFormErrors] = useState({})
   const { handleSetInstructions } = useContext(NewProposalContext)
 
@@ -68,10 +72,12 @@ const Lock = ({
       !isValid ||
       !form.governedAccount?.governance?.account ||
       !wallet?.publicKey ||
-      !form.uiAmount ||
-      !form.durationSeconds ||
       !programs ||
-      !lockerData
+      !form.gaugeName ||
+      !gauges ||
+      !gauges[form.gaugeName] ||
+      form.weight === void 0 ||
+      !tribecaConfiguration
     ) {
       return invalid
     }
@@ -80,16 +86,13 @@ const Lock = ({
 
     if (!pubkey) return invalid
 
-    const tx = await lockInstruction({
+    const tx = await gaugeSetVoteInstruction({
+      tribecaConfiguration,
+      weight: form.weight,
       programs,
-      lockerData,
+      gauge: gauges[form.gaugeName].mint,
+      payer: wallet.publicKey,
       authority: pubkey,
-      amount: new BN(
-        new BigNumber(form.uiAmount)
-          .shiftedBy(saberTribecaConfiguration.saberToken.decimals)
-          .toNumber()
-      ),
-      durationSeconds: new BN(form.durationSeconds),
     })
 
     return {
@@ -107,39 +110,23 @@ const Lock = ({
       },
       index
     )
-  }, [form])
+  }, [form, tribecaConfiguration, programs])
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {
     return <>This instruction does not support {connection.cluster}</>
   }
 
-  const minDurationSeconds =
-    lockerData?.params?.minStakeDuration?.toNumber() ?? 0
-
-  const maxDurationSeconds =
-    lockerData?.params?.maxStakeDuration?.toNumber() ?? Number.MAX_VALUE
-
   const schema = yup.object().shape({
     governedAccount: yup
       .object()
       .nullable()
       .required('Governed account is required'),
-    uiAmount: yup
+    gaugeName: yup.string().required('Gauge is required'),
+    weight: yup
       .number()
-      .moreThan(0, 'Amount should be more than 0')
-      .required('Amount is required'),
-    durationSeconds: yup
-      .number()
-      .moreThan(
-        minDurationSeconds,
-        `Duration should be more than ${minDurationSeconds}`
-      )
-      .lessThan(
-        maxDurationSeconds,
-        `Duration should be less than ${maxDurationSeconds}`
-      )
-      .required('Duration is required'),
+      .min(0, 'Weight should be equals or more than 0')
+      .required('Weight is required'),
   })
 
   return (
@@ -154,38 +141,40 @@ const Lock = ({
         error={formErrors['governedAccount']}
         shouldBeGoverned={shouldBeGoverned}
         governance={governance}
-      ></GovernedAccountSelect>
+      />
+
+      <GovernorSelect
+        tribecaConfiguration={tribecaConfiguration}
+        setTribecaConfiguration={setTribecaConfiguration}
+      />
+
+      <GaugeSelect
+        gauges={gauges}
+        value={form.gaugeName}
+        onChange={(value) =>
+          handleSetForm({
+            value,
+            propertyName: 'gaugeName',
+          })
+        }
+        error={formErrors['gaugeName']}
+      />
 
       <Input
-        label="Amount to lock"
-        value={form.uiAmount}
+        label="Weight (nb of token)"
+        value={form.weight}
         type="number"
         min="0"
         onChange={(evt) =>
           handleSetForm({
             value: evt.target.value,
-            propertyName: 'uiAmount',
+            propertyName: 'weight',
           })
         }
-        error={formErrors['uiAmount']}
-      />
-
-      <Input
-        label="Duration in seconds"
-        value={form.durationSeconds}
-        type="number"
-        min={minDurationSeconds}
-        max={maxDurationSeconds}
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'durationSeconds',
-          })
-        }
-        error={formErrors['durationSeconds']}
+        error={formErrors['weight']}
       />
     </>
   )
 }
 
-export default Lock
+export default SetGaugeVote

@@ -4,20 +4,22 @@ import {
   SolanaProvider,
 } from '@saberhq/solana-contrib'
 import { useEffect, useState } from 'react'
-import saberTribecaConfiguration, {
-  SaberTribecaPrograms,
-} from '@tools/sdk/saberTribeca/configuration'
 
 import useWalletStore from 'stores/useWalletStore'
+import ATribecaConfiguration, {
+  TribecaPrograms,
+} from '@tools/sdk/tribeca/ATribecaConfiguration'
 
-export default function useSaberTribecaPrograms() {
+export default function useTribecaPrograms(
+  tribecaConfiguration: ATribecaConfiguration | null
+) {
   const connection = useWalletStore((s) => s.connection)
   const wallet = useWalletStore((s) => s.current)
 
-  const [programs, setPrograms] = useState<SaberTribecaPrograms | null>(null)
+  const [programs, setPrograms] = useState<TribecaPrograms | null>(null)
 
   useEffect(() => {
-    if (!connection || !wallet) {
+    if (!connection || !wallet || !tribecaConfiguration) {
       return
     }
 
@@ -28,11 +30,11 @@ export default function useSaberTribecaPrograms() {
     })
 
     setPrograms(
-      saberTribecaConfiguration.loadPrograms(
+      tribecaConfiguration.loadPrograms(
         new SolanaAugmentedProvider(solanaProvider)
       )
     )
-  }, [connection, wallet])
+  }, [connection, wallet, tribecaConfiguration])
 
   return {
     programs,

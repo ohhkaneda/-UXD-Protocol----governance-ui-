@@ -6,11 +6,8 @@ import {
   TransactionInstruction,
 } from '@solana/web3.js'
 import { getATAAddress } from '@saberhq/token-utils'
-
-import saberTribecaConfiguration, {
-  SaberTribecaPrograms,
-} from './configuration'
 import { LockerData } from './programs'
+import ATribecaConfiguration, { TribecaPrograms } from './ATribecaConfiguration'
 
 export async function lockInstruction({
   programs,
@@ -18,14 +15,16 @@ export async function lockInstruction({
   authority,
   amount,
   durationSeconds,
+  tribecaConfiguration,
 }: {
-  programs: SaberTribecaPrograms
+  programs: TribecaPrograms
   lockerData: LockerData
   authority: PublicKey
   amount: BN
   durationSeconds: BN
+  tribecaConfiguration: ATribecaConfiguration
 }): Promise<TransactionInstruction> {
-  const [escrow] = await saberTribecaConfiguration.findEscrowAddress(authority)
+  const [escrow] = await tribecaConfiguration.findEscrowAddress(authority)
 
   const {
     tokens: escrowTokens,
@@ -33,17 +32,17 @@ export async function lockInstruction({
   } = await programs.LockedVoter.account.escrow.fetch(escrow)
 
   const sourceTokens = await getATAAddress({
-    mint: saberTribecaConfiguration.saberToken.mint,
+    mint: tribecaConfiguration.token.mint,
     owner: escrowOwner,
   })
 
-  const [whitelistEntry] = await saberTribecaConfiguration.findWhitelistAddress(
-    saberTribecaConfiguration.locker,
+  const [whitelistEntry] = await tribecaConfiguration.findWhitelistAddress(
+    tribecaConfiguration.locker,
     authority
   )
 
   console.log({
-    locker: saberTribecaConfiguration.locker.toString(),
+    locker: tribecaConfiguration.locker.toString(),
     escrow: escrow.toString(),
     escrowOwner: escrowOwner.toString(),
     escrowTokens: escrowTokens.toString(),
@@ -55,7 +54,7 @@ export async function lockInstruction({
 
   return programs.LockedVoter.instruction.lock(amount, durationSeconds, {
     accounts: {
-      locker: saberTribecaConfiguration.locker,
+      locker: tribecaConfiguration.locker,
       escrow,
       escrowOwner,
       escrowTokens,

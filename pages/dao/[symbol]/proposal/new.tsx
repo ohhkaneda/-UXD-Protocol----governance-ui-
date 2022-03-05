@@ -57,15 +57,15 @@ import InitObligationAccount from './components/instructions/Solend/InitObligati
 import RefreshObligation from './components/instructions/Solend/RefreshObligation'
 import RefreshReserve from './components/instructions/Solend/RefreshReserve'
 import WithdrawObligationCollateralAndRedeemReserveLiquidity from './components/instructions/Solend/WithdrawObligationCollateralAndRedeemReserveLiquidity'
-import SaberTribecaNewEscrow from './components/instructions/saberTribeca/NewEscrow'
-import SaberTribecaLock from './components/instructions/saberTribeca/Lock'
-import SaberTribecaCreateEscrowSbrATA from './components/instructions/saberTribeca/CreateEscrowSbrATA'
-import SaberTribecaCreateGaugeVoter from './components/instructions/saberTribeca/CreateGaugeVoter'
-import SaberTribecaCreateGaugeVote from './components/instructions/saberTribeca/CreateGaugeVote'
-import SaberTribecaSetGaugeVote from './components/instructions/saberTribeca/SetGaugeVote'
-import SaberTribecaPrepareEpochGaugeVoter from './components/instructions/saberTribeca/PrepareEpochGaugeVoter'
-import SaberTribecaCreateEpochGauge from './components/instructions/saberTribeca/CreateEpochGauge'
-import SaberTribecaGaugeCommitVote from './components/instructions/saberTribeca/GaugeCommitVote'
+import TribecaNewEscrow from './components/instructions/tribeca/NewEscrow'
+import TribecaLock from './components/instructions/tribeca/Lock'
+import TribecaCreateEscrowSbrATA from './components/instructions/tribeca/CreateEscrowSbrATA'
+import TribecaCreateGaugeVoter from './components/instructions/tribeca/CreateGaugeVoter'
+import TribecaCreateGaugeVote from './components/instructions/tribeca/CreateGaugeVote'
+import TribecaSetGaugeVote from './components/instructions/tribeca/SetGaugeVote'
+import TribecaPrepareEpochGaugeVoter from './components/instructions/tribeca/PrepareEpochGaugeVoter'
+import TribecaCreateEpochGauge from './components/instructions/tribeca/CreateEpochGauge'
+import TribecaGaugeCommitVote from './components/instructions/tribeca/GaugeCommitVote'
 import SetProgramAuthority from './components/instructions/SetProgramAuthority'
 import SoceanMintBondedTokens from './components/instructions/socean/MintBondedTokens'
 import SoceanDepositToAuctionPool from './components/instructions/socean/DepositToAuctionPool'
@@ -430,39 +430,26 @@ const New = () => {
         return <Grant index={idx} governance={governance} />
       case Instructions.Clawback:
         return <Clawback index={idx} governance={governance} />
-      case Instructions.SaberTribecaNewEscrow:
-        return <SaberTribecaNewEscrow index={idx} governance={governance} />
-      case Instructions.SaberTribecaLock:
-        return <SaberTribecaLock index={idx} governance={governance} />
-      case Instructions.SaberTribecaCreateEscrowSbrATA:
+      case Instructions.TribecaNewEscrow:
+        return <TribecaNewEscrow index={idx} governance={governance} />
+      case Instructions.TribecaLock:
+        return <TribecaLock index={idx} governance={governance} />
+      case Instructions.TribecaCreateEscrowSbrATA:
+        return <TribecaCreateEscrowSbrATA index={idx} governance={governance} />
+      case Instructions.TribecaCreateGaugeVoter:
+        return <TribecaCreateGaugeVoter index={idx} governance={governance} />
+      case Instructions.TribecaCreateGaugeVote:
+        return <TribecaCreateGaugeVote index={idx} governance={governance} />
+      case Instructions.TribecaGaugeSetVote:
+        return <TribecaSetGaugeVote index={idx} governance={governance} />
+      case Instructions.TribecaPrepareEpochGaugeVoter:
         return (
-          <SaberTribecaCreateEscrowSbrATA index={idx} governance={governance} />
+          <TribecaPrepareEpochGaugeVoter index={idx} governance={governance} />
         )
-      case Instructions.SaberTribecaCreateGaugeVoter:
-        return (
-          <SaberTribecaCreateGaugeVoter index={idx} governance={governance} />
-        )
-      case Instructions.SaberTribecaCreateGaugeVote:
-        return (
-          <SaberTribecaCreateGaugeVote index={idx} governance={governance} />
-        )
-      case Instructions.SaberTribecaGaugeSetVote:
-        return <SaberTribecaSetGaugeVote index={idx} governance={governance} />
-      case Instructions.SaberTribecaPrepareEpochGaugeVoter:
-        return (
-          <SaberTribecaPrepareEpochGaugeVoter
-            index={idx}
-            governance={governance}
-          />
-        )
-      case Instructions.SaberTribecaCreateEpochGauge:
-        return (
-          <SaberTribecaCreateEpochGauge index={idx} governance={governance} />
-        )
-      case Instructions.SaberTribecaGaugeCommitVote:
-        return (
-          <SaberTribecaGaugeCommitVote index={idx} governance={governance} />
-        )
+      case Instructions.TribecaCreateEpochGauge:
+        return <TribecaCreateEpochGauge index={idx} governance={governance} />
+      case Instructions.TribecaGaugeCommitVote:
+        return <TribecaGaugeCommitVote index={idx} governance={governance} />
       case Instructions.SoceanMintBondedTokens:
         return <SoceanMintBondedTokens index={idx} governance={governance} />
       case Instructions.SoceanDepositToAuctionPool:

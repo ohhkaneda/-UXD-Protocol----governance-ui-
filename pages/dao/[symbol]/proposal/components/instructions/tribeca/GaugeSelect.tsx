@@ -1,5 +1,5 @@
 import Select from '@components/inputs/Select'
-import { GaugeInfos } from '@tools/sdk/saberTribeca/configuration'
+import { GaugeInfos } from '@tools/sdk/tribeca/ATribecaConfiguration'
 
 const GaugeSelect = ({
   gauges,

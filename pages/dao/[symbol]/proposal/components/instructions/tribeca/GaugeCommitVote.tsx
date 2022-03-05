@@ -3,7 +3,7 @@ import * as yup from 'yup'
 import { isFormValid } from '@utils/formValidation'
 import {
   UiInstruction,
-  SaberTribecaCreateGaugeVoterForm,
+  TribecaGaugeCommitVoteForm,
 } from '@utils/uiTypes/proposalCreationTypes'
 import { NewProposalContext } from '../../../new'
 import useWalletStore from 'stores/useWalletStore'
@@ -14,10 +14,13 @@ import {
 } from '@solana/spl-governance'
 import GovernedAccountSelect from '../../GovernedAccountSelect'
 import useGovernedMultiTypeAccounts from '@hooks/useGovernedMultiTypeAccounts'
-import { createGaugeVoterInstruction } from '@tools/sdk/saberTribeca/createGaugeVoterInstruction'
-import useSaberTribecaPrograms from '@hooks/useSaberTribecaPrograms'
+import useTribecaGauge from '@hooks/useTribecaGauge'
+import { gaugeCommitVoteInstruction } from '@tools/sdk/tribeca/gaugeCommitVoteInstruction'
+import GaugeSelect from './GaugeSelect'
+import GovernorSelect from './GovernorSelect'
+import ATribecaConfiguration from '@tools/sdk/tribeca/ATribecaConfiguration'
 
-const CreateGaugeVoter = ({
+const GaugeCommitVote = ({
   index,
   governance,
 }: {
@@ -27,14 +30,19 @@ const CreateGaugeVoter = ({
   const connection = useWalletStore((s) => s.connection)
   const wallet = useWalletStore((s) => s.current)
 
+  const [
+    tribecaConfiguration,
+    setTribecaConfiguration,
+  ] = useState<ATribecaConfiguration | null>(null)
+
   const {
     governedMultiTypeAccounts,
     getGovernedAccountPublicKey,
   } = useGovernedMultiTypeAccounts()
-  const { programs } = useSaberTribecaPrograms()
+  const { gauges, programs } = useTribecaGauge(tribecaConfiguration)
 
   const shouldBeGoverned = index !== 0 && governance
-  const [form, setForm] = useState<SaberTribecaCreateGaugeVoterForm>({})
+  const [form, setForm] = useState<TribecaGaugeCommitVoteForm>({})
   const [formErrors, setFormErrors] = useState({})
   const { handleSetInstructions } = useContext(NewProposalContext)
 
@@ -63,7 +71,11 @@ const CreateGaugeVoter = ({
       !isValid ||
       !form.governedAccount?.governance?.account ||
       !wallet?.publicKey ||
-      !programs
+      !programs ||
+      !form.gaugeName ||
+      !gauges ||
+      !gauges[form.gaugeName] ||
+      !tribecaConfiguration
     ) {
       return invalid
     }
@@ -72,8 +84,10 @@ const CreateGaugeVoter = ({
 
     if (!pubkey) return invalid
 
-    const tx = await createGaugeVoterInstruction({
+    const tx = await gaugeCommitVoteInstruction({
+      tribecaConfiguration,
       programs,
+      gauge: gauges[form.gaugeName].mint,
       payer: wallet.publicKey,
       authority: pubkey,
     })
@@ -93,7 +107,7 @@ const CreateGaugeVoter = ({
       },
       index
     )
-  }, [form])
+  }, [form, tribecaConfiguration, programs])
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {
@@ -105,21 +119,41 @@ const CreateGaugeVoter = ({
       .object()
       .nullable()
       .required('Governed account is required'),
+    gaugeName: yup.string().required('Gauge is required'),
   })
 
   return (
-    <GovernedAccountSelect
-      label="Governance"
-      governedAccounts={governedMultiTypeAccounts}
-      onChange={(value) => {
-        handleSetForm({ value, propertyName: 'governedAccount' })
-      }}
-      value={form.governedAccount}
-      error={formErrors['governedAccount']}
-      shouldBeGoverned={shouldBeGoverned}
-      governance={governance}
-    ></GovernedAccountSelect>
+    <>
+      <GovernedAccountSelect
+        label="Governance"
+        governedAccounts={governedMultiTypeAccounts}
+        onChange={(value) => {
+          handleSetForm({ value, propertyName: 'governedAccount' })
+        }}
+        value={form.governedAccount}
+        error={formErrors['governedAccount']}
+        shouldBeGoverned={shouldBeGoverned}
+        governance={governance}
+      />
+
+      <GovernorSelect
+        tribecaConfiguration={tribecaConfiguration}
+        setTribecaConfiguration={setTribecaConfiguration}
+      />
+
+      <GaugeSelect
+        gauges={gauges}
+        value={form.gaugeName}
+        onChange={(value) =>
+          handleSetForm({
+            value,
+            propertyName: 'gaugeName',
+          })
+        }
+        error={formErrors['gaugeName']}
+      />
+    </>
   )
 }
 
-export default CreateGaugeVoter
+export default GaugeCommitVote

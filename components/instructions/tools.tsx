@@ -19,7 +19,7 @@ import { VOTE_STAKE_REGISTRY_INSTRUCTIONS } from './programs/voteStakeRegistry'
 import { MARINADE_INSTRUCTIONS } from './programs/marinade'
 import { SOLEND_PROGRAM_INSTRUCTIONS } from './programs/solend'
 import { ATA_PROGRAM_INSTRUCTIONS } from './programs/associatedTokenAccount'
-import { SABER_TRIBECA_PROGRAM_INSTRUCTIONS } from './programs/saberTribeca'
+import { TRIBECA_PROGRAM_INSTRUCTIONS } from './programs/tribeca'
 import { SABER_POOLS_PROGRAM_INSTRUCTIONS } from './programs/saberPools'
 import { SOCEAN_PROGRAM_INSTRUCTIONS } from './programs/socean'
 
@@ -172,7 +172,7 @@ export const INSTRUCTION_DESCRIPTORS = {
   ...ATA_PROGRAM_INSTRUCTIONS,
   ...SYSTEM_INSTRUCTIONS,
   ...VOTE_STAKE_REGISTRY_INSTRUCTIONS,
-  ...SABER_TRIBECA_PROGRAM_INSTRUCTIONS,
+  ...TRIBECA_PROGRAM_INSTRUCTIONS,
   ...SABER_POOLS_PROGRAM_INSTRUCTIONS,
   ...SOCEAN_PROGRAM_INSTRUCTIONS,
 }

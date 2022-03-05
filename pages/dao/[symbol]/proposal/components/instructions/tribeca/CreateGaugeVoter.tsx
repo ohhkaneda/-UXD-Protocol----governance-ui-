@@ -3,7 +3,7 @@ import * as yup from 'yup'
 import { isFormValid } from '@utils/formValidation'
 import {
   UiInstruction,
-  SaberTribecaCreateEscrowSbrATAForm,
+  TribecaCreateGaugeVoterForm,
 } from '@utils/uiTypes/proposalCreationTypes'
 import { NewProposalContext } from '../../../new'
 import useWalletStore from 'stores/useWalletStore'
@@ -14,10 +14,12 @@ import {
 } from '@solana/spl-governance'
 import GovernedAccountSelect from '../../GovernedAccountSelect'
 import useGovernedMultiTypeAccounts from '@hooks/useGovernedMultiTypeAccounts'
-import { createEscrowATAInstruction } from '@tools/sdk/saberTribeca/createEscrowSbrATAInstruction'
-import useSaberTribecaLockerData from '@hooks/useSaberTribecaLockerData'
+import { createGaugeVoterInstruction } from '@tools/sdk/tribeca/createGaugeVoterInstruction'
+import useTribecaPrograms from '@hooks/useTribecaPrograms'
+import GovernorSelect from './GovernorSelect'
+import ATribecaConfiguration from '@tools/sdk/tribeca/ATribecaConfiguration'
 
-const CreateEscrowSbrATA = ({
+const CreateGaugeVoter = ({
   index,
   governance,
 }: {
@@ -27,14 +29,19 @@ const CreateEscrowSbrATA = ({
   const connection = useWalletStore((s) => s.connection)
   const wallet = useWalletStore((s) => s.current)
 
+  const [
+    tribecaConfiguration,
+    setTribecaConfiguration,
+  ] = useState<ATribecaConfiguration | null>(null)
+
   const {
     governedMultiTypeAccounts,
     getGovernedAccountPublicKey,
   } = useGovernedMultiTypeAccounts()
-  const { lockerData } = useSaberTribecaLockerData()
+  const { programs } = useTribecaPrograms(tribecaConfiguration)
 
   const shouldBeGoverned = index !== 0 && governance
-  const [form, setForm] = useState<SaberTribecaCreateEscrowSbrATAForm>({})
+  const [form, setForm] = useState<TribecaCreateGaugeVoterForm>({})
   const [formErrors, setFormErrors] = useState({})
   const { handleSetInstructions } = useContext(NewProposalContext)
 
@@ -63,7 +70,8 @@ const CreateEscrowSbrATA = ({
       !isValid ||
       !form.governedAccount?.governance?.account ||
       !wallet?.publicKey ||
-      !lockerData
+      !programs ||
+      !tribecaConfiguration
     ) {
       return invalid
     }
@@ -72,8 +80,9 @@ const CreateEscrowSbrATA = ({
 
     if (!pubkey) return invalid
 
-    const tx = await createEscrowATAInstruction({
-      lockerData,
+    const tx = await createGaugeVoterInstruction({
+      tribecaConfiguration,
+      programs,
       payer: wallet.publicKey,
       authority: pubkey,
     })
@@ -93,7 +102,7 @@ const CreateEscrowSbrATA = ({
       },
       index
     )
-  }, [form])
+  }, [form, tribecaConfiguration, programs])
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {
@@ -108,18 +117,25 @@ const CreateEscrowSbrATA = ({
   })
 
   return (
-    <GovernedAccountSelect
-      label="Governance"
-      governedAccounts={governedMultiTypeAccounts}
-      onChange={(value) => {
-        handleSetForm({ value, propertyName: 'governedAccount' })
-      }}
-      value={form.governedAccount}
-      error={formErrors['governedAccount']}
-      shouldBeGoverned={shouldBeGoverned}
-      governance={governance}
-    ></GovernedAccountSelect>
+    <>
+      <GovernedAccountSelect
+        label="Governance"
+        governedAccounts={governedMultiTypeAccounts}
+        onChange={(value) => {
+          handleSetForm({ value, propertyName: 'governedAccount' })
+        }}
+        value={form.governedAccount}
+        error={formErrors['governedAccount']}
+        shouldBeGoverned={shouldBeGoverned}
+        governance={governance}
+      />
+
+      <GovernorSelect
+        tribecaConfiguration={tribecaConfiguration}
+        setTribecaConfiguration={setTribecaConfiguration}
+      />
+    </>
   )
 }
 
-export default CreateEscrowSbrATA
+export default CreateGaugeVoter

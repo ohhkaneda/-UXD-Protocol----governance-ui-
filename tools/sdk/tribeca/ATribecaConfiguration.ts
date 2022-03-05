@@ -12,7 +12,7 @@ import {
 import { GovernProgram, UgovernJSON } from './programs/govern'
 import { LockedVoterProgram, UlockedUvoterJSON } from './programs/lockedVoter'
 
-export type SaberTribecaPrograms = {
+export type TribecaPrograms = {
   LockedVoter: LockedVoterProgram
   Govern: GovernProgram
   Gauge: GaugeProgram
@@ -28,48 +28,54 @@ export type GaugeInfos = {
   [name: string]: GaugeInfo
 }
 
-class SaberTribecaConfiguration {
+export default abstract class ATribecaConfiguration {
   protected encodeU32(num: number): Buffer {
     const buf = Buffer.alloc(4)
     buf.writeUInt32LE(num)
     return buf
   }
 
-  public readonly mintInfoEndpoint =
+  public static readonly mintInfoEndpoint =
     'https://cdn.jsdelivr.net/gh/CLBExchange/certified-token-list/101'
 
-  public readonly lockedVoterProgramId = new PublicKey(
+  public static readonly lockedVoterProgramId = new PublicKey(
     'LocktDzaV1W2Bm9DeZeiyz4J9zs4fRqNiYqQyracRXw'
   )
-  public readonly governProgramId = new PublicKey(
+
+  public static readonly governProgramId = new PublicKey(
     'Govz1VyoyLD5BL6CSCxUJLVLsQHRwjfFj1prNsdNg5Jw'
   )
-  public readonly gaugeProgramId = new PublicKey(
+
+  public static readonly gaugeProgramId = new PublicKey(
     'GaugesLJrnVjNNWLReiw3Q7xQhycSBRgeHGTMDUaX231'
   )
-  public readonly quarryMineProgramId = new PublicKey(
+
+  public static readonly quarryMineProgramId = new PublicKey(
     'QMNeHCGYnLVDn1icRAfQZpjPLBNkfGbSKRB83G5d8KB'
   )
 
-  public readonly gaugemeister = new PublicKey(
+  public static readonly gaugemeister = new PublicKey(
     '28ZDtf6d2wsYhBvabTxUHTRT6MDxqjmqR7RMCp348tyU'
   )
-  public readonly locker = new PublicKey(
-    '8erad8kmNrLJDJPe9UkmTHomrMV3EW48sjGeECyVjbYX'
-  )
 
-  public readonly saberToken = {
-    name: 'SBR - Saber Protocol Token',
-    mint: new PublicKey('Saber2gLauYim4Mvftnrasomsv6NvAuncvMEZwcLpD1'),
-    decimals: 6,
+  // ---------------- Abstract ----------------
+  public abstract readonly name: string
+
+  public abstract readonly locker: PublicKey
+
+  public abstract readonly token: {
+    name: string
+    mint: PublicKey
+    decimals: number
   }
+  // ------------------------------------------
 
-  public readonly gaugeInstructions = {
+  public static readonly gaugeInstructions = {
     createGaugeVoter: 135,
     createGaugeVote: 109,
   }
 
-  public readonly lockedVoterInstructions = {
+  public static readonly lockedVoterInstructions = {
     newEscrow: 216,
     lock: 21,
   }
@@ -84,7 +90,7 @@ class SaberTribecaConfiguration {
         authority.toBuffer(),
       ],
 
-      this.lockedVoterProgramId
+      ATribecaConfiguration.lockedVoterProgramId
     )
   }
 
@@ -94,10 +100,10 @@ class SaberTribecaConfiguration {
     return PublicKey.findProgramAddress(
       [
         utils.bytes.utf8.encode('GaugeVoter'),
-        this.gaugemeister.toBuffer(),
+        ATribecaConfiguration.gaugemeister.toBuffer(),
         escrow.toBuffer(),
       ],
-      this.gaugeProgramId
+      ATribecaConfiguration.gaugeProgramId
     )
   }
 
@@ -111,7 +117,7 @@ class SaberTribecaConfiguration {
         gaugeVoter.toBuffer(),
         gauge.toBuffer(),
       ],
-      this.gaugeProgramId
+      ATribecaConfiguration.gaugeProgramId
     )
   }
 
@@ -125,7 +131,7 @@ class SaberTribecaConfiguration {
         gaugeVoter.toBuffer(),
         this.encodeU32(votingEpoch),
       ],
-      this.gaugeProgramId
+      ATribecaConfiguration.gaugeProgramId
     )
   }
 
@@ -139,7 +145,7 @@ class SaberTribecaConfiguration {
         gauge.toBuffer(),
         this.encodeU32(votingEpoch),
       ],
-      this.gaugeProgramId
+      ATribecaConfiguration.gaugeProgramId
     )
   }
 
@@ -153,7 +159,7 @@ class SaberTribecaConfiguration {
         gaugeVote.toBuffer(),
         this.encodeU32(votingEpoch),
       ],
-      this.gaugeProgramId
+      ATribecaConfiguration.gaugeProgramId
     )
   }
 
@@ -167,16 +173,16 @@ class SaberTribecaConfiguration {
         locker.toBuffer(),
         programId.toBuffer(),
       ],
-      this.lockedVoterProgramId
+      ATribecaConfiguration.lockedVoterProgramId
     )
   }
 
-  public async fetchAllGauge(
-    programs: SaberTribecaPrograms
-  ): Promise<GaugeInfos> {
+  public async fetchAllGauge(programs: TribecaPrograms): Promise<GaugeInfos> {
     const gauges = (await programs.Gauge.account.gauge.all()).filter(
       ({ account: { isDisabled, gaugemeister } }) =>
-        !isDisabled || gaugemeister.toString() !== this.gaugemeister.toString()
+        !isDisabled ||
+        gaugemeister.toString() !==
+          ATribecaConfiguration.gaugemeister.toString()
     )
 
     // Fetch the info of the quarry behind the gauge to get name + logo behind the gauge
@@ -195,7 +201,7 @@ class SaberTribecaConfiguration {
         (async () => {
           try {
             const response = await fetch(
-              `${this.mintInfoEndpoint}/${x.toString()}.json`,
+              `${ATribecaConfiguration.mintInfoEndpoint}/${x.toString()}.json`,
               {
                 method: 'GET',
                 headers: {
@@ -236,18 +242,20 @@ class SaberTribecaConfiguration {
     gaugeProgram: GaugeProgram
   ): Promise<GaugemeisterData> {
     const data = await gaugeProgram.account.gaugemeister.fetchNullable(
-      this.gaugemeister
+      ATribecaConfiguration.gaugemeister
     )
 
     if (!data) {
-      throw new Error(`Empty Gaugemeister data ${this.gaugemeister}`)
+      throw new Error(
+        `Empty Gaugemeister data ${ATribecaConfiguration.gaugemeister}`
+      )
     }
 
     return data
   }
 
-  public loadPrograms(provider: SolanaAugmentedProvider): SaberTribecaPrograms {
-    return newProgramMap<SaberTribecaPrograms>(
+  public loadPrograms(provider: SolanaAugmentedProvider): TribecaPrograms {
+    return newProgramMap<TribecaPrograms>(
       provider,
 
       {
@@ -260,13 +268,11 @@ class SaberTribecaConfiguration {
 
       {
         // Addresses
-        LockedVoter: this.lockedVoterProgramId,
-        Govern: this.governProgramId,
-        Gauge: this.gaugeProgramId,
-        Mine: this.quarryMineProgramId,
+        LockedVoter: ATribecaConfiguration.lockedVoterProgramId,
+        Govern: ATribecaConfiguration.governProgramId,
+        Gauge: ATribecaConfiguration.gaugeProgramId,
+        Mine: ATribecaConfiguration.quarryMineProgramId,
       }
     )
   }
 }
-
-export default new SaberTribecaConfiguration()
