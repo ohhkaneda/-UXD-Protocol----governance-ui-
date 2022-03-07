@@ -11,10 +11,18 @@ import { useCallback, useEffect, useState } from 'react'
 import useWalletStore from 'stores/useWalletStore'
 import tokenService from '@utils/services/token'
 import { BN } from '@project-serum/anchor'
+import useRealm from './useRealm'
 
-const SOL_TREASURY_OWNER = new PublicKey(
-  '7M6TSEkRiXiYmpRCcCDSdJGTGxAPem2HBqjW4gLQ2KoE'
-)
+const HotWalletMap = {
+  UXDProtocol: {
+    name: `SOL Treasury's Owner`,
+    publicKey: new PublicKey('7M6TSEkRiXiYmpRCcCDSdJGTGxAPem2HBqjW4gLQ2KoE'),
+  },
+  'Kek World': {
+    name: `SOL Treasury's Owner`,
+    publicKey: new PublicKey('AuQHcJZhTd1dnXRrM78RomFiCvW6a9CqxxJ94Fp9h8b'),
+  },
+}
 
 export type HotWalletAccountInfo = {
   publicKey: PublicKey
@@ -37,12 +45,25 @@ const useHotWallet = () => {
     HotWalletAccountInfo[] | null
   >(null)
 
+  const { realm } = useRealm()
+
+  const [hotWalletInfo, setHotWalletInfo] = useState<{
+    name: string
+    publicKey: PublicKey
+  } | null>(null)
+
+  useEffect(() => {
+    if (!realm) return
+
+    setHotWalletInfo(HotWalletMap[realm.account.name] ?? null)
+  }, [realm])
+
   const loadTokenAccounts = useCallback(async () => {
-    if (!connection.current) return
+    if (!connection.current || !hotWalletInfo) return
 
     const tokenAccounts = await getOwnedTokenAccounts(
       connection.current,
-      SOL_TREASURY_OWNER
+      hotWalletInfo.publicKey
     )
 
     const tokenMintAddresses = [
@@ -97,7 +118,11 @@ const useHotWallet = () => {
         }
       })
     )
-  }, [connection, JSON.stringify(tokenService._tokenPriceToUSDlist)])
+  }, [
+    connection,
+    JSON.stringify(tokenService._tokenPriceToUSDlist),
+    hotWalletInfo,
+  ])
 
   useEffect(() => {
     loadTokenAccounts()
@@ -105,8 +130,7 @@ const useHotWallet = () => {
 
   return {
     tokenAccountsInfo,
-    hotWalletAddress: SOL_TREASURY_OWNER,
-    hotWalletName: `SOL Treasury's Owner`,
+    hotWalletInfo,
   }
 }
 

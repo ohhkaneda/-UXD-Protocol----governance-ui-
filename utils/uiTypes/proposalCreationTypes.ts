@@ -163,8 +163,15 @@ export interface RefreshReserveForm {
 
 export interface TokenTransferBetweenInternalGovernanceAccountsForm {
   governedAccount?: GovernedMultiTypeAccount
-  sourceAccount?: PublicKey
-  receiverAccount?: PublicKey
+  sourceAccount?: string
+  receiverAccount?: string
+  uiAmount?: number
+}
+
+export interface GovernanceUnderlyingTokenAccountTransferForm {
+  governedAccount?: GovernedMultiTypeAccount
+  sourceAccount?: string
+  receiverAccount?: string
   uiAmount?: number
 }
 
@@ -310,6 +317,7 @@ export enum Instructions {
   Grant,
   Clawback,
   TokenTransferBetweenInternalGovernanceAccounts,
+  GovernanceUnderlyingTokenAccountTransfer,
   TribecaNewEscrow,
   TribecaLock,
   TribecaCreateEscrowSbrATA,

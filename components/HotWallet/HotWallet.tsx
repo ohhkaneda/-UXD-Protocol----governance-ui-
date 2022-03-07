@@ -4,7 +4,11 @@ import { FireIcon } from '@heroicons/react/outline'
 import HotWalletName from './HotWalletName'
 
 const HotWallet = () => {
-  const { tokenAccountsInfo, hotWalletAddress, hotWalletName } = useHotWallet()
+  const { tokenAccountsInfo, hotWalletInfo } = useHotWallet()
+
+  if (!hotWalletInfo) {
+    return <></>
+  }
 
   return (
     <div className="bg-bkg-2 p-4 md:p-6 rounded-lg transition-all">
@@ -14,8 +18,8 @@ const HotWallet = () => {
       </h3>
 
       <HotWalletName
-        hotWalletAddress={hotWalletAddress}
-        hotWalletName={hotWalletName}
+        hotWalletAddress={hotWalletInfo.publicKey}
+        hotWalletName={hotWalletInfo.name}
       />
 
       <div style={{ maxHeight: '350px' }} className="overflow-y-auto space-y-3">

@@ -12,7 +12,7 @@ const TokenAccountSelect = ({
 }: {
   label: string
   value?: string
-  onChange: (value: PublicKey) => void
+  onChange: (value: string) => void
   error: string
   ownedTokenAccountsInfo?: OwnedTokenAccountsInfo
 }) => {
@@ -71,7 +71,7 @@ const TokenAccountSelect = ({
       error={error}
     >
       {Object.values(ownedTokenAccountsInfo).map(({ pubkey }) => (
-        <Select.Option key={pubkey.toString()} value={pubkey}>
+        <Select.Option key={pubkey.toBase58()} value={pubkey.toBase58()}>
           {getAccountDisplay(pubkey)}
         </Select.Option>
       ))}

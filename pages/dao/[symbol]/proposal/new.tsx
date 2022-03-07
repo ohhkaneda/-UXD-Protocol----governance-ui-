@@ -82,6 +82,7 @@ import DepositInsuranceToMangoDepository from './components/instructions/UXD/Dep
 import WithdrawInsuranceFromMangoDepository from './components/instructions/UXD/WithdrawInsuranceFromMangoDepository'
 import SetRedeemGlobalSupplyCap from './components/instructions/UXD/SetRedeemGlobalSupplyCap'
 import TokenTransferBetweenInternalGovernanceAccounts from './components/instructions/TokenTransferBetweenInternalGovernanceAccounts'
+import GovernanceUnderlyingTokenAccountTransfer from './components/instructions/GovernanceUnderlyingTokenAccountTransfer'
 import SaberPoolsDeposit from './components/instructions/saberPools/Deposit'
 import SaberPoolsWithdrawOne from './components/instructions/saberPools/WithdrawOne'
 
@@ -379,6 +380,13 @@ const New = () => {
       case Instructions.TokenTransferBetweenInternalGovernanceAccounts:
         return (
           <TokenTransferBetweenInternalGovernanceAccounts
+            index={idx}
+            governance={governance}
+          />
+        )
+      case Instructions.GovernanceUnderlyingTokenAccountTransfer:
+        return (
+          <GovernanceUnderlyingTokenAccountTransfer
             index={idx}
             governance={governance}
           />

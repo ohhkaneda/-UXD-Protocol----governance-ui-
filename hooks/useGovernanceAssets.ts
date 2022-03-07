@@ -143,6 +143,11 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
+      id: Instructions.GovernanceUnderlyingTokenAccountTransfer,
+      name: `Governance's Underlying Token Account Transfer`,
+      isVisible: canUseAnyInstruction,
+    },
+    {
       id: Instructions.TokenTransferBetweenInternalGovernanceAccounts,
       name: 'Transfer Token Between Internal Governance Accounts',
       isVisible: canUseAnyInstruction,

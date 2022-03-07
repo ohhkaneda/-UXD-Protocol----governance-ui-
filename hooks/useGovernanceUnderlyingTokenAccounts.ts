@@ -6,6 +6,7 @@ import { findATAAddrSync } from '@uxdprotocol/uxd-client'
 import { SPL_TOKENS } from '@utils/splTokens'
 import { getOwnedTokenAccounts, tryGetMint } from '@utils/tokens'
 import useWalletStore from 'stores/useWalletStore'
+import { abbreviateAddress } from '@utils/formatting'
 
 export type OwnedTokenAccountInfo = {
   pubkey: PublicKey
@@ -27,7 +28,7 @@ export type OwnedTokenAccountsInfo = {
 function getSplTokenNameFromConstant(tokenMint: PublicKey): string {
   return (
     Object.values(SPL_TOKENS).find(({ mint }) => mint.equals(tokenMint))
-      ?.name ?? 'Unknown'
+      ?.name ?? abbreviateAddress(tokenMint)
   )
 }
 
@@ -96,7 +97,7 @@ export default function useGovernanceUnderlyingTokenAccounts(
       (ownedTokenAccountsInfo, { publicKey, account: { mint, amount } }) => ({
         ...ownedTokenAccountsInfo,
 
-        [publicKey.toString()]: {
+        [publicKey.toBase58()]: {
           pubkey: publicKey,
           amount: new BN(amount.toString()),
           mint,

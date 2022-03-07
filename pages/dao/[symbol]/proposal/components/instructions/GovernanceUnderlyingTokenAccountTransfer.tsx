@@ -11,7 +11,7 @@ import {
 import { isFormValid } from '@utils/formValidation'
 import {
   UiInstruction,
-  TokenTransferBetweenInternalGovernanceAccountsForm,
+  GovernanceUnderlyingTokenAccountTransferForm,
 } from '@utils/uiTypes/proposalCreationTypes'
 import useGovernedMultiTypeAccounts from '@hooks/useGovernedMultiTypeAccounts'
 import Input from '@components/inputs/Input'
@@ -22,7 +22,7 @@ import GovernedAccountSelect from '../GovernedAccountSelect'
 import TokenAccountSelect from './TokenAccountSelect'
 import { PublicKey } from '@solana/web3.js'
 
-const TokenTransferBetweenInternalGovernanceAccounts = ({
+const GovernanceUnderlyingTokenAccountTransfer = ({
   index,
   governance,
 }: {
@@ -40,12 +40,12 @@ const TokenTransferBetweenInternalGovernanceAccounts = ({
   const [
     form,
     setForm,
-  ] = useState<TokenTransferBetweenInternalGovernanceAccountsForm>({})
+  ] = useState<GovernanceUnderlyingTokenAccountTransferForm>({})
   const [formErrors, setFormErrors] = useState({})
   const { handleSetInstructions } = useContext(NewProposalContext)
 
   const pubkey = form.governedAccount
-    ? getGovernedAccountPublicKey(form.governedAccount)
+    ? getGovernedAccountPublicKey(form.governedAccount, true)
     : null
 
   const { ownedTokenAccountsInfo } = useGovernanceUnderlyingTokenAccounts(
@@ -89,9 +89,9 @@ const TokenTransferBetweenInternalGovernanceAccounts = ({
       return invalid
     }
 
-    const { mintDecimals } = ownedTokenAccountsInfo[
-      form.sourceAccount.toString()
-    ]!
+    const sourceAccount = new PublicKey(form.sourceAccount)
+
+    const { mintDecimals } = ownedTokenAccountsInfo[sourceAccount.toBase58()]!
 
     const amount = new BigNumber(form.uiAmount)
       .shiftedBy(mintDecimals)
@@ -99,7 +99,7 @@ const TokenTransferBetweenInternalGovernanceAccounts = ({
 
     const tx = Token.createTransferInstruction(
       TOKEN_PROGRAM_ID,
-      new PublicKey(form.sourceAccount),
+      sourceAccount,
       new PublicKey(form.receiverAccount),
       pubkey,
       [],
@@ -129,32 +129,7 @@ const TokenTransferBetweenInternalGovernanceAccounts = ({
       .nullable()
       .required('Governed account is required'),
     sourceAccount: yup.string().required('Source Account is required'),
-    receiverAccount: yup
-      .string()
-      .required('Receiver Account is required')
-      .test((value?: string) => {
-        if (!value || !form.sourceAccount || !ownedTokenAccountsInfo)
-          return false
-
-        if (value === form.sourceAccount.toString()) {
-          return new yup.ValidationError('source and destination are the same')
-        }
-
-        const { mint: mintReceiver } = ownedTokenAccountsInfo[value]
-        const { mint: mintSource } = ownedTokenAccountsInfo[
-          form.sourceAccount.toString()
-        ]
-
-        const equals = mintSource.equals(mintReceiver)
-
-        if (!equals) {
-          return new yup.ValidationError(
-            'source and destination mint are different'
-          )
-        }
-
-        return true
-      }),
+    receiverAccount: yup.string().required('Receiver Account is required'),
   })
 
   return (
@@ -175,7 +150,7 @@ const TokenTransferBetweenInternalGovernanceAccounts = ({
         <>
           <TokenAccountSelect
             label="Source Account"
-            value={form.sourceAccount?.toString()}
+            value={form.sourceAccount}
             onChange={(value) =>
               handleSetForm({ value, propertyName: 'sourceAccount' })
             }
@@ -183,14 +158,17 @@ const TokenTransferBetweenInternalGovernanceAccounts = ({
             ownedTokenAccountsInfo={ownedTokenAccountsInfo}
           />
 
-          <TokenAccountSelect
+          <Input
             label="Receiver Account"
-            value={form.receiverAccount?.toString()}
-            onChange={(value) =>
-              handleSetForm({ value, propertyName: 'receiverAccount' })
+            value={form.receiverAccount}
+            type="string"
+            onChange={(evt) =>
+              handleSetForm({
+                value: evt.target.value,
+                propertyName: 'receiverAccount',
+              })
             }
             error={formErrors['receiverAccount']}
-            ownedTokenAccountsInfo={ownedTokenAccountsInfo}
           />
 
           <Input
@@ -212,4 +190,4 @@ const TokenTransferBetweenInternalGovernanceAccounts = ({
   )
 }
 
-export default TokenTransferBetweenInternalGovernanceAccounts
+export default GovernanceUnderlyingTokenAccountTransfer
