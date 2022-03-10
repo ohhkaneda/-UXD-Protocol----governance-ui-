@@ -24,7 +24,7 @@ export async function deposit({
 }): Promise<TransactionInstruction> {
   const unconnectedVoltSdk = await friktionConfiguration.loadVoltSDK(provider)
 
-  const pdaStr = ''
+  const pdaStr = 'FILL_ME'
 
   const {
     extraVoltKey,
@@ -90,63 +90,4 @@ export async function deposit({
       },
     }
   )
-
-  /*
-    await program.rpc.depositDaoExample(
-        depositAmount,
-        {
-            authority: daoProgramAuthorityKey,
-            payer: walletPayer.publicKey,
-            voltVault: unconnectedVoltSdk.voltKey,
-            extraVoltData: extraVoltKey,
-
-            vaultAuthority: unconnectedVoltSdk.voltVault.vaultAuthority,
-
-            vaultMint: unconnectedVoltSdk.voltVault.vaultMint,
-
-            depositPool: unconnectedVoltSdk.voltVault.depositPool,
-            writerTokenPool: unconnectedVoltSdk.voltVault.writerTokenPool,
-
-            underlyingTokenSource: daoExampleUnderlyingTokenAccount,
-            vaultTokenDestination: daoExampleVaultTokenAccount,
-
-            roundInfo: roundInfoKey,
-            roundVoltTokens: roundVoltTokensKey,
-            roundUnderlyingTokens: roundUnderlyingTokensKey,
-
-            pendingDepositInfo: pendingDepositInfoKey,
-
-            systemProgram: SystemProgram.programId,
-            tokenProgram: TOKEN_PROGRAM_ID,
-            voltProgramId: FRIKTION_PROGRAM_ID,
-        },
-    );*/
-
-  /*
-    const textEncoder = new TextEncoder();
-     
-    const [daoProgramAuthorityKey, daoProgramAuthorityBump] =
-        await PublicKey.findProgramAddress(
-            [textEncoder.encode("daoProgramAuthority")],
-            DAO_EXAMPLES_PROGRAM_ID
-        );
-    
-    // token accounts owned by daoProgramAuthorityKey. the given values are just a placeholder
-    const daoExampleVaultTokenAccount = new PublicKey("CdZ1Mgo3927bsYdKK5rnzGtwek3NLWdvoTSSm2TJjdqW");
-    const daoExampleUnderlyingTokenAccount = new PublicKey("CdZ1Mgo3927bsYdKK5rnzGtwek3NLWdvoTSSm2TJjdqW");
-    
-    const {
-        extraVoltKey,
-        roundInfoKey,
-        roundUnderlyingTokensKey,
-        roundVoltTokensKey,
-        pendingDepositInfoKey,
-    } = await VoltSDK.findUsefulAddresses(
-        unconnectedVoltSdk.voltKey,
-        unconnectedVoltSdk.voltVault,
-        daoProgramAuthorityKey,
-        unconnectedVoltSdk.sdk.programs.Volt.programId
-    );
-    
-    const depositAmount = new anchor.BN(1);*/
 }
