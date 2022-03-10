@@ -1,5 +1,5 @@
 import { Connection } from '@solana/web3.js'
-import { struct, u8, u48 } from 'buffer-layout'
+import { struct, u8, nu64 } from 'buffer-layout'
 import { AccountMetaData } from '@solana/spl-governance'
 import { u128, u64 } from '@project-serum/borsh'
 import BigNumber from 'bignumber.js'
@@ -218,7 +218,6 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
         'authority',
         'controller',
         'depository',
-        'insuranceMint',
         'authorityInsurance',
         'depositoryInsurancePassthroughAccount',
         'depositoryMangoAccount',
@@ -230,6 +229,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
         'mangoNodeBank',
         'mangoVault',
         //
+        'systemProgram',
         'tokenProgram',
         'mangoProgram',
       ],
@@ -238,15 +238,20 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
         data: Uint8Array,
         _accounts: AccountMetaData[]
       ) => {
-        const dataLayout = struct([u48('redeemable_global_supply_cap')])
+        const dataLayout = struct([
+          u8('instruction'),
+          u8('SIGHASH_1'),
+          u8('SIGHASH_2'),
+          u8('SIGHASH_3'),
+          u8('SIGHASH_4'),
+          u8('SIGHASH_5'),
+          u8('SIGHASH_6'),
+          u8('SIGHASH_7'),
+          nu64('insuranceAmount'),
+        ])
 
-        const args = dataLayout.decode(Buffer.from(data)) as any
-        console.log('args', args)
-        return (
-          <>
-            <p>{args}</p>
-          </>
-        )
+        const { insuranceAmount } = dataLayout.decode(Buffer.from(data)) as any
+        return <p>{insuranceAmount}</p>
       },
     },
   },

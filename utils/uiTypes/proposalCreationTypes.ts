@@ -185,7 +185,7 @@ export interface TribecaLockForm {
   durationSeconds?: number
 }
 
-export interface TribecaCreateEscrowSbrATAForm {
+export interface TribecaCreateEscrowGovernanceTokenATAForm {
   governedAccount?: GovernedMultiTypeAccount
 }
 
@@ -290,6 +290,12 @@ export interface SaberPoolsWithdrawOneForm {
   uiMinimumTokenAmount?: number
 }
 
+export interface FriktionDepositForm {
+  governedAccount?: GovernedMultiTypeAccount
+  uiDepositAmount?: number
+  sourceTokenAccount?: string
+}
+
 export enum Instructions {
   Transfer,
   ProgramUpgrade,
@@ -320,7 +326,7 @@ export enum Instructions {
   GovernanceUnderlyingTokenAccountTransfer,
   TribecaNewEscrow,
   TribecaLock,
-  TribecaCreateEscrowSbrATA,
+  TribecaCreateEscrowGovernanceTokenATA,
   TribecaCreateGaugeVoter,
   TribecaCreateGaugeVote,
   TribecaGaugeSetVote,
@@ -335,6 +341,7 @@ export enum Instructions {
   SoceanVest,
   SaberPoolsDeposit,
   SaberPoolsWithdrawOne,
+  FriktionDeposit,
 }
 
 export interface InitializeControllerForm {

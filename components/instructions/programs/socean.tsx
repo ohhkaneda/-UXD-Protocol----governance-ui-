@@ -214,7 +214,16 @@ export const SOCEAN_PROGRAM_INSTRUCTIONS = {
         const uiSlippageTolerance = (slippageTolerance / 10).toLocaleString()
 
         const uiPurchaseRatio = (
-          Number(uiExpectedPayment) / Number(uiPurchaseAmount)
+          Number(
+            new BigNumber(expectedPayment)
+              .shiftedBy(-sourceMintInfo.account.decimals)
+              .toNumber()
+          ) /
+          Number(
+            new BigNumber(purchaseAmount)
+              .shiftedBy(-bondedMintInfo.account.decimals)
+              .toNumber()
+          )
         ).toLocaleString()
 
         return (

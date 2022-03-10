@@ -59,7 +59,7 @@ import RefreshReserve from './components/instructions/Solend/RefreshReserve'
 import WithdrawObligationCollateralAndRedeemReserveLiquidity from './components/instructions/Solend/WithdrawObligationCollateralAndRedeemReserveLiquidity'
 import TribecaNewEscrow from './components/instructions/tribeca/NewEscrow'
 import TribecaLock from './components/instructions/tribeca/Lock'
-import TribecaCreateEscrowSbrATA from './components/instructions/tribeca/CreateEscrowSbrATA'
+import TribecaCreateEscrowGovernanceTokenATA from './components/instructions/tribeca/CreateEscrowGovernanceTokenATA'
 import TribecaCreateGaugeVoter from './components/instructions/tribeca/CreateGaugeVoter'
 import TribecaCreateGaugeVote from './components/instructions/tribeca/CreateGaugeVote'
 import TribecaSetGaugeVote from './components/instructions/tribeca/SetGaugeVote'
@@ -85,6 +85,7 @@ import TokenTransferBetweenInternalGovernanceAccounts from './components/instruc
 import GovernanceUnderlyingTokenAccountTransfer from './components/instructions/GovernanceUnderlyingTokenAccountTransfer'
 import SaberPoolsDeposit from './components/instructions/saberPools/Deposit'
 import SaberPoolsWithdrawOne from './components/instructions/saberPools/WithdrawOne'
+import FriktionDeposit from './components/instructions/friktion/Deposit'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -442,8 +443,13 @@ const New = () => {
         return <TribecaNewEscrow index={idx} governance={governance} />
       case Instructions.TribecaLock:
         return <TribecaLock index={idx} governance={governance} />
-      case Instructions.TribecaCreateEscrowSbrATA:
-        return <TribecaCreateEscrowSbrATA index={idx} governance={governance} />
+      case Instructions.TribecaCreateEscrowGovernanceTokenATA:
+        return (
+          <TribecaCreateEscrowGovernanceTokenATA
+            index={idx}
+            governance={governance}
+          />
+        )
       case Instructions.TribecaCreateGaugeVoter:
         return <TribecaCreateGaugeVoter index={idx} governance={governance} />
       case Instructions.TribecaCreateGaugeVote:
@@ -478,6 +484,8 @@ const New = () => {
         return <SaberPoolsDeposit index={idx} governance={governance} />
       case Instructions.SaberPoolsWithdrawOne:
         return <SaberPoolsWithdrawOne index={idx} governance={governance} />
+      case Instructions.FriktionDeposit:
+        return <FriktionDeposit index={idx} governance={governance} />
       default:
         null
     }

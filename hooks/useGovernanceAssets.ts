@@ -153,6 +153,11 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
+      id: Instructions.FriktionDeposit,
+      name: 'Friktion: Deposit',
+      isVisible: canUseAnyInstruction,
+    },
+    {
       id: Instructions.SaberPoolsDeposit,
       name: 'Saber Pools: Deposit',
       isVisible: canUseAnyInstruction,
@@ -198,8 +203,8 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
-      id: Instructions.TribecaCreateEscrowSbrATA,
-      name: 'Tribeca: Create Escrow SBR ATA',
+      id: Instructions.TribecaCreateEscrowGovernanceTokenATA,
+      name: 'Tribeca: Create Escrow Governance Token ATA',
       isVisible: canUseAnyInstruction,
     },
     {

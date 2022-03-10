@@ -65,11 +65,15 @@ export default function useGovernedMultiTypeAccounts() {
   }, [getGovernedMultiTypeAccounts])
 
   const getGovernedAccountPublicKey = useCallback((
-    governedAccount: GovernedMultiTypeAccount,
+    governedAccount: GovernedMultiTypeAccount | null,
 
     // can force the fact to use the owner for SOL Token Governance
     forceToUseSolTokenGovernanceOwner?: boolean
   ): PublicKey | null | undefined => {
+    if (!governedAccount) {
+      return null
+    }
+
     const accountType = governedAccount.governance.account.accountType
 
     switch (accountType) {
@@ -86,7 +90,9 @@ export default function useGovernedMultiTypeAccounts() {
       }
       case GovernanceAccountType.ProgramGovernanceV1:
       case GovernanceAccountType.ProgramGovernanceV2:
-        return governedAccount.governance.account.governedAccount
+        // Use the owner of the program id
+        return governedAccount.governance.pubkey
+      // return governedAccount.governance.account.governedAccount
       default:
         return governedAccount.governance.pubkey
     }

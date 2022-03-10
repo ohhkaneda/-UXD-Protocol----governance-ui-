@@ -3,7 +3,7 @@ import * as yup from 'yup'
 import { isFormValid } from '@utils/formValidation'
 import {
   UiInstruction,
-  TribecaCreateEscrowSbrATAForm,
+  TribecaCreateEscrowGovernanceTokenATAForm,
 } from '@utils/uiTypes/proposalCreationTypes'
 import { NewProposalContext } from '../../../new'
 import useWalletStore from 'stores/useWalletStore'
@@ -19,7 +19,7 @@ import useTribecaLockerData from '@hooks/useTribecaLockerData'
 import GovernorSelect from './GovernorSelect'
 import ATribecaConfiguration from '@tools/sdk/tribeca/ATribecaConfiguration'
 
-const CreateEscrowSbrATA = ({
+const CreateEscrowGovernanceATA = ({
   index,
   governance,
 }: {
@@ -41,7 +41,9 @@ const CreateEscrowSbrATA = ({
   const { lockerData } = useTribecaLockerData(tribecaConfiguration)
 
   const shouldBeGoverned = index !== 0 && governance
-  const [form, setForm] = useState<TribecaCreateEscrowSbrATAForm>({})
+  const [form, setForm] = useState<TribecaCreateEscrowGovernanceTokenATAForm>(
+    {}
+  )
   const [formErrors, setFormErrors] = useState({})
   const { handleSetInstructions } = useContext(NewProposalContext)
 
@@ -138,4 +140,4 @@ const CreateEscrowSbrATA = ({
   )
 }
 
-export default CreateEscrowSbrATA
+export default CreateEscrowGovernanceATA
