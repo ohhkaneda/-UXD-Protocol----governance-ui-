@@ -96,6 +96,8 @@ const Deposit = ({
         Provider.defaultOptions()
       ),
 
+      connection: connection.current,
+
       authority: pubkey,
       payer: wallet.publicKey,
 
@@ -107,6 +109,11 @@ const Deposit = ({
           .toString()
       ),
     })
+
+    console.log('TX', tx)
+
+    // Force DAO to be a signer
+    tx.keys[1].isSigner = true
 
     return {
       serializedInstruction: serializeInstructionToBase64(tx),

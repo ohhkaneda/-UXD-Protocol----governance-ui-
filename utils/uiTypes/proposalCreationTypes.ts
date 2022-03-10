@@ -24,7 +24,6 @@ export interface UiInstruction {
   customHoldUpTime?: number
   prerequisiteInstructions?: TransactionInstruction[]
   chunkSplitByDefault?: boolean
-  additionalSigners?: Keypair[]
 }
 export interface SplTokenTransferForm {
   destinationAccount: string

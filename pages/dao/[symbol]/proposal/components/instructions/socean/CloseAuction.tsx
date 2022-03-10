@@ -93,7 +93,6 @@ const CloseAuction = ({
       serializedInstruction: serializeInstructionToBase64(tx),
       isValid: true,
       governance: form.governedAccount.governance,
-      additionalSigners: [auction],
     }
   }
 
