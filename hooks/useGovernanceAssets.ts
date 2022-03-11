@@ -143,6 +143,11 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
+      id: Instructions.DepositIntoVolt,
+      name: 'Friktion: Deposit into Volt',
+      isVisible: canUseAnyInstruction,
+    },
+    {
       id: Instructions.CreateSolendObligationAccount,
       name: 'Solend: Create Obligation Account',
       isVisible: canUseAnyInstruction,
@@ -230,46 +235,6 @@ export default function useGovernanceAssets() {
       isVisible:
         canUseTokenTransferInstruction &&
         realm?.account.config.useCommunityVoterWeightAddin,
-    },
-    {
-      id: Instructions.CreateAssociatedTokenAccount,
-      name: 'Create Associated Token Account',
-      isVisible: canUseAnyInstruction,
-    },
-    {
-      id: Instructions.DepositIntoVolt,
-      name: 'Friktion: Deposit into Volt',
-      isVisible: canUseAnyInstruction,
-    },
-    {
-      id: Instructions.CreateSolendObligationAccount,
-      name: 'Solend: Create Obligation Account',
-      isVisible: canUseAnyInstruction,
-    },
-    {
-      id: Instructions.InitSolendObligationAccount,
-      name: 'Solend: Init Obligation Account',
-      isVisible: canUseAnyInstruction,
-    },
-    {
-      id: Instructions.DepositReserveLiquidityAndObligationCollateral,
-      name: 'Solend: Deposit Funds',
-      isVisible: canUseAnyInstruction,
-    },
-    {
-      id: Instructions.RefreshSolendReserve,
-      name: 'Solend: Refresh Reserve',
-      isVisible: canUseAnyInstruction,
-    },
-    {
-      id: Instructions.RefreshSolendObligation,
-      name: 'Solend: Refresh Obligation',
-      isVisible: canUseAnyInstruction,
-    },
-    {
-      id: Instructions.WithdrawObligationCollateralAndRedeemReserveLiquidity,
-      name: 'Solend: Withdraw Funds',
-      isVisible: canUseAnyInstruction,
     },
     {
       id: Instructions.ProgramUpgrade,

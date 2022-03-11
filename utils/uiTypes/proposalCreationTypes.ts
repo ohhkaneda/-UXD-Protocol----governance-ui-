@@ -35,11 +35,11 @@ export interface SplTokenTransferForm {
 }
 
 export interface FriktionDepositForm {
-  amount: number | undefined
-  governedTokenAccount: GovernedTokenAccount | undefined
-  voltVaultId: string
-  programId: string | undefined
-  mintInfo: MintInfo | undefined
+  uiAmount?: number
+  sourceAccount?: string
+  governedAccount?: GovernedMultiTypeAccount
+  voltVaultId?: string
+  programId?: string
 }
 
 export interface GrantForm {
