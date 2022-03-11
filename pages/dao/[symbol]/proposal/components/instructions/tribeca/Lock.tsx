@@ -144,8 +144,9 @@ const Lock = ({
         `Duration should be more than ${minDurationSeconds}`
       )
       .lessThan(
-        maxDurationSeconds,
-        `Duration should be less than ${maxDurationSeconds}`
+        // +1 so maxDurationSeconds is included
+        maxDurationSeconds + 1,
+        `Duration should be less than ${maxDurationSeconds + 1}`
       )
       .required('Duration is required'),
   })

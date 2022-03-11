@@ -85,7 +85,6 @@ import TokenTransferBetweenInternalGovernanceAccounts from './components/instruc
 import GovernanceUnderlyingTokenAccountTransfer from './components/instructions/GovernanceUnderlyingTokenAccountTransfer'
 import SaberPoolsDeposit from './components/instructions/saberPools/Deposit'
 import SaberPoolsWithdrawOne from './components/instructions/saberPools/WithdrawOne'
-import FriktionDeposit from './components/instructions/friktion/Deposit'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -484,8 +483,6 @@ const New = () => {
         return <SaberPoolsDeposit index={idx} governance={governance} />
       case Instructions.SaberPoolsWithdrawOne:
         return <SaberPoolsWithdrawOne index={idx} governance={governance} />
-      case Instructions.FriktionDeposit:
-        return <FriktionDeposit index={idx} governance={governance} />
       default:
         null
     }

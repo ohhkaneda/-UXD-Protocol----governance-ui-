@@ -3,7 +3,7 @@ import { Governance, InstructionData } from '@solana/spl-governance'
 import { ProgramAccount } from '@solana/spl-governance'
 import { RpcContext } from '@solana/spl-governance'
 import { MintInfo } from '@solana/spl-token'
-import { Keypair, PublicKey, TransactionInstruction } from '@solana/web3.js'
+import { PublicKey, TransactionInstruction } from '@solana/web3.js'
 import { SupportedMintName } from '@tools/sdk/solend/configuration'
 import { SplTokenUIName } from '@utils/splTokens'
 import { getNameOf } from '@tools/core/script'
@@ -289,12 +289,6 @@ export interface SaberPoolsWithdrawOneForm {
   uiMinimumTokenAmount?: number
 }
 
-export interface FriktionDepositForm {
-  governedAccount?: GovernedMultiTypeAccount
-  uiDepositAmount?: number
-  sourceTokenAccount?: string
-}
-
 export enum Instructions {
   Transfer,
   ProgramUpgrade,
@@ -340,7 +334,6 @@ export enum Instructions {
   SoceanVest,
   SaberPoolsDeposit,
   SaberPoolsWithdrawOne,
-  FriktionDeposit,
 }
 
 export interface InitializeControllerForm {

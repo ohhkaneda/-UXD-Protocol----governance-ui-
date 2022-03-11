@@ -153,11 +153,6 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
-      id: Instructions.FriktionDeposit,
-      name: 'Friktion: Deposit',
-      isVisible: canUseAnyInstruction,
-    },
-    {
       id: Instructions.SaberPoolsDeposit,
       name: 'Saber Pools: Deposit',
       isVisible: canUseAnyInstruction,
@@ -324,6 +319,11 @@ export default function useGovernanceAssets() {
     {
       id: Instructions.RefreshSolendObligation,
       name: 'Solend: Refresh Obligation',
+      isVisible: canUseAnyInstruction,
+    },
+    {
+      id: Instructions.WithdrawObligationCollateralAndRedeemReserveLiquidity,
+      name: 'Solend: Withdraw Funds',
       isVisible: canUseAnyInstruction,
     },
     {

@@ -79,7 +79,8 @@ export default function useGovernedMultiTypeAccounts() {
     switch (accountType) {
       case GovernanceAccountType.MintGovernanceV1:
       case GovernanceAccountType.MintGovernanceV2:
-        return governedAccount.governance.account.governedAccount
+        // return governedAccount.governance.account.governedAccount
+        return governedAccount.governance.pubkey
       case GovernanceAccountType.TokenGovernanceV1:
       case GovernanceAccountType.TokenGovernanceV2: {
         if (governedAccount.isSol && !forceToUseSolTokenGovernanceOwner) {

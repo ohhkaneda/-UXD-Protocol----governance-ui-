@@ -8,6 +8,7 @@ import {
 import { getATAAddress } from '@saberhq/token-utils'
 import { LockerData } from './programs'
 import ATribecaConfiguration, { TribecaPrograms } from './ATribecaConfiguration'
+import { DEFAULT_GOVERNANCE_PROGRAM_ID } from '@components/instructions/tools'
 
 export async function lockInstruction({
   programs,
@@ -38,6 +39,7 @@ export async function lockInstruction({
 
   const [whitelistEntry] = await tribecaConfiguration.findWhitelistAddress(
     tribecaConfiguration.locker,
+    new PublicKey(DEFAULT_GOVERNANCE_PROGRAM_ID),
     authority
   )
 

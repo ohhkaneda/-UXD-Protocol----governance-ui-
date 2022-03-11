@@ -42,6 +42,22 @@ export async function withdrawObligationCollateralAndRedeemReserveLiquidity({
   const destinationCollateral = cusdcTokenAccount
   const withdrawReserve = reserve
 
+  console.log('Solend withdraw', {
+    liquidityAmount: liquidityAmount.toString(),
+    sourceCollateral: sourceCollateral.toString(),
+    destinationCollateral: destinationCollateral.toString(),
+    withdrawReserve: withdrawReserve.toString(),
+    obligation: obligation.toString(),
+    lendingMarket: SolendConfiguration.lendingMarket.toString(),
+    lendingMarketAuthority: SolendConfiguration.lendingMarketAuthority.toString(),
+    destinationLiquidity: (destinationLiquidity ?? usdcTokenAccount).toString(),
+    reserveCollateralMint: reserveCollateralMint.toString(),
+    reserveLiquiditySupply: reserveLiquiditySupply.toString(),
+    obligationOwner: obligationOwner.toString(),
+    transferAuthority: transferAuthority.toString(),
+    SolendProgramID: SolendConfiguration.programID.toString(),
+  })
+
   return originalWithdrawFunction(
     liquidityAmount,
     sourceCollateral,

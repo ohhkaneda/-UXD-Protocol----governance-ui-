@@ -165,13 +165,15 @@ export default abstract class ATribecaConfiguration {
 
   public async findWhitelistAddress(
     locker: PublicKey,
-    programId: PublicKey
+    programId: PublicKey,
+    owner: PublicKey
   ): Promise<[PublicKey, number]> {
     return PublicKey.findProgramAddress(
       [
         utils.bytes.utf8.encode('LockerWhitelistEntry'),
         locker.toBuffer(),
         programId.toBuffer(),
+        owner.toBuffer(),
       ],
       ATribecaConfiguration.lockedVoterProgramId
     )
