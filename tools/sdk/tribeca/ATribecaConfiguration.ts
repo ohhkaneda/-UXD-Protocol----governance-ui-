@@ -73,6 +73,9 @@ export default abstract class ATribecaConfiguration {
   public static readonly gaugeInstructions = {
     createGaugeVoter: 135,
     createGaugeVote: 109,
+    setGaugeVote: 245,
+    prepareEpochGaugeVoter: 15,
+    gaugeCommitVote: 249,
   }
 
   public static readonly lockedVoterInstructions = {

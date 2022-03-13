@@ -6,14 +6,12 @@ export async function gaugeSetVoteInstruction({
   programs,
   gauge,
   authority,
-  payer,
   tribecaConfiguration,
 }: {
   weight: number
   programs: TribecaPrograms
   gauge: PublicKey
   authority: PublicKey
-  payer: PublicKey
   tribecaConfiguration: ATribecaConfiguration
 }): Promise<TransactionInstruction> {
   const [escrow] = await tribecaConfiguration.findEscrowAddress(authority)
@@ -32,7 +30,7 @@ export async function gaugeSetVoteInstruction({
       gauge,
       gaugeVoter,
       gaugeVote,
-      voteDelegate: payer,
+      voteDelegate: authority,
     },
   })
 }

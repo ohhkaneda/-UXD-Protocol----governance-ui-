@@ -91,7 +91,6 @@ const SetGaugeVote = ({
       weight: form.weight,
       programs,
       gauge: gauges[form.gaugeName].mint,
-      payer: wallet.publicKey,
       authority: pubkey,
     })
 
@@ -161,10 +160,11 @@ const SetGaugeVote = ({
       />
 
       <Input
-        label="Weight (nb of token)"
+        label="Weight (in %)"
         value={form.weight}
         type="number"
         min="0"
+        max="100"
         onChange={(evt) =>
           handleSetForm({
             value: evt.target.value,
