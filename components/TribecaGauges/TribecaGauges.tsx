@@ -4,6 +4,8 @@ import { saberTribecaConfiguration } from '@tools/sdk/tribeca/configurations'
 import ActiveGaugeVotes from './ActiveGaugeVotes'
 import EscrowOwnerName from './EscrowOwnerName'
 import TribecaGaugesEpoch from './TribecaGaugesEpoch'
+import EpochGaugeVoterData from './EpochGaugeVoterData'
+import EscrowData from './EscrowData'
 
 const TribecaGauges = () => {
   const { infos, escrowOwner } = useTribecaGaugeInfos(saberTribecaConfiguration)
@@ -24,6 +26,8 @@ const TribecaGauges = () => {
         escrowOwnerAddress={escrowOwner?.publicKey}
       />
 
+      <EscrowData escrowData={infos?.escrowData} />
+
       <TribecaGaugesEpoch
         nextEpoch={infos?.gaugemeisterData.nextEpochStartsAt}
         rewardsEpoch={infos?.gaugemeisterData.currentRewardsEpoch}
@@ -31,6 +35,16 @@ const TribecaGauges = () => {
       />
 
       <ActiveGaugeVotes activeGaugeVotesData={infos?.activeGaugeVotesData} />
+
+      <EpochGaugeVoterData
+        title="Current epoch"
+        epochGaugeVoterData={infos?.currentEpochGaugeVoterData}
+      />
+
+      <EpochGaugeVoterData
+        title="Next epoch"
+        epochGaugeVoterData={infos?.nextEpochGaugeVoterData}
+      />
 
       <div
         style={{ maxHeight: '350px' }}

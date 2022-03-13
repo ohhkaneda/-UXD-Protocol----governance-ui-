@@ -160,11 +160,10 @@ const SetGaugeVote = ({
       />
 
       <Input
-        label="Weight (in %)"
+        label="Weight (relative)"
         value={form.weight}
         type="number"
         min="0"
-        max="100"
         onChange={(evt) =>
           handleSetForm({
             value: evt.target.value,

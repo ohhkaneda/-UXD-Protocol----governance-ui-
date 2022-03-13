@@ -3,7 +3,12 @@ import ATribecaConfiguration from '@tools/sdk/tribeca/ATribecaConfiguration'
 import useTribecaGauge from './useTribecaGauge'
 import { PublicKey } from '@solana/web3.js'
 import useRealm from './useRealm'
-import { GaugemeisterData, GaugeVoterData } from '@tools/sdk/tribeca/programs'
+import {
+  EpochGaugeVoterData,
+  EscrowData,
+  GaugemeisterData,
+  GaugeVoterData,
+} from '@tools/sdk/tribeca/programs'
 
 const EscrowOwnerMap = {
   UXDProtocol: {
@@ -21,12 +26,16 @@ export type ActiveGaugeVoteData = {
   mint: PublicKey
   logoURI?: string
   weight: number
+  weightPercentage: number
 }
 
 export type TribecaGaugesInfos = {
+  escrowData: EscrowData
   gaugemeisterData: GaugemeisterData
-  gaugeVoterData: GaugeVoterData
-  activeGaugeVotesData: ActiveGaugeVoteData[]
+  gaugeVoterData: GaugeVoterData | null
+  activeGaugeVotesData: ActiveGaugeVoteData[] | null
+  currentEpochGaugeVoterData: EpochGaugeVoterData | null
+  nextEpochGaugeVoterData: EpochGaugeVoterData | null
 }
 
 export default function useTribecaGaugeInfos(
@@ -58,16 +67,51 @@ export default function useTribecaGaugeInfos(
         escrowOwner.publicKey
       )
 
-      const [gaugeVoter] = await tribecaConfiguration.findGaugeVoterAddress(
-        escrow
-      )
+      const [escrowData, gaugemeisterData] = await Promise.all([
+        programs.LockedVoter.account.escrow.fetch(escrow),
 
-      const [gaugemeisterData, gaugeVoterData] = await Promise.all([
         programs.Gauge.account.gaugemeister.fetch(
           ATribecaConfiguration.gaugemeister
         ),
-        programs.Gauge.account.gaugeVoter.fetch(gaugeVoter),
       ])
+
+      let gaugeVoter: PublicKey
+
+      try {
+        const [publicKey] = await tribecaConfiguration.findGaugeVoterAddress(
+          escrow
+        )
+
+        gaugeVoter = publicKey
+      } catch (_) {
+        // means we have no gaugeVoter
+        return {
+          escrowData,
+          gaugemeisterData,
+          gaugeVoterData: null,
+          activeGaugeVotesData: null,
+          currentEpochGaugeVoterData: null,
+          nextEpochGaugeVoterData: null,
+        }
+      }
+
+      let gaugeVoterData: GaugeVoterData
+
+      try {
+        gaugeVoterData = await programs.Gauge.account.gaugeVoter.fetch(
+          gaugeVoter
+        )
+      } catch (_) {
+        // Gauge voter has not been initialized
+        return {
+          escrowData,
+          gaugemeisterData,
+          gaugeVoterData: null,
+          activeGaugeVotesData: null,
+          currentEpochGaugeVoterData: null,
+          nextEpochGaugeVoterData: null,
+        }
+      }
 
       const gaugeVotes = await programs.Gauge.account.gaugeVote.all()
 
@@ -75,6 +119,12 @@ export default function useTribecaGaugeInfos(
         (gaugeVote) =>
           gaugeVote.account.weight > 0 &&
           gaugeVote.account.gaugeVoter.equals(gaugeVoter)
+      )
+
+      const totalRelativeGaugeVotesWeight = activeGaugeVotes.reduce(
+        (totalWeight, activeGaugeVote) =>
+          totalWeight + activeGaugeVote.account.weight,
+        0
       )
 
       const activeGaugeVotesData = activeGaugeVotes.map((activeGaugeVote) => {
@@ -87,13 +137,56 @@ export default function useTribecaGaugeInfos(
           mint: gaugeInfos.mint,
           logoURI: gaugeInfos.logoURI,
           weight: activeGaugeVote.account.weight,
+          weightPercentage: Number(
+            (
+              (activeGaugeVote.account.weight * 100) /
+              totalRelativeGaugeVotesWeight
+            ).toFixed(2)
+          ),
         }
       })
 
+      let currentEpochGaugeVoterData: EpochGaugeVoterData | null = null
+
+      try {
+        const [
+          currentEpochGaugeVoter,
+        ] = await tribecaConfiguration.findEpochGaugeVoterAddress(
+          gaugeVoter,
+          gaugemeisterData.currentRewardsEpoch
+        )
+
+        currentEpochGaugeVoterData = await programs.Gauge.account.epochGaugeVoter.fetch(
+          currentEpochGaugeVoter
+        )
+      } catch (_) {
+        // ignore error, means we have not voted on the epoch
+      }
+
+      let nextEpochGaugeVoterData: EpochGaugeVoterData | null = null
+
+      try {
+        const [
+          nextEpochGaugeVoter,
+        ] = await tribecaConfiguration.findEpochGaugeVoterAddress(
+          gaugeVoter,
+          gaugemeisterData.currentRewardsEpoch + 1
+        )
+
+        nextEpochGaugeVoterData = await programs.Gauge.account.epochGaugeVoter.fetch(
+          nextEpochGaugeVoter
+        )
+      } catch (_) {
+        // ignore error, means we have not voted on the epoch
+      }
+
       return {
+        escrowData,
         gaugemeisterData,
         gaugeVoterData,
         activeGaugeVotesData,
+        currentEpochGaugeVoterData,
+        nextEpochGaugeVoterData,
       }
     } catch (err) {
       console.log(
