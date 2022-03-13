@@ -18,8 +18,6 @@ const GovernorSelect = ({
       value={tribecaConfiguration?.name ?? null}
       placeholder="Please select..."
       onChange={(value) => {
-        console.log('SELECT', value)
-        console.log('setTribecaConfiguration', getConfigurationByName(value))
         setTribecaConfiguration(getConfigurationByName(value))
       }}
     >

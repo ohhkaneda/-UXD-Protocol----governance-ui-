@@ -20,6 +20,7 @@ export type TribecaPrograms = {
 }
 
 export type GaugeInfo = {
+  publicKey: PublicKey
   mint: PublicKey
   logoURI?: string
 }
@@ -218,12 +219,14 @@ export default abstract class ATribecaConfiguration {
             const { name, logoURI } = await response.json()
 
             return {
+              publicKey: gauges[xi].publicKey,
               mint: gauges[xi].publicKey,
               logoURI,
               name,
             }
           } catch {
             return {
+              publicKey: gauges[xi].publicKey,
               name: x,
               mint: x,
             }

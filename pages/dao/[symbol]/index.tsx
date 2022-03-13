@@ -22,6 +22,7 @@ import { usePrevious } from '@hooks/usePrevious'
 import TokenBalanceCardWrapper from '@components/TokenBalance/TokenBalanceCardWrapper'
 import ApproveAllBtn from './proposal/components/ApproveAllBtn'
 import HotWallet from '@components/HotWallet/HotWallet'
+import TribecaGauges from '@components/TribecaGauges/TribecaGauges'
 
 const compareProposals = (
   p1: Proposal,
@@ -178,6 +179,8 @@ const REALM = () => {
           <NFTSCompactWrapper />
 
           <HotWallet />
+
+          <TribecaGauges />
 
           <AccountsCompactWrapper />
 
