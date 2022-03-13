@@ -31,6 +31,7 @@ const FriktionDeposit = ({
   const { realmInfo } = useRealm()
   const shouldBeGoverned = index !== 0 && governance
   const programId: PublicKey | undefined = realmInfo?.programId
+
   const [form, setForm] = useState<FriktionDepositForm>({
     programId: programId?.toString(),
   })
@@ -38,6 +39,8 @@ const FriktionDeposit = ({
   const [friktionVolts, setFriktionVolts] = useState<VoltSnapshot[] | null>(
     null
   )
+
+  const [friktionVolt, setFriktionVolt] = useState<VoltSnapshot | null>(null)
 
   const [formErrors, setFormErrors] = useState({})
 
@@ -123,6 +126,8 @@ const FriktionDeposit = ({
   // To get vaults that are not in circuit
   // Change to ?.filter((x) => !x.isInCircuits)
 
+  // Now I have allowed only one vault -> 9cHT8d7d35ngj5i8WBZB8ibjnPLnvnym4tp4KoTCQtxw, our vault
+
   return (
     <>
       <GovernedAccountSelect
@@ -143,13 +148,23 @@ const FriktionDeposit = ({
             label="Friktion Volt"
             value={form.voltVaultId}
             placeholder="Please select..."
-            onChange={(value) =>
+            onChange={(value) => {
+              const volt = friktionVolts?.find(
+                (volt) => volt.voltVaultId === value
+              )
+
+              setFriktionVolt(volt ?? null)
+
               handleSetForm({ value, propertyName: 'voltVaultId' })
-            }
+            }}
             error={formErrors['voltVaultId']}
           >
-            {friktionVolts
-              ?.filter((x) => x.isInCircuits)
+            {(friktionVolts ?? [])
+              .filter(
+                (x) =>
+                  x.voltVaultId ===
+                  '9cHT8d7d35ngj5i8WBZB8ibjnPLnvnym4tp4KoTCQtxw'
+              )
               .map((value) => (
                 <Select.Option
                   key={value.voltVaultId}
@@ -179,6 +194,11 @@ const FriktionDeposit = ({
           <TokenAccountSelect
             label="Source Account"
             value={form.sourceAccount?.toString()}
+            filterByMint={
+              friktionVolt
+                ? [new PublicKey(friktionVolt.depositTokenMint)]
+                : undefined
+            }
             onChange={(value) =>
               handleSetForm({ value, propertyName: 'sourceAccount' })
             }

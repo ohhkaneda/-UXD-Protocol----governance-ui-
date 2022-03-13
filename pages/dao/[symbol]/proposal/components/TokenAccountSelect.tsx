@@ -6,12 +6,14 @@ import { OwnedTokenAccountsInfo } from '@hooks/useGovernanceUnderlyingTokenAccou
 const TokenAccountSelect = ({
   label,
   value,
+  filterByMint,
   onChange,
   error,
   ownedTokenAccountsInfo,
 }: {
   label: string
   value?: string
+  filterByMint?: PublicKey[]
   onChange: (value: string) => void
   error: string
   ownedTokenAccountsInfo?: OwnedTokenAccountsInfo
@@ -19,6 +21,8 @@ const TokenAccountSelect = ({
   if (!ownedTokenAccountsInfo) {
     return null
   }
+
+  console.log('FilterByMint', filterByMint)
 
   const getAccountDisplay = (pubkey?: PublicKey) => {
     if (!pubkey) return null
@@ -70,11 +74,17 @@ const TokenAccountSelect = ({
       onChange={onChange}
       error={error}
     >
-      {Object.values(ownedTokenAccountsInfo).map(({ pubkey }) => (
-        <Select.Option key={pubkey.toBase58()} value={pubkey.toBase58()}>
-          {getAccountDisplay(pubkey)}
-        </Select.Option>
-      ))}
+      {Object.values(ownedTokenAccountsInfo)
+        .filter(
+          (ownedTokenAccountInfo) =>
+            !filterByMint ||
+            filterByMint.some((mint) => mint.equals(ownedTokenAccountInfo.mint))
+        )
+        .map(({ pubkey }) => (
+          <Select.Option key={pubkey.toBase58()} value={pubkey.toBase58()}>
+            {getAccountDisplay(pubkey)}
+          </Select.Option>
+        ))}
     </Select>
   )
 }

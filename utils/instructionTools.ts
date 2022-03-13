@@ -68,15 +68,7 @@ export async function getFriktionDepositInstruction({
 
   const signers: Keypair[] = []
 
-  if (
-    isValid &&
-    amount &&
-    // governedAccount?.token?.publicKey &&
-    // governedAccount?.token &&
-    // governedAccount?.mint?.account &&
-    governedAccount?.governance &&
-    wallet
-  ) {
+  if (isValid && amount && governedAccount?.governance && wallet) {
     const sdk = new FriktionSDK({
       provider: {
         connection: connection.current,
@@ -94,6 +86,19 @@ export async function getFriktionDepositInstruction({
 
     const voltVault = cVoltSDK.voltVault
     const vaultMint = cVoltSDK.voltVault.vaultMint
+
+    const balances = await cVoltSDK.getBalancesForUser(authority)
+
+    console.log(`${authority.toString()} balances`, {
+      claimableUnderlying: balances?.claimableUnderlying.toString(),
+      mintableShares: balances?.mintableShares.toString(),
+      normFactor: balances?.normFactor.toString(),
+      normalBalance: balances?.normalBalance.toString(),
+      pendingDeposits: balances?.pendingDeposits.toString(),
+      pendingWithdrawals: balances?.pendingWithdrawals.toString(),
+      totalBalance: balances?.totalBalance.toString(),
+      vaultNormFactor: balances?.vaultNormFactor.toString(),
+    })
 
     //we find true receiver address if its wallet and we need to create ATA the ata address will be the receiver
     const { currentAddress: receiverAddress, needToCreateAta } = await getATA({
