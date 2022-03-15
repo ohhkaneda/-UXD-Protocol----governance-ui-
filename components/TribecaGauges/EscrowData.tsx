@@ -47,7 +47,7 @@ const EscrowDataBloc = ({ escrowData }: { escrowData?: EscrowData }) => {
   }, [loadUiAmount])
 
   return (
-    <div className="bg-bkg-1 mb-3 px-4 py-2 rounded-md w-full relative cursor-pointer">
+    <div className="bg-bkg-1 mb-3 px-4 py-2 rounded-md w-full relative">
       <p className="text-fgd-1 text-sm underline">Escrow Data</p>
 
       {escrowData ? (

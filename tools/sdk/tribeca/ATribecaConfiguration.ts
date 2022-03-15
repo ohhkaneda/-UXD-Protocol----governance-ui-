@@ -77,6 +77,8 @@ export default abstract class ATribecaConfiguration {
     setGaugeVote: 245,
     prepareEpochGaugeVoter: 15,
     gaugeCommitVote: 249,
+    resetEpochGaugeVoter: 21,
+    gaugeRevertVote: 185,
   }
 
   public static readonly lockedVoterInstructions = {

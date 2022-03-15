@@ -8,7 +8,7 @@ const EpochGaugeVoterDataBloc = ({
   epochGaugeVoterData?: EpochGaugeVoterData | null
 }) => {
   return (
-    <div className="bg-bkg-1 mb-3 px-4 py-2 rounded-md w-full relative cursor-pointer">
+    <div className="bg-bkg-1 mb-3 px-4 py-2 rounded-md w-full relative">
       <p className="text-fgd-1 text-sm underline mb-3">{title}</p>
 
       {epochGaugeVoterData ? (
@@ -16,14 +16,14 @@ const EpochGaugeVoterDataBloc = ({
           <span className="flex flex-col">
             <span className="text-fgd-3 text-xs">Voting Power</span>{' '}
             <span className="text-sm">
-              {epochGaugeVoterData.votingPower.toString()}
+              {epochGaugeVoterData.votingPower.toNumber().toLocaleString()}
             </span>
           </span>
 
           <span className="flex flex-col">
             <span className="text-fgd-3 text-xs mt-3">Allocated Power</span>{' '}
             <span className="text-sm">
-              {epochGaugeVoterData.allocatedPower.toString()}
+              {epochGaugeVoterData.allocatedPower.toNumber().toLocaleString()}
             </span>
           </span>
         </div>

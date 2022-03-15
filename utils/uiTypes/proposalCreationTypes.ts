@@ -217,6 +217,15 @@ export interface TribecaGaugeCommitVoteForm {
   gaugeName?: string
 }
 
+export interface TribecaGaugeRevertVoteForm {
+  governedAccount?: GovernedMultiTypeAccount
+  gaugeName?: string
+}
+
+export interface TribecaResetEpochGaugeVoterForm {
+  governedAccount?: GovernedMultiTypeAccount
+}
+
 export interface SoceanMintBondedTokensForm {
   governedAccount?: GovernedMultiTypeAccount
   uiAmount?: number
@@ -326,6 +335,8 @@ export enum Instructions {
   TribecaPrepareEpochGaugeVoter,
   TribecaCreateEpochGauge,
   TribecaGaugeCommitVote,
+  TribecaGaugeRevertVote,
+  TribecaResetEpochGaugeVoter,
   SoceanMintBondedTokens,
   SoceanDepositToAuctionPool,
   SoceanCloseAuction,

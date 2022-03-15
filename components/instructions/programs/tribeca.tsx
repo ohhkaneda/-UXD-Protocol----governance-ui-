@@ -120,7 +120,7 @@ export const TRIBECA_PROGRAM_INSTRUCTIONS = {
 
             <div>
               <span>Weight:</span>
-              <span>{weight}%</span>
+              <span>{weight}</span>
             </div>
           </div>
         )
@@ -234,6 +234,125 @@ export const TRIBECA_PROGRAM_INSTRUCTIONS = {
         )
       },
     },
+
+    [ATribecaConfiguration.gaugeInstructions.gaugeRevertVote]: {
+      name: 'Tribeca - Gauge Revert Vote',
+      accounts: [
+        'Gaugemeister',
+        'Gauge',
+        'Gauge Voter',
+        'Gauge Vote',
+        'Epoch Gauge',
+        'Epoch Gauge Voter',
+        'Escrow',
+        'Vote Delegate',
+        'Epoch Gauge Vote',
+        'Payer',
+      ],
+      getDataUI: (
+        _connection: Connection,
+        data: Uint8Array,
+        accounts: AccountMetaData[]
+      ) => {
+        const gauge = accounts[1].pubkey.toString()
+        const gaugeVoter = accounts[2].pubkey.toString()
+        const gaugeVote = accounts[3].pubkey.toString()
+        const epochGauge = accounts[4].pubkey.toString()
+        const epochGaugeVoter = accounts[5].pubkey.toString()
+        const escrow = accounts[6].pubkey.toString()
+        const voteDelegate = accounts[7].pubkey.toString()
+        const epochGaugeVote = accounts[8].pubkey.toString()
+        const payer = accounts[9].pubkey.toString()
+
+        return (
+          <div className="flex flex-col">
+            <div>
+              <span>Gauge:</span>
+              <span>{gauge}</span>
+            </div>
+
+            <div>
+              <span>Gauge Voter:</span>
+              <span>{gaugeVoter}</span>
+            </div>
+
+            <div>
+              <span>Gauge Vote:</span>
+              <span>{gaugeVote}</span>
+            </div>
+
+            <div>
+              <span>Epoch Gauge:</span>
+              <span>{epochGauge}</span>
+            </div>
+
+            <div>
+              <span>Epoch Gauge Voter:</span>
+              <span>{epochGaugeVoter}</span>
+            </div>
+
+            <div>
+              <span>Escrow:</span>
+              <span>{escrow}</span>
+            </div>
+
+            <div>
+              <span>Vote Delegate:</span>
+              <span>{voteDelegate}</span>
+            </div>
+
+            <div>
+              <span>Epoch Gauge Vote:</span>
+              <span>{epochGaugeVote}</span>
+            </div>
+
+            <div>
+              <span>Payer:</span>
+              <span>{payer}</span>
+            </div>
+          </div>
+        )
+      },
+    },
+
+    [ATribecaConfiguration.gaugeInstructions.resetEpochGaugeVoter]: {
+      name: 'Tribeca - Reset Epoch Gauge Voter',
+      accounts: [
+        'Gaugemeister',
+        'Locker',
+        'Escrow',
+        'Gauge Voter',
+        'Epoch Gauge Voter',
+      ],
+      getDataUI: (
+        _connection: Connection,
+        data: Uint8Array,
+        accounts: AccountMetaData[]
+      ) => {
+        const escrow = accounts[2].pubkey.toString()
+        const gaugeVoter = accounts[3].pubkey.toString()
+        const epochGaugeVoter = accounts[4].pubkey.toString()
+
+        return (
+          <div className="flex flex-col">
+            <div>
+              <span>Gauge Voter:</span>
+              <span>{gaugeVoter}</span>
+            </div>
+
+            <div>
+              <span>Epoch Gauge Voter:</span>
+              <span>{epochGaugeVoter}</span>
+            </div>
+
+            <div>
+              <span>Escrow:</span>
+              <span>{escrow}</span>
+            </div>
+          </div>
+        )
+      },
+    },
   },
 
   [ATribecaConfiguration.lockedVoterProgramId.toBase58()]: {
@@ -289,12 +408,12 @@ export const TRIBECA_PROGRAM_INSTRUCTIONS = {
           <div className="flex flex-col">
             <div>
               <span>Native Amount:</span>
-              <span>{amount}</span>
+              <span>{Number(amount).toLocaleString()}</span>
             </div>
 
             <div>
               <span>Duration (seconds):</span>
-              <span>{duration}</span>
+              <span>{Number(duration).toLocaleString()}</span>
             </div>
           </div>
         )

@@ -22,6 +22,13 @@ export async function createGaugeVoterInstruction({
     escrow
   )
 
+  console.log('Create Gauge Voter', {
+    escrow: escrow.toString(),
+    gaugeVoter: gaugeVoter.toString(),
+    gaugemeister: ATribecaConfiguration.gaugemeister.toString(),
+    payer: payer.toString(),
+  })
+
   return programs.Gauge.instruction.createGaugeVoter(bump, {
     accounts: {
       gaugeVoter,

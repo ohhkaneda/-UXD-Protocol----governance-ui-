@@ -1,55 +1,46 @@
-import {
-  PublicKey,
-  SystemProgram,
-  TransactionInstruction,
-} from '@solana/web3.js'
+import { PublicKey, TransactionInstruction } from '@solana/web3.js'
 import ATribecaConfiguration, { TribecaPrograms } from './ATribecaConfiguration'
 
-export async function prepareEpochGaugeVoterInstruction({
+export async function resetEpochGaugeVoterInstruction({
   programs,
   authority,
-  payer,
   tribecaConfiguration,
 }: {
   programs: TribecaPrograms
   authority: PublicKey
-  payer: PublicKey
   tribecaConfiguration: ATribecaConfiguration
 }): Promise<TransactionInstruction> {
-  const {
-    currentRewardsEpoch,
-    locker,
-  } = await tribecaConfiguration.fetchGaugemeister(programs.Gauge)
+  const { currentRewardsEpoch } = await tribecaConfiguration.fetchGaugemeister(
+    programs.Gauge
+  )
 
   const [escrow] = await tribecaConfiguration.findEscrowAddress(authority)
 
   const [gaugeVoter] = await tribecaConfiguration.findGaugeVoterAddress(escrow)
 
+  const votingEpoch = currentRewardsEpoch + 1
+
   const [
     epochGaugeVoter,
-    bump,
   ] = await tribecaConfiguration.findEpochGaugeVoterAddress(
     gaugeVoter,
-    currentRewardsEpoch + 1
+    votingEpoch
   )
 
-  console.log('Prepare Epoch Gauge', {
-    currentRewardsEpoch,
-    nextEpoch: currentRewardsEpoch + 1,
+  console.log('Reset Epoch Gauge Voter', {
+    gaugemeister: ATribecaConfiguration.gaugemeister.toString(),
+    locker: tribecaConfiguration.locker.toString(),
     escrow: escrow.toString(),
     gaugeVoter: gaugeVoter.toString(),
     epochGaugeVoter: epochGaugeVoter.toString(),
-    gaugemeister: ATribecaConfiguration.gaugemeister.toString(),
   })
 
-  return programs.Gauge.instruction.prepareEpochGaugeVoter(bump, {
+  return programs.Gauge.instruction.resetEpochGaugeVoter({
     accounts: {
       gaugemeister: ATribecaConfiguration.gaugemeister,
-      locker,
+      locker: tribecaConfiguration.locker,
       escrow,
       gaugeVoter,
-      payer,
-      systemProgram: SystemProgram.programId,
       epochGaugeVoter,
     },
   })

@@ -52,7 +52,7 @@ const TribecaGaugesEpoch = ({
   }, [epochDurationSeconds])
 
   return (
-    <div className="bg-bkg-1 mb-3 px-4 py-2 rounded-md w-full relative cursor-pointer">
+    <div className="bg-bkg-1 mb-3 px-4 py-2 rounded-md w-full relative">
       <p className="text-fgd-3 text-xs">Current Epoch</p>
       <h3 className="mb-0 text-sm">{rewardsEpoch}</h3>
 

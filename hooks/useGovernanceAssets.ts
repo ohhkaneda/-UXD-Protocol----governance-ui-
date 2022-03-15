@@ -238,6 +238,16 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
+      id: Instructions.TribecaGaugeRevertVote,
+      name: 'Tribeca: Gauge Revert Vote',
+      isVisible: canUseAnyInstruction,
+    },
+    {
+      id: Instructions.TribecaResetEpochGaugeVoter,
+      name: 'Tribeca: Reset Epoch Gauge Voter',
+      isVisible: canUseAnyInstruction,
+    },
+    {
       id: Instructions.InitializeController,
       name: 'UXD: Initialize Controller',
       isVisible: canUseUxdInstructions,

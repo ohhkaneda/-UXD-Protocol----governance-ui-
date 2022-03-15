@@ -66,6 +66,8 @@ import TribecaSetGaugeVote from './components/instructions/tribeca/SetGaugeVote'
 import TribecaPrepareEpochGaugeVoter from './components/instructions/tribeca/PrepareEpochGaugeVoter'
 import TribecaCreateEpochGauge from './components/instructions/tribeca/CreateEpochGauge'
 import TribecaGaugeCommitVote from './components/instructions/tribeca/GaugeCommitVote'
+import TribecaGaugeRevertVote from './components/instructions/tribeca/GaugeRevertVote'
+import TribecaResetEpochGaugeVoter from './components/instructions/tribeca/ResetEpochGaugeVoter'
 import SetProgramAuthority from './components/instructions/SetProgramAuthority'
 import SoceanMintBondedTokens from './components/instructions/socean/MintBondedTokens'
 import SoceanDepositToAuctionPool from './components/instructions/socean/DepositToAuctionPool'
@@ -463,6 +465,12 @@ const New = () => {
         return <TribecaCreateEpochGauge index={idx} governance={governance} />
       case Instructions.TribecaGaugeCommitVote:
         return <TribecaGaugeCommitVote index={idx} governance={governance} />
+      case Instructions.TribecaGaugeRevertVote:
+        return <TribecaGaugeRevertVote index={idx} governance={governance} />
+      case Instructions.TribecaResetEpochGaugeVoter:
+        return (
+          <TribecaResetEpochGaugeVoter index={idx} governance={governance} />
+        )
       case Instructions.SoceanMintBondedTokens:
         return <SoceanMintBondedTokens index={idx} governance={governance} />
       case Instructions.SoceanDepositToAuctionPool:
