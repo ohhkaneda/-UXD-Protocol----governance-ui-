@@ -42,6 +42,14 @@ export interface FriktionDepositForm {
   programId?: string
 }
 
+export interface FriktionWithdrawForm {
+  uiAmount?: number
+  underlyingTokenDestination?: string
+  governedAccount?: GovernedMultiTypeAccount
+  voltVaultId?: string
+  programId?: string
+}
+
 export interface GrantForm {
   destinationAccount: string
   amount: number | undefined
@@ -186,6 +194,7 @@ export enum Instructions {
   MangoChangeReferralFeeParams,
   CreateAssociatedTokenAccount,
   DepositIntoVolt,
+  FriktionWithdraw,
   CreateSolendObligationAccount,
   InitSolendObligationAccount,
   DepositReserveLiquidityAndObligationCollateral,

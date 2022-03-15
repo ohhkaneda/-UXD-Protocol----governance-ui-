@@ -42,6 +42,113 @@ export const validateInstruction = async ({
   return isValid
 }
 
+export async function getFriktionWithdrawInstruction({
+  schema,
+  form,
+  authority,
+  uiAmount,
+  connection,
+  wallet,
+  setFormErrors,
+}: {
+  schema: any
+  form: any
+  uiAmount: BN
+  authority: PublicKey
+  programId: PublicKey | undefined
+  connection: ConnectionContext
+  wallet: WalletAdapter | undefined
+  setFormErrors: any
+}): Promise<UiInstruction> {
+  const isValid = await validateInstruction({ schema, form, setFormErrors })
+  let serializedInstruction = ''
+  const prerequisiteInstructions: TransactionInstruction[] = []
+  const governedAccount = form.governedAccount
+  const voltVaultId = new PublicKey(form.voltVaultId as string)
+
+  const signers: Keypair[] = []
+
+  if (isValid && uiAmount && governedAccount?.governance && wallet) {
+    const sdk = new FriktionSDK({
+      provider: {
+        connection: connection.current,
+        wallet: (wallet as unknown) as AnchorWallet,
+      },
+    })
+
+    const cVoltSDK = new ConnectedVoltSDK(
+      connection.current,
+      wallet.publicKey as PublicKey,
+      await sdk.loadVoltByKey(voltVaultId),
+      undefined,
+      authority
+    )
+
+    const vaultMint = cVoltSDK.voltVault.vaultMint
+
+    const balances = await cVoltSDK.getBalancesForUser(authority)
+
+    console.log(`${authority.toString()} balances`, {
+      claimableUnderlying: balances?.claimableUnderlying.toString(),
+      mintableShares: balances?.mintableShares.toString(),
+      normFactor: balances?.normFactor.toString(),
+      normalBalance: balances?.normalBalance.toString(),
+      pendingDeposits: balances?.pendingDeposits.toString(),
+      pendingWithdrawals: balances?.pendingWithdrawals.toString(),
+      totalBalance: balances?.totalBalance.toString(),
+      vaultNormFactor: balances?.vaultNormFactor.toString(),
+    })
+
+    const { currentAddress: userVaultTokens } = await getATA({
+      connection: connection,
+      receiverAddress: authority,
+      mintPK: vaultMint,
+      wallet,
+    })
+
+    const underlyingTokenDestination = new PublicKey(
+      form.underlyingTokenDestination
+    )
+
+    try {
+      /* const mintInfo = await tryGetTokenMint(connection.current, sourceAccount)
+ 
+       if (!mintInfo) throw new Error('Cannot load sourceAccount mint info')
+ 
+        const decimals = mintInfo.account.decimals */
+
+      const withdrawIx = await cVoltSDK.withdraw(
+        uiAmount,
+        userVaultTokens,
+        underlyingTokenDestination,
+        authority
+      )
+
+      const governedAccountIndex = withdrawIx.keys.findIndex(
+        (k) => k.pubkey.toString() === authority.toString()
+      )
+
+      withdrawIx.keys[governedAccountIndex].isSigner = true
+
+      serializedInstruction = serializeInstructionToBase64(withdrawIx)
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error('Error: ' + e.message)
+      }
+      throw e
+    }
+  }
+
+  return {
+    serializedInstruction,
+    isValid,
+    governance: governedAccount?.governance,
+    prerequisiteInstructions: prerequisiteInstructions,
+    signers,
+    shouldSplitIntoSeparateTxs: true,
+  }
+}
+
 export async function getFriktionDepositInstruction({
   schema,
   form,

@@ -52,6 +52,7 @@ import Mint from './components/instructions/Mint'
 import SplTokenTransfer from './components/instructions/SplTokenTransfer'
 import VoteBySwitch from './components/VoteBySwitch'
 import FriktionDeposit from './components/instructions/Friktion/FriktionDeposit'
+import FriktionWithdraw from './components/instructions/Friktion/FriktionWithdraw'
 import CreateObligationAccount from './components/instructions/Solend/CreateObligationAccount'
 import DepositReserveLiquidityAndObligationCollateral from './components/instructions/Solend/DepositReserveLiquidityAndObligationCollateral'
 import InitObligationAccount from './components/instructions/Solend/InitObligationAccount'
@@ -322,6 +323,8 @@ const New = () => {
         )
       case Instructions.DepositIntoVolt:
         return <FriktionDeposit index={idx} governance={governance} />
+      case Instructions.FriktionWithdraw:
+        return <FriktionWithdraw index={idx} governance={governance} />
       case Instructions.CreateSolendObligationAccount:
         return <CreateObligationAccount index={idx} governance={governance} />
       case Instructions.InitSolendObligationAccount:

@@ -22,8 +22,6 @@ const TokenAccountSelect = ({
     return null
   }
 
-  console.log('FilterByMint', filterByMint)
-
   const getAccountDisplay = (pubkey?: PublicKey) => {
     if (!pubkey) return null
 
