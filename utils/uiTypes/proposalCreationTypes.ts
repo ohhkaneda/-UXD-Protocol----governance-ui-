@@ -4,7 +4,8 @@ import { ProgramAccount } from '@solana/spl-governance'
 import { RpcContext } from '@solana/spl-governance'
 import { MintInfo } from '@solana/spl-token'
 import { PublicKey, TransactionInstruction } from '@solana/web3.js'
-import { SupportedMintName } from '@tools/sdk/solend/configuration'
+import { SupportedMintName as SolendSupportedMintName } from '@tools/sdk/solend/configuration'
+import { SupportedMintName as QuarryMineSupportedMintName } from '@tools/sdk/quarryMine/configuration'
 import { SplTokenUIName } from '@utils/splTokens'
 import { getNameOf } from '@tools/core/script'
 import {
@@ -140,24 +141,24 @@ export interface InitSolendObligationAccountForm {
 export interface DepositReserveLiquidityAndObligationCollateralForm {
   governedAccount?: GovernedMultiTypeAccount
   uiAmount: string
-  mintName?: SupportedMintName
+  mintName?: SolendSupportedMintName
 }
 
 export interface WithdrawObligationCollateralAndRedeemReserveLiquidityForm {
   governedAccount?: GovernedMultiTypeAccount
   uiAmount: string
-  mintName?: SupportedMintName
+  mintName?: SolendSupportedMintName
   destinationLiquidity?: string
 }
 
 export interface RefreshObligationForm {
   governedAccount?: GovernedMultiTypeAccount
-  mintName?: SupportedMintName
+  mintName?: SolendSupportedMintName
 }
 
 export interface RefreshReserveForm {
   governedAccount?: GovernedMultiTypeAccount
-  mintName?: SupportedMintName
+  mintName?: SolendSupportedMintName
 }
 
 export interface TokenTransferBetweenInternalGovernanceAccountsForm {
@@ -298,6 +299,40 @@ export interface SaberPoolsWithdrawOneForm {
   uiMinimumTokenAmount?: number
 }
 
+export interface QuarryMineCreateMinerForm {
+  governedAccount?: GovernedMultiTypeAccount
+  mintName?: QuarryMineSupportedMintName
+}
+
+export interface QuarryMineCreateMinerVaultAccountForm {
+  governedAccount?: GovernedMultiTypeAccount
+  mintName?: QuarryMineSupportedMintName
+}
+
+export interface QuarryMineStakeTokensForm {
+  governedAccount?: GovernedMultiTypeAccount
+  sourceAccount?: string
+  uiAmount?: number
+  mintName?: QuarryMineSupportedMintName
+}
+
+export interface QuarryMineWithdrawTokensForm {
+  governedAccount?: GovernedMultiTypeAccount
+  destinationAccount?: string
+  uiAmount?: number
+  mintName?: QuarryMineSupportedMintName
+}
+
+export interface QuarryMineClaimRewardsForm {
+  governedAccount?: GovernedMultiTypeAccount
+  mintName?: QuarryMineSupportedMintName
+}
+
+export interface SaberPeripheryRedeemAllTokensFromMintProxyForm {
+  governedAccount?: GovernedMultiTypeAccount
+  mintName?: QuarryMineSupportedMintName
+}
+
 export enum Instructions {
   Transfer,
   ProgramUpgrade,
@@ -345,6 +380,12 @@ export enum Instructions {
   SoceanVest,
   SaberPoolsDeposit,
   SaberPoolsWithdrawOne,
+  QuarryMineCreateMiner,
+  QuarryMineCreateMinerVaultAccount,
+  QuarryMineStakeTokens,
+  QuarryMineWithdrawTokens,
+  QuarryMineClaimRewards,
+  SaberPeripheryRedeemAllTokensFromMintProxy,
 }
 
 export interface InitializeControllerForm {

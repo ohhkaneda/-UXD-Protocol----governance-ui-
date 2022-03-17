@@ -1543,6 +1543,14 @@
     assert "^2.0.0"
     buffer "^6.0.1"
 
+"@quarryprotocol/quarry-sdk@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@quarryprotocol/quarry-sdk/-/quarry-sdk-3.0.0.tgz#264f480ea2b3e49a25b0ed3ae91bf15f7f0ee442"
+  integrity sha512-U4bHADUKTCmKwvpSUH3guHfCLXCDDxkhr2W3cGnmwghaN1mWNw1HH9cCpKgFMSpJjoh69spwALxVhDC5lZ42/w==
+  dependencies:
+    tiny-invariant "^1.2.0"
+    tslib "^2.3.1"
+
 "@raydium-io/raydium-sdk@^1.0.1-beta.26":
   version "1.0.1-beta.26"
   resolved "https://registry.npmjs.org/@raydium-io/raydium-sdk/-/raydium-sdk-1.0.1-beta.26.tgz"
@@ -1638,6 +1646,14 @@
     eventemitter3 "^4.0.7"
     lodash.camelcase "^4.3.0"
     lodash.mapvalues "^4.6.0"
+    tslib "^2.3.1"
+
+"@saberhq/saber-periphery@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@saberhq/saber-periphery/-/saber-periphery-1.1.1.tgz#48539ee11dcff6df07301631e49f6f25b9c48bbb"
+  integrity sha512-1ex2u3UOnsYuWxhXNC/RUTztPwUtUHA5JDpSABcw2gFeaE4VbnF+T0nmNhe5MU5gtBaZTfJaA7a8JV3fF31vEQ==
+  dependencies:
+    tiny-invariant "^1.2.0"
     tslib "^2.3.1"
 
 "@saberhq/solana-contrib@^1.12.23", "@saberhq/solana-contrib@^1.12.26", "@saberhq/solana-contrib@^1.12.35", "@saberhq/solana-contrib@^1.12.42":

@@ -23,6 +23,7 @@ import TokenBalanceCardWrapper from '@components/TokenBalance/TokenBalanceCardWr
 import ApproveAllBtn from './proposal/components/ApproveAllBtn'
 import HotWallet from '@components/HotWallet/HotWallet'
 import TribecaGauges from '@components/TribecaGauges/TribecaGauges'
+import SaberStats from '@components/SaberStats/SaberStats'
 
 const compareProposals = (
   p1: Proposal,
@@ -179,6 +180,8 @@ const REALM = () => {
           <NFTSCompactWrapper />
 
           <HotWallet />
+
+          <SaberStats />
 
           <TribecaGauges />
 

@@ -153,6 +153,36 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
     },
     {
+      id: Instructions.QuarryMineCreateMinerVaultAccount,
+      name: 'Quarry Mine: Create Miner Vault Account',
+      isVisible: canUseAnyInstruction,
+    },
+    {
+      id: Instructions.QuarryMineCreateMiner,
+      name: 'Quarry Mine: Create Miner',
+      isVisible: canUseAnyInstruction,
+    },
+    {
+      id: Instructions.QuarryMineStakeTokens,
+      name: 'Quarry Mine: Stake Tokens',
+      isVisible: canUseAnyInstruction,
+    },
+    {
+      id: Instructions.QuarryMineWithdrawTokens,
+      name: 'Quarry Mine: Withdraw Tokens',
+      isVisible: canUseAnyInstruction,
+    },
+    {
+      id: Instructions.QuarryMineClaimRewards,
+      name: 'Quarry Mine: Claim Rewards',
+      isVisible: canUseAnyInstruction,
+    },
+    {
+      id: Instructions.SaberPeripheryRedeemAllTokensFromMintProxy,
+      name: 'Saber Periphery: Redeem All Tokens From Mint Proxy',
+      isVisible: canUseAnyInstruction,
+    },
+    {
       id: Instructions.SaberPoolsDeposit,
       name: 'Saber Pools: Deposit',
       isVisible: canUseAnyInstruction,

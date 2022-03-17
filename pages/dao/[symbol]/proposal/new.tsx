@@ -87,6 +87,12 @@ import TokenTransferBetweenInternalGovernanceAccounts from './components/instruc
 import GovernanceUnderlyingTokenAccountTransfer from './components/instructions/GovernanceUnderlyingTokenAccountTransfer'
 import SaberPoolsDeposit from './components/instructions/saberPools/Deposit'
 import SaberPoolsWithdrawOne from './components/instructions/saberPools/WithdrawOne'
+import QuarryMineCreateMiner from './components/instructions/quarryMine/CreateMiner'
+import QuarryMineCreateMinerVaultAccount from './components/instructions/quarryMine/CreateMinerVaultAccount'
+import QuarryMineStakeTokens from './components/instructions/quarryMine/StakeTokens'
+import QuarryMineWithdrawTokens from './components/instructions/quarryMine/WithdrawTokens'
+import QuarryMineClaimRewards from './components/instructions/quarryMine/ClaimRewards'
+import RedeemAllTokensFromMintProxy from './components/instructions/saberPeriphery/RedeemAllTokensFromMintProxy'
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -491,6 +497,25 @@ const New = () => {
         return <SaberPoolsDeposit index={idx} governance={governance} />
       case Instructions.SaberPoolsWithdrawOne:
         return <SaberPoolsWithdrawOne index={idx} governance={governance} />
+      case Instructions.QuarryMineCreateMiner:
+        return <QuarryMineCreateMiner index={idx} governance={governance} />
+      case Instructions.QuarryMineCreateMinerVaultAccount:
+        return (
+          <QuarryMineCreateMinerVaultAccount
+            index={idx}
+            governance={governance}
+          />
+        )
+      case Instructions.QuarryMineStakeTokens:
+        return <QuarryMineStakeTokens index={idx} governance={governance} />
+      case Instructions.QuarryMineWithdrawTokens:
+        return <QuarryMineWithdrawTokens index={idx} governance={governance} />
+      case Instructions.QuarryMineClaimRewards:
+        return <QuarryMineClaimRewards index={idx} governance={governance} />
+      case Instructions.SaberPeripheryRedeemAllTokensFromMintProxy:
+        return (
+          <RedeemAllTokensFromMintProxy index={idx} governance={governance} />
+        )
       default:
         null
     }
