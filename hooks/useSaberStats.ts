@@ -61,48 +61,55 @@ const useSaberStats = () => {
   const loadInfo = useCallback(async () => {
     if (!connection.current || !saberAccountOwner) return
 
-    const {
-      mint,
-      rewarder,
-      rewardsTokenMintDecimals,
-      mintName,
-      rewardsTokenMintName,
-    } = QuarryMineConfiguration.mintSpecificAddresses[SABER_UXD_USDC_LP]
-
-    const [quarry] = await findQuarryAddress(rewarder, mint)
-    const [miner] = await findMinerAddress(quarry, saberAccountOwner.publicKey)
-
-    const sdk = QuarrySDK.load({
-      provider: new SolanaAugmentedProvider(
-        SolanaProvider.load({
-          connection: connection.current,
-          sendConnection: connection.current,
-          wallet: wallet as Wallet,
-        })
-      ),
-    })
-
-    const minerData = await sdk.programs.Mine.account.miner.fetch(miner)
-
-    const lpMintInfo = await tryGetMint(connection.current, mint)
-    if (!lpMintInfo)
-      throw new Error(`Cannot load lp mint info for ${mint.toBase58()}`)
-
-    setSaberStats([
-      {
-        liquidityPoolName: 'Saber UXD-USDC Liquidity Pool',
-        balance: minerData.balance,
-        uiBalance: new BigNumber(minerData.balance.toString())
-          .shiftedBy(-lpMintInfo.account.decimals)
-          .toNumber(),
-        rewardsEarned: minerData.rewardsEarned,
-        uiRewardsEarned: new BigNumber(minerData.rewardsEarned.toString())
-          .shiftedBy(-rewardsTokenMintDecimals)
-          .toNumber(),
+    try {
+      const {
+        mint,
+        rewarder,
+        rewardsTokenMintDecimals,
         mintName,
         rewardsTokenMintName,
-      },
-    ])
+      } = QuarryMineConfiguration.mintSpecificAddresses[SABER_UXD_USDC_LP]
+
+      const [quarry] = await findQuarryAddress(rewarder, mint)
+      const [miner] = await findMinerAddress(
+        quarry,
+        saberAccountOwner.publicKey
+      )
+
+      const sdk = QuarrySDK.load({
+        provider: new SolanaAugmentedProvider(
+          SolanaProvider.load({
+            connection: connection.current,
+            sendConnection: connection.current,
+            wallet: wallet as Wallet,
+          })
+        ),
+      })
+
+      const minerData = await sdk.programs.Mine.account.miner.fetch(miner)
+
+      const lpMintInfo = await tryGetMint(connection.current, mint)
+      if (!lpMintInfo)
+        throw new Error(`Cannot load lp mint info for ${mint.toBase58()}`)
+
+      setSaberStats([
+        {
+          liquidityPoolName: 'Saber UXD-USDC Liquidity Pool',
+          balance: minerData.balance,
+          uiBalance: new BigNumber(minerData.balance.toString())
+            .shiftedBy(-lpMintInfo.account.decimals)
+            .toNumber(),
+          rewardsEarned: minerData.rewardsEarned,
+          uiRewardsEarned: new BigNumber(minerData.rewardsEarned.toString())
+            .shiftedBy(-rewardsTokenMintDecimals)
+            .toNumber(),
+          mintName,
+          rewardsTokenMintName,
+        },
+      ])
+    } catch (err) {
+      console.log('error loading saber stats', err)
+    }
   }, [connection, saberAccountOwner, wallet])
 
   useEffect(() => {
