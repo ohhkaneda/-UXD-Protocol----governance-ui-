@@ -22,6 +22,7 @@ import { ATA_PROGRAM_INSTRUCTIONS } from './programs/associatedTokenAccount'
 import { TRIBECA_PROGRAM_INSTRUCTIONS } from './programs/tribeca'
 import { SABER_POOLS_PROGRAM_INSTRUCTIONS } from './programs/saberPools'
 import { SOCEAN_PROGRAM_INSTRUCTIONS } from './programs/socean'
+import { QUARRY_MINE_PROGRAM_INSTRUCTIONS } from './programs/quarryMine'
 
 /**
  * Default governance program id instance
@@ -175,6 +176,7 @@ export const INSTRUCTION_DESCRIPTORS = {
   ...TRIBECA_PROGRAM_INSTRUCTIONS,
   ...SABER_POOLS_PROGRAM_INSTRUCTIONS,
   ...SOCEAN_PROGRAM_INSTRUCTIONS,
+  ...QUARRY_MINE_PROGRAM_INSTRUCTIONS,
 }
 
 export async function getInstructionDescriptor(

@@ -1,3 +1,4 @@
+import { QUARRY_ADDRESSES } from '@quarryprotocol/quarry-sdk'
 import { PublicKey } from '@solana/web3.js'
 
 export const SABER_UXD_USDC_LP = 'UXD-USDC LP'
@@ -8,6 +9,8 @@ class QuarryMine {
   public readonly mintWrapperProgram = new PublicKey(
     'QMWoBmAyJLAsA1Lh9ugMTw2gciTihncciphzdNzdZYV'
   )
+
+  public readonly quarryMineProgram = QUARRY_ADDRESSES.Mine
 
   public readonly mintSpecificAddresses: {
     [key in SupportedMintName]: {
@@ -45,6 +48,13 @@ class QuarryMine {
     [key in SupportedMintName]: true
   } = {
     'UXD-USDC LP': true,
+  }
+
+  public readonly quarryMineProgramInstructions = {
+    createMiner: 126,
+    stakeTokens: 136,
+    withdraw: 2,
+    claimRewards: 4,
   }
 }
 
