@@ -15,7 +15,8 @@
     "lint": "eslint . --ext ts --ext tsx --ext js --ext jsx",
     "test": "jest",
     "test-all": "yarn lint && yarn type-check && yarn test",
-    "notifier": "ts-node scripts/governance-notifier.ts"
+    "notifier": "ts-node scripts/governance-notifier.ts",
+    "postinstall": "patch-package"
   },
   "lint-staged": {
     "*.@(ts|tsx|js|jsx)": [
@@ -28,14 +29,14 @@
     "@cardinal/namespaces-components": "^2.5.0",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.3.0",
-    "@friktion-labs/friktion-sdk": "^1.1.13",
+    "@friktion-labs/friktion-sdk": "^1.1.25",
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.1",
     "@marinade.finance/marinade-ts-sdk": "^2.0.9",
     "@next/bundle-analyzer": "^12.1.0",
     "@nfteyez/sol-rayz": "^0.8.0",
-    "@project-serum/borsh": "^0.2.2",
     "@project-serum/anchor": "^0.20.1",
+    "@project-serum/borsh": "^0.2.2",
     "@project-serum/common": "^0.0.1-beta.3",
     "@project-serum/sol-wallet-adapter": "^0.2.0",
     "@raydium-io/raydium-sdk": "^1.0.1-beta.26",
