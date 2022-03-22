@@ -24,7 +24,7 @@ module.exports = {
           primary: { light: '#EBFF00', dark: '#D2B537' },
           'secondary-1': { light: '#AFD803', dark: '#6CBF00' },
           'secondary-2': { light: '#E54033', dark: '#C7251A' },
-          'bkg-1': '#121417',
+          'bkg-1': '#000000',
           'bkg-2': '#000000',
           'bkg-3': '#2F343B',
           'bkg-4': '#363D44',
