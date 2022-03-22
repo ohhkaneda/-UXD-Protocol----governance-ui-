@@ -53,8 +53,8 @@ const MemberItem = ({ item }: { item: Member }) => {
         dark={true}
         connection={connection.current}
         address={walletPublicKey}
-        height="30px"
-        width="30px"
+        height="auto"
+        width="2.5rem"
         placeholder={<UserCircleIcon className="h-6 text-fgd-3 w-6" />}
       />
     ),
@@ -77,9 +77,9 @@ const MemberItem = ({ item }: { item: Member }) => {
   return (
     <div
       onClick={handleGoToMemberOverview}
-      className="cursor-pointer default-transition flex items-start text-fgd-1 border border-fgd-4 p-3 pr-0 w-full hover:border-white"
+      className="cursor-pointer default-transition flex items-center text-fgd-1 border border-fgd-4 p-3 pr-0 w-full hover:border-white"
     >
-      <div className="bg-bkg-4 flex flex-shrink-0 items-center justify-center h-8 w-8 mr-2">
+      <div className="bg-bkg-1 flex flex-shrink-0 items-center justify-center h-10 w-14 mr-2">
         {address}
       </div>
       <div>
@@ -92,7 +92,7 @@ const MemberItem = ({ item }: { item: Member }) => {
             <span className="flex items-center">
               {tokenName} Votes {communityAmount || 0}
               {hasCommunityTokenOutsideRealm && (
-                <LogoutIcon className="w-3 h-3 ml-1"></LogoutIcon>
+                <LogoutIcon className="w-3 h-3 ml-1" />
               )}
             </span>
           )}
@@ -100,7 +100,7 @@ const MemberItem = ({ item }: { item: Member }) => {
             <span className="flex items-center">
               Council Votes {councilAmount}{' '}
               {hasCouncilTokenOutsideRealm && (
-                <LogoutIcon className="w-3 h-3 ml-1"></LogoutIcon>
+                <LogoutIcon className="w-3 h-3 ml-1" />
               )}
             </span>
           )}

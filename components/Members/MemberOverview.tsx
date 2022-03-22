@@ -209,7 +209,7 @@ const MemberOverview = () => {
               `/dao/${symbol}/proposal/${x.proposalPublicKey}`
             )}
             rel="noopener noreferrer"
-            className="border border-fgd-4 default-transition hover:bg-bkg-3 css-1ug690d-StyledCardWrapepr elzt7lo0 p-4 text-xs text-th-fgd-1 mb-2 flex"
+            className="border border-fgd-4 default-transition hover:border-white css-1ug690d-StyledCardWrapepr elzt7lo0 p-4 text-xs text-th-fgd-1 mb-2 flex"
             key={x.proposalPublicKey}
           >
             <div className="w-full pr-6">
