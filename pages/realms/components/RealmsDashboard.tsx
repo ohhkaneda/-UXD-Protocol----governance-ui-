@@ -32,16 +32,16 @@ export default function RealmsDashboard({
 
   return isLoading ? (
     <div className="grid grid-flow-row grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-      <div className="animate-pulse bg-bkg-3 col-span-1 h-44 rounded-lg" />
-      <div className="animate-pulse bg-bkg-3 col-span-1 h-44 rounded-lg" />
-      <div className="animate-pulse bg-bkg-3 col-span-1 h-44 rounded-lg" />
-      <div className="animate-pulse bg-bkg-3 col-span-1 h-44 rounded-lg" />
-      <div className="animate-pulse bg-bkg-3 col-span-1 h-44 rounded-lg" />
-      <div className="animate-pulse bg-bkg-3 col-span-1 h-44 rounded-lg" />
-      <div className="animate-pulse bg-bkg-3 col-span-1 h-44 rounded-lg" />
-      <div className="animate-pulse bg-bkg-3 col-span-1 h-44 rounded-lg" />
-      <div className="animate-pulse bg-bkg-3 col-span-1 h-44 rounded-lg" />
-      <div className="animate-pulse bg-bkg-3 col-span-1 h-44 rounded-lg" />
+      <div className="animate-pulse bg-bkg-3 col-span-1 h-44" />
+      <div className="animate-pulse bg-bkg-3 col-span-1 h-44" />
+      <div className="animate-pulse bg-bkg-3 col-span-1 h-44" />
+      <div className="animate-pulse bg-bkg-3 col-span-1 h-44" />
+      <div className="animate-pulse bg-bkg-3 col-span-1 h-44" />
+      <div className="animate-pulse bg-bkg-3 col-span-1 h-44" />
+      <div className="animate-pulse bg-bkg-3 col-span-1 h-44" />
+      <div className="animate-pulse bg-bkg-3 col-span-1 h-44" />
+      <div className="animate-pulse bg-bkg-3 col-span-1 h-44" />
+      <div className="animate-pulse bg-bkg-3 col-span-1 h-44" />
     </div>
   ) : (
     <>
@@ -50,7 +50,7 @@ export default function RealmsDashboard({
           certifiedRealms.map((realm: RealmInfo) => (
             <div
               onClick={() => goToRealm(realm)}
-              className="bg-bkg-2 cursor-pointer default-transition flex flex-col items-center p-8 rounded-lg hover:border-white"
+              className="bg-bkg-2 cursor-pointer default-transition flex flex-col items-center p-8 hover:border-white"
               key={realm.realmId.toString()}
             >
               <div className="pb-5">
@@ -70,7 +70,7 @@ export default function RealmsDashboard({
             </div>
           ))
         ) : (
-          <div className="bg-bkg-2 col-span-5 p-8 rounded-lg text-center">
+          <div className="bg-bkg-2 col-span-5 p-8 text-center">
             <p>No results</p>
           </div>
         )}
@@ -82,7 +82,7 @@ export default function RealmsDashboard({
             unchartedRealms.map((realm: RealmInfo) => (
               <div
                 onClick={() => goToRealm(realm)}
-                className="bg-bkg-2 cursor-pointer default-transition flex flex-col items-center p-8 rounded-lg hover:bg-bkg-3"
+                className="bg-bkg-2 cursor-pointer default-transition flex flex-col items-center p-8 hover:bg-bkg-3"
                 key={realm.realmId.toString()}
               >
                 <div className="pb-5">
@@ -102,7 +102,7 @@ export default function RealmsDashboard({
               </div>
             ))
           ) : (
-            <div className="bg-bkg-2 col-span-5 p-8 rounded-lg text-center">
+            <div className="bg-bkg-2 col-span-5 p-8 text-center">
               <p>No results</p>
             </div>
           )}

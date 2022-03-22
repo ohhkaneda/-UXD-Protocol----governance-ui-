@@ -30,9 +30,7 @@ const AccountItemNFT = ({
       onClick={onClick ? onClick : handleGoToAccountOverview}
       className={`cursor-pointer default-transition flex items-center text-fgd-1 ${
         border && 'border'
-      } border-fgd-4 p-3 rounded-lg w-full hover:bg-bkg-3 ${
-        className && className
-      }`}
+      } border-fgd-4 p-3 w-full hover:bg-bkg-3 ${className && className}`}
     >
       <img
         src="/img/collectablesIcon.svg"

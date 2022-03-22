@@ -11,7 +11,7 @@ export default function ProgramUpgradeInfo({
   }
 
   return (
-    <div className="border border-fgd-4 p-4 rounded-md">
+    <div className="border border-fgd-4 p-4">
       <div className="pb-3">
         <p className="mb-0.5 text-xs">Upgrade authority</p>
         <CommandLineInfo info={governancePk?.toBase58()} />

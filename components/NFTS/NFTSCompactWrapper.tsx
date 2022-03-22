@@ -21,7 +21,7 @@ const NFTSCompactWrapper = () => {
   const { symbol } = useRealm()
   const { fmtUrlWithCluster } = useQueryContext()
   return nftsGovernedTokenAccounts.length ? (
-    <div className="bg-bkg-2 p-4 md:p-6 rounded-lg transition-all">
+    <div className="bg-bkg-2 p-4 md:p-6 transition-all">
       <div className="flex items-center justify-between pb-4">
         <h3 className="mb-0">NFTs</h3>
         <LinkButton
@@ -44,15 +44,15 @@ const NFTSCompactWrapper = () => {
         <div className="grid grid-cols-4 grid-flow-row gap-3">
           {isLoading ? (
             <>
-              <div className="animate-pulse bg-bkg-3 col-span-1 h-20 rounded-md" />
-              <div className="animate-pulse bg-bkg-3 col-span-1 h-20 rounded-md" />
-              <div className="animate-pulse bg-bkg-3 col-span-1 h-20 rounded-md" />
-              <div className="animate-pulse bg-bkg-3 col-span-1 h-20 rounded-md" />
+              <div className="animate-pulse bg-bkg-3 col-span-1 h-20" />
+              <div className="animate-pulse bg-bkg-3 col-span-1 h-20" />
+              <div className="animate-pulse bg-bkg-3 col-span-1 h-20" />
+              <div className="animate-pulse bg-bkg-3 col-span-1 h-20" />
             </>
           ) : realmNfts.length ? (
             realmNfts.map((x, idx) => (
               <a
-                className="bg-bkg-4 col-span-1 flex items-center justify-center rounded-lg filter drop-shadow-lg"
+                className="bg-bkg-4 col-span-1 flex items-center justify-center filter drop-shadow-lg"
                 key={idx}
                 href={getExplorerUrl(connection.endpoint, x.mint)}
                 target="_blank"
@@ -60,7 +60,7 @@ const NFTSCompactWrapper = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <ImgWithLoader
-                  className="bg-bkg-2 cursor-pointer default-transition transform scale-90 hover:scale-95 rounded-md"
+                  className="bg-bkg-2 cursor-pointer default-transition transform scale-90 hover:scale-95"
                   src={x.val.image}
                 />
               </a>

@@ -58,7 +58,7 @@ const LockTokensAccount = ({ tokenOwnerRecordPk }) => {
   const connection = useWalletStore((s) => s.connection.current)
   const wallet = useWalletStore((s) => s.current)
   const connected = useWalletStore((s) => s.connected)
-  const mainBoxesClasses = 'bg-bkg-1 col-span-1 p-4 rounded-md'
+  const mainBoxesClasses = 'bg-bkg-1 col-span-1 p-4'
   const isNextSameRecord = (x, next) => {
     const nextType = Object.keys(next.lockup.kind)[0]
     return (
@@ -197,7 +197,7 @@ const LockTokensAccount = ({ tokenOwnerRecordPk }) => {
 
   return (
     <div className="grid grid-cols-12 gap-4">
-      <div className="bg-bkg-2 rounded-lg p-4 md:p-6 col-span-12">
+      <div className="bg-bkg-2 p-4 md:p-6 col-span-12">
         <div className="mb-4">
           <PreviousRouteBtn />
         </div>
@@ -227,9 +227,9 @@ const LockTokensAccount = ({ tokenOwnerRecordPk }) => {
             <div className="grid grid-cols-3 grid-flow-row gap-4 pb-8">
               {isLoading ? (
                 <>
-                  <div className="animate-pulse bg-bkg-3 col-span-1 h-44 rounded-md" />
-                  <div className="animate-pulse bg-bkg-3 col-span-1 h-44 rounded-md" />
-                  <div className="animate-pulse bg-bkg-3 col-span-1 h-44 rounded-md" />
+                  <div className="animate-pulse bg-bkg-3 col-span-1 h-44" />
+                  <div className="animate-pulse bg-bkg-3 col-span-1 h-44" />
+                  <div className="animate-pulse bg-bkg-3 col-span-1 h-44" />
                 </>
               ) : (
                 <>
@@ -320,7 +320,7 @@ const LockTokensAccount = ({ tokenOwnerRecordPk }) => {
                   ?.map((x, idx) => (
                     <DepositCard deposit={x} key={idx}></DepositCard>
                   ))}
-                <div className="border border-fgd-4 flex flex-col items-center justify-center p-6 rounded-lg">
+                <div className="border border-fgd-4 flex flex-col items-center justify-center p-6">
                   <LightningBoltIcon className="h-8 mb-2 text-primary-light w-8" />
                   <p className="flex text-center pb-6">
                     Increase your voting power by<br></br> locking your tokens.
@@ -334,7 +334,7 @@ const LockTokensAccount = ({ tokenOwnerRecordPk }) => {
                 </div>
               </div>
             ) : (
-              <div className="border border-fgd-4 flex flex-col items-center justify-center p-6 rounded-lg mb-3">
+              <div className="border border-fgd-4 flex flex-col items-center justify-center p-6 mb-3">
                 <LightningBoltIcon className="h-8 mb-2 text-primary-light w-8" />
                 <p className="flex text-center pb-6">
                   Increase your voting power by<br></br> locking your tokens.
@@ -349,7 +349,7 @@ const LockTokensAccount = ({ tokenOwnerRecordPk }) => {
             )}
           </div>
         ) : (
-          <div className="border border-fgd-4 flex flex-col items-center justify-center p-6 rounded-lg">
+          <div className="border border-fgd-4 flex flex-col items-center justify-center p-6">
             <LinkIcon className="h-6 mb-1 text-primary-light w-6" />
             <span className="text-fgd-1 text-sm">Connect your wallet</span>
           </div>

@@ -17,7 +17,7 @@ const AccountItem = ({
   } = getTreasuryAccountItemInfo(governedAccountTokenAccount, governanceNfts)
 
   return (
-    <div className="flex items-start text-fgd-1 border border-fgd-4 p-3 rounded-lg w-full">
+    <div className="flex items-start text-fgd-1 border border-fgd-4 p-3 w-full">
       {logo && <img className="flex-shrink-0 h-6 w-6 mr-2.5 mt-1" src={logo} />}
       <div className="w-full">
         <div className="flex items-start justify-between mb-1">

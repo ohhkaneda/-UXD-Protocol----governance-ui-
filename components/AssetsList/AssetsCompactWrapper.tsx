@@ -12,7 +12,7 @@ const AssetsCompactWrapper = () => {
   const { fmtUrlWithCluster } = useQueryContext()
 
   return (
-    <div className="bg-bkg-2 p-4 md:p-6 rounded-lg">
+    <div className="bg-bkg-2 p-4 md:p-6">
       <div className="flex items-center justify-between pb-4">
         <h3 className="mb-0">Assets</h3>
         <LinkButton

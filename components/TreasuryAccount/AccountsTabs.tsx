@@ -39,9 +39,9 @@ const AccountsTabs: FunctionComponent<AccountsTabsProps> = ({
           <button
             key={x.transferAddress}
             onClick={() => onChange(x)}
-            className={`cursor-pointer default-transition flex items-center h-24 px-4 relative w-full hover:border-white hover:rounded-md ${
+            className={`cursor-pointer default-transition flex items-center h-24 px-4 relative w-full hover:border-white ${
               activeTab?.transferAddress === x.transferAddress
-                ? `bg-bkg-3 rounded-md rounded-l-none text-primary-light`
+                ? `bg-bkg-3 rounded-l-none text-primary-light`
                 : `text-fgd-2 hover:text-primary-light`
             }
             `}

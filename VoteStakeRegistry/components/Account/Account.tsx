@@ -6,7 +6,7 @@ import useWalletStore from 'stores/useWalletStore'
 const Account = ({ withHeader = true }: { withHeader?: boolean }) => {
   const connected = useWalletStore((s) => s.connected)
   return (
-    <div className="bg-bkg-2 col-span-12  p-4 md:p-6 rounded-lg">
+    <div className="bg-bkg-2 col-span-12  p-4 md:p-6">
       {withHeader && (
         <>
           <div className="mb-4">
@@ -22,7 +22,7 @@ const Account = ({ withHeader = true }: { withHeader?: boolean }) => {
         {connected ? (
           <MyProposalsBtn></MyProposalsBtn>
         ) : (
-          <div className="border border-fgd-4 flex flex-col items-center justify-center p-6 rounded-lg">
+          <div className="border border-fgd-4 flex flex-col items-center justify-center p-6">
             <LinkIcon className="h-6 mb-1 text-primary-light w-6" />
             <span className="text-fgd-1 text-sm">Connect your wallet</span>
           </div>

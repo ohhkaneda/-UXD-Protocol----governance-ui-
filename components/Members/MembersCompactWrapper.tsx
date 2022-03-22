@@ -62,7 +62,7 @@ const MembersCompactWrapper = () => {
                     onClick={() => setOpenAddMemberModal(!openAddMemberModal)}
                     className={`bg-bkg-2 default-transition 
                 flex flex-col items-center justify-center
-                rounded-lg hover:border-white ml-auto 
+                hover:border-white ml-auto 
                 hover:cursor-pointer ${
                   addNewMemberTooltip ? 'opacity-60 pointer-events-none' : ''
                 }`}
@@ -75,7 +75,7 @@ const MembersCompactWrapper = () => {
               )}
             </h3>
 
-            <div className="bg-bkg-1 mb-3 px-4 py-2 rounded-md w-full">
+            <div className="bg-bkg-1 mb-3 px-4 py-2 w-full">
               <p className="text-fgd-3 text-xs">Total votes cast</p>
 
               <h3 className="mb-0">{totalVotesCast}</h3>
@@ -106,9 +106,7 @@ const MembersCompactWrapper = () => {
     resetCompactViewState()
   }, [symbol])
 
-  return (
-    <div className="bg-bkg-2 p-4 md:p-6 rounded-lg">{getCurrentView()}</div>
-  )
+  return <div className="bg-bkg-2 p-4 md:p-6">{getCurrentView()}</div>
 }
 
 export default MembersCompactWrapper

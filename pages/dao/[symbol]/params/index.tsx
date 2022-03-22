@@ -41,7 +41,7 @@ const Params = () => {
 
   return (
     <div className="grid grid-cols-12 gap-4">
-      <div className="bg-bkg-2 rounded-lg p-4 md:p-6 col-span-12">
+      <div className="bg-bkg-2 p-4 md:p-6 col-span-12">
         <div className="mb-4">
           <PreviousRouteBtn />
         </div>
@@ -53,7 +53,7 @@ const Params = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 pb-6">
           {activeGovernance ? (
             <>
-              <div className="border border-fgd-4 col-span-1 p-4 rounded-md">
+              <div className="border border-fgd-4 col-span-1 p-4">
                 <h2>Addresses</h2>
                 <DisplayField
                   padding
@@ -85,7 +85,7 @@ const Params = () => {
                   />
                 )}
               </div>
-              <div className="border border-fgd-4 col-span-1 p-4 rounded-md">
+              <div className="border border-fgd-4 col-span-1 p-4">
                 <h2>Config</h2>
                 {communityMintMaxVoteWeightSource && (
                   <DisplayField
@@ -123,13 +123,13 @@ const Params = () => {
             </>
           ) : (
             <>
-              <div className="animate-pulse bg-bkg-3 h-48 rounded-md w-full" />
-              <div className="animate-pulse bg-bkg-3 h-48 rounded-md w-full" />
+              <div className="animate-pulse bg-bkg-3 h-48 w-full" />
+              <div className="animate-pulse bg-bkg-3 h-48 w-full" />
             </>
           )}
         </div>
         {!loadGovernedAccounts ? (
-          <div className="border border-fgd-4 grid grid-cols-12 gap-4 lg:gap-6 p-6 rounded-md">
+          <div className="border border-fgd-4 grid grid-cols-12 gap-4 lg:gap-6 p-6">
             <div className="col-span-12 lg:hidden">
               <Select
                 className="break-all"
@@ -262,7 +262,7 @@ const Params = () => {
                       ) {
                         return (
                           <div
-                            className="bg-bkg-1 p-4 pb-2 rounded-md"
+                            className="bg-bkg-1 p-4 pb-2"
                             key={x.pubkey.toBase58()}
                           >
                             <DisplayField
@@ -311,7 +311,7 @@ const Params = () => {
                       if (x.type === AccountType.NFT) {
                         return (
                           <div
-                            className="bg-bkg-1 p-4 pb-2 rounded-md"
+                            className="bg-bkg-1 p-4 pb-2"
                             key={x.pubkey.toBase58()}
                           >
                             <DisplayField
@@ -330,7 +330,7 @@ const Params = () => {
                       if (x.type === AccountType.MINT) {
                         return (
                           <div
-                            className="bg-bkg-1 p-4 pb-2 rounded-md"
+                            className="bg-bkg-1 p-4 pb-2"
                             key={x.pubkey.toBase58()}
                           >
                             <DisplayField
@@ -378,7 +378,7 @@ const Params = () => {
                       if (x.type === AccountType.PROGRAM) {
                         return (
                           <div
-                            className="bg-bkg-1 p-4 pb-2 rounded-md"
+                            className="bg-bkg-1 p-4 pb-2"
                             key={x.pubkey.toBase58()}
                           >
                             <DisplayField
@@ -401,7 +401,7 @@ const Params = () => {
             ) : null}
           </div>
         ) : (
-          <div className="animate-pulse bg-bkg-3 h-48 rounded-lg w-full" />
+          <div className="animate-pulse bg-bkg-3 h-48 w-full" />
         )}
       </div>
     </div>

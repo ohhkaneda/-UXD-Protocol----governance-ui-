@@ -26,7 +26,7 @@ const InlineNotification: FunctionComponent<InlineNotificationProps> = ({
         : type === 'info'
         ? 'border-bkg-4'
         : 'border-orange'
-    } flex items-center p-2 rounded-md`}
+    } flex items-center p-2`}
   >
     {type === 'error' ? (
       <ExclamationCircleIcon className="flex-shrink-0 h-5 w-5 mr-2 text-red" />

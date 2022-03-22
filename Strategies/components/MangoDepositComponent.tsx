@@ -392,7 +392,7 @@ const MangoDepositComponent = ({
             voteByCouncil={voteByCouncil}
             setVoteByCouncil={setVoteByCouncil}
           />
-          <div className="border border-fgd-4 p-4 rounded-md mb-6 mt-4 space-y-1 text-sm">
+          <div className="border border-fgd-4 p-4 mb-6 mt-4 space-y-1 text-sm">
             <div className="flex justify-between">
               <span className="text-fgd-3">Current Deposits</span>
               <span className="font-bold text-fgd-1">

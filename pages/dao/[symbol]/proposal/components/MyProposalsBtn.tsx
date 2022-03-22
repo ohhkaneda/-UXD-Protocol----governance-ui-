@@ -266,7 +266,7 @@ const ProposalList = ({
       <div className="mb-3 ">
         {proposals.map((x) => (
           <div
-            className="text-xs border-fgd-4 border px-3 py-2 mb-3 rounded-lg"
+            className="text-xs border-fgd-4 border px-3 py-2 mb-3"
             key={x.pubkey.toBase58()}
           >
             {x.account.name}

@@ -17,9 +17,7 @@ const VoteResults = ({ isListView, proposal }: VoteResultsProps) => {
   return (
     <div className="flex space-x-4 items-center">
       {proposal ? (
-        <div
-          className={`${!isListView ? 'bg-bkg-1 p-3' : ''} rounded-md w-full`}
-        >
+        <div className={`${!isListView ? 'bg-bkg-1 p-3' : ''} w-full`}>
           <div className="flex">
             <div className="w-1/2">
               <p>Yes Votes</p>

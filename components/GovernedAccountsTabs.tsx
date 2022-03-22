@@ -31,9 +31,9 @@ const GovernedAccountsTabs: FunctionComponent<GovernedAccountsTabsProps> = ({
           <button
             key={pubKey}
             onClick={() => onChange(x)}
-            className={`cursor-pointer default-transition flex items-center h-16 px-4 relative w-full hover:bg-bkg-3 hover:rounded-md ${
+            className={`cursor-pointer default-transition flex items-center h-16 px-4 relative w-full hover:bg-bkg-3 ${
               activePubKey?.toBase58() === pubKey.toBase58()
-                ? `bg-bkg-3 rounded-md rounded-l-none text-primary-light`
+                ? `bg-bkg-3 rounded-l-none text-primary-light`
                 : `text-fgd-2 hover:text-primary-light`
             }
             `}

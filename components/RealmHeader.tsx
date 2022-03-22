@@ -60,7 +60,7 @@ const RealmHeader = () => {
             </div>
           </div>
         ) : (
-          <div className="animate-pulse bg-bkg-3 h-10 w-40 rounded-md" />
+          <div className="animate-pulse bg-bkg-3 h-10 w-40" />
         )}
         <div className="flex items-center space-x-4">
           <Link href={fmtUrlWithCluster(`/dao/${symbol}/params`)}>

@@ -234,7 +234,7 @@ const CloseBuffers = ({ program }: { program: ProgramAccount<Governance> }) => {
           noMaxWidth={true}
           error={formErrors['solReceiverAddress']}
         />
-        <div className="border border-fgd-4 mb-4 px-4 py-3 rounded-md w-full">
+        <div className="border border-fgd-4 mb-4 px-4 py-3 w-full">
           <p className="mb-0.5 text-xs">Bufffers to close</p>
           {isBuffersLoading ? (
             <Loading />

@@ -101,7 +101,7 @@ const Treasury = () => {
 
   return (
     <>
-      <div className="bg-bkg-2 rounded-lg p-4 md:p-6">
+      <div className="bg-bkg-2 p-4 md:p-6">
         <div className="grid grid-cols-12 gap-6">
           <div className="col-span-12">
             <div className="mb-4">
@@ -118,7 +118,7 @@ const Treasury = () => {
                 </div>
               </div>
               {totalPriceFormatted && (
-                <div className="bg-bkg-1 px-4 py-2 rounded-md">
+                <div className="bg-bkg-1 px-4 py-2">
                   <div className="flex items-center">
                     <CurrencyDollarIcon className="flex-shrink-0 h-8 mr-2 text-primary-light w-8" />
                     <div>

@@ -455,10 +455,10 @@ const LockTokensModal = ({
                   {currentMultiplier}x
                 </span>
               </div>
-              <div className="w-full h-2 bg-bkg-1 rounded-lg">
+              <div className="w-full h-2 bg-bkg-1">
                 <div
                   style={{ width: `${currentPercentOfMaxMultiplier}%` }}
-                  className="bg-primary-light h-2 rounded-lg"
+                  className="bg-primary-light h-2"
                 ></div>
               </div>
             </div>

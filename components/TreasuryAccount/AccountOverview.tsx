@@ -250,7 +250,7 @@ const AccountOverview = () => {
               />
             ))
           ) : (
-            <div className="border border-fgd-4 p-4 rounded-md">
+            <div className="border border-fgd-4 p-4">
               <p className="text-center text-fgd-3">
                 No investments available for this account
               </p>
@@ -265,7 +265,7 @@ const AccountOverview = () => {
             />
           ))
         ) : (
-          <div className="border border-fgd-4 p-4 rounded-md">
+          <div className="border border-fgd-4 p-4">
             <p className="text-center text-fgd-3">
               No investments for this account
             </p>
@@ -276,9 +276,9 @@ const AccountOverview = () => {
       <div>
         {isLoadingRecentActivity ? (
           <div className="space-y-2">
-            <div className="animate-pulse bg-bkg-3 h-12 rounded-md" />
-            <div className="animate-pulse bg-bkg-3 h-12 rounded-md" />
-            <div className="animate-pulse bg-bkg-3 h-12 rounded-md" />
+            <div className="animate-pulse bg-bkg-3 h-12" />
+            <div className="animate-pulse bg-bkg-3 h-12" />
+            <div className="animate-pulse bg-bkg-3 h-12" />
           </div>
         ) : recentActivity.length > 0 ? (
           recentActivity.map((activity) => (
@@ -294,7 +294,7 @@ const AccountOverview = () => {
               }
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-fgd-4 default-transition flex items-center justify-between rounded-md hover:border-white hover:border-primary-light p-4 text-sm text-th-fgd-1 mb-2"
+              className="border border-fgd-4 default-transition flex items-center justify-between hover:border-white hover:border-primary-light p-4 text-sm text-th-fgd-1 mb-2"
               key={activity.signature}
             >
               <div>{activity.signature.substring(0, 12)}...</div>
@@ -309,7 +309,7 @@ const AccountOverview = () => {
             </a>
           ))
         ) : (
-          <div className="border border-fgd-4 p-4 rounded-md">
+          <div className="border border-fgd-4 p-4">
             <p className="text-center text-fgd-3">No recent activity</p>
           </div>
         )}
@@ -395,7 +395,7 @@ const StrategyCard = ({
     currentMangoDeposits.toFixed(0)
   ).toFormat()
   return (
-    <div className="border border-fgd-4 flex items-center justify-between mt-2 p-4 rounded-md">
+    <div className="border border-fgd-4 flex items-center justify-between mt-2 p-4">
       <div className="flex items-center">
         {handledTokenImgSrc ? (
           <img src={strat.handledTokenImgSrc} className="h-8 mr-3 w-8"></img>

@@ -169,7 +169,7 @@ const CreateRefForm = ({
       {linkGenerated || existingLinks.length > 0 ? (
         <div className="pt-6">
           {linkGenerated && (
-            <div className="border border-fgd-4 px-4 py-2 rounded-md w-full break-all flex items-center">
+            <div className="border border-fgd-4 px-4 py-2 w-full break-all flex items-center">
               <div>
                 <div className="text-xs text-fgd-1">
                   {link}
@@ -191,7 +191,7 @@ const CreateRefForm = ({
           {existingLinks.map((x) => (
             <div
               key={x.referrerId}
-              className="border border-fgd-4 px-4 py-2 rounded-md w-full break-all flex items-center"
+              className="border border-fgd-4 px-4 py-2 w-full break-all flex items-center"
             >
               <div>
                 <div className="text-xs text-fgd-1">

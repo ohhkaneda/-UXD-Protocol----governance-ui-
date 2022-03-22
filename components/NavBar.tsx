@@ -15,6 +15,7 @@ const NavBar = () => {
             {/* <h1 className="text-lg">Sierra</h1> */}
           </div>
         </Link>
+
         <ConnectWalletButton />
       </div>
     </div>

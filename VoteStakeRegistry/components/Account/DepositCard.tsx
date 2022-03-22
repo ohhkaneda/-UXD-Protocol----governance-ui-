@@ -127,8 +127,8 @@ const DepositCard = ({ deposit }: { deposit: DepositWithMintAccount }) => {
   }
   const tokenInfo = tokenService.getTokenInfo(deposit.mint.publicKey.toBase58())
   return (
-    <div className="border border-fgd-4 rounded-lg flex flex-col">
-      <div className="bg-bkg-3 px-4 py-4 pr-16 rounded-md rounded-b-none flex items-center">
+    <div className="border border-fgd-4 flex flex-col">
+      <div className="bg-bkg-3 px-4 py-4 pr-16 rounded-b-none flex items-center">
         {tokenInfo?.logoURI && (
           <img className="w-8 h-8 mr-2" src={tokenInfo?.logoURI}></img>
         )}
@@ -140,10 +140,7 @@ const DepositCard = ({ deposit }: { deposit: DepositWithMintAccount }) => {
           </span>
         </h3>
       </div>
-      <div
-        className="p-4 rounded-lg flex flex-col h-full"
-        style={{ minHeight: '290px' }}
-      >
+      <div className="p-4 flex flex-col h-full" style={{ minHeight: '290px' }}>
         <div className="flex flex-row flex-wrap">
           <CardLabel
             label="Lockup Type"

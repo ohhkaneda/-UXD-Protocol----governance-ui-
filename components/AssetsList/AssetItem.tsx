@@ -49,7 +49,7 @@ const AssetItem = ({
   }, [JSON.stringify(item)])
 
   return (
-    <div className="text-fgd-1 border border-fgd-4 p-3 rounded-lg w-full">
+    <div className="text-fgd-1 border border-fgd-4 p-3 w-full">
       <div className="flex items-center">
         <TerminalIcon className="h-6 mr-2 text-fgd-3 w-6" />
         <div>
@@ -75,7 +75,7 @@ const AssetItem = ({
       </div>
       {!panelView && (
         <>
-          <div className="bg-bkg-1 mt-4 px-4 py-3 rounded-md w-full break-all flex mb-6 items-center">
+          <div className="bg-bkg-1 mt-4 px-4 py-3 w-full break-all flex mb-6 items-center">
             <div className="flex items-center text-sm text-fgd-3">
               Last deployed slot:{' '}
               {loadSlot ? (

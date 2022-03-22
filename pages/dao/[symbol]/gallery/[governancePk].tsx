@@ -56,7 +56,7 @@ const gallery = () => {
     }
   }, [realmNfts.length, JSON.stringify(governanceNfts), governancePk])
   return (
-    <div className="bg-bkg-2 rounded-lg p-4 md:p-6">
+    <div className="bg-bkg-2 p-4 md:p-6">
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-12">
           <div className="mb-4">
@@ -126,15 +126,15 @@ const gallery = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-flow-row gap-6">
             {isLoading ? (
               <>
-                <div className="animate-pulse bg-bkg-3 col-span-1 h-48 rounded-lg" />
-                <div className="animate-pulse bg-bkg-3 col-span-1 h-48 rounded-lg" />
-                <div className="animate-pulse bg-bkg-3 col-span-1 h-48 rounded-lg" />
-                <div className="animate-pulse bg-bkg-3 col-span-1 h-48 rounded-lg" />
+                <div className="animate-pulse bg-bkg-3 col-span-1 h-48" />
+                <div className="animate-pulse bg-bkg-3 col-span-1 h-48" />
+                <div className="animate-pulse bg-bkg-3 col-span-1 h-48" />
+                <div className="animate-pulse bg-bkg-3 col-span-1 h-48" />
               </>
             ) : nfts.length ? (
               nfts.map((x, idx) => (
                 <a
-                  className="bg-bkg-4 col-span-1 flex items-center justify-center rounded-lg filter drop-shadow-xl"
+                  className="bg-bkg-4 col-span-1 flex items-center justify-center filter drop-shadow-xl"
                   key={idx}
                   href={
                     connection.endpoint && x.mint
@@ -146,7 +146,7 @@ const gallery = () => {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <ImgWithLoader
-                    className="bg-bkg-2 cursor-pointer default-transition h-full w-full rounded-md border border-transparent transform scale-90 hover:scale-95"
+                    className="bg-bkg-2 cursor-pointer default-transition h-full w-full border border-transparent transform scale-90 hover:scale-95"
                     src={x.val.image}
                   />
                 </a>

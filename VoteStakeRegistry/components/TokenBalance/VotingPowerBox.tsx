@@ -21,7 +21,7 @@ const VotingPowerBox = ({
     votingPower && mint ? fmtMintAmount(mint, votingPower) : '0'
 
   return (
-    <div className={`bg-bkg-1 rounded-md ${className}`} style={style}>
+    <div className={`bg-bkg-1 ${className}`} style={style}>
       <p className="text-fgd-3">Votes</p>
       <span className="mb-0 flex font-bold items-center hero-text">
         {votingPowerFmt}{' '}

@@ -68,7 +68,7 @@ const Select = ({
                   static
                   className={`text-fgd-1 text-sm max-h-64 ${
                     !noMaxWidth && 'max-w-lg'
-                  } overflow-auto z-20 w-full p-1 absolute left-0 mt-1 bg-bkg-1 origin-top-left divide-y divide-bkg-3 shadow-lg outline-none rounded-md thin-scroll`}
+                  } overflow-auto z-20 w-full p-1 absolute left-0 mt-1 border-2 border-fgd-3 bg-bkg-1 origin-top-left divide-y divide-bkg-3 shadow-lg outline-none thin-scroll`}
                 >
                   {children}
                 </Listbox.Options>
@@ -87,7 +87,7 @@ const Option = ({ value, children, className = '' }) => {
     <Listbox.Option value={value}>
       {({ selected }) => (
         <div
-          className={`default-transition px-2 py-3 hover:bg-bkg-2 hover:cursor-pointer text-fgd-2 tracking-wider ${
+          className={`default-transition px-2 py-3 hover:text-white hover:cursor-pointer text-fgd-2 tracking-wider ${
             selected && `text-primary-light`
           } ${className}`}
         >

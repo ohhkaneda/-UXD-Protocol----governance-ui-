@@ -76,8 +76,8 @@ const ConnectWalletButton = (props) => {
     <div className="flex">
       <button
         disabled={connected}
-        className={`bg-transparent border border-fgd-4 border-r-0 default-transition flex h-12 items-center pl-1 pr-2 rounded-l-full rounded-r-none ${
-          connected ? 'cursor-default' : 'hover:bg-bkg-3 focus:outline-none'
+        className={`bg-transparent border border-fgd-4 border-2 default-transition flex h-12 items-center pl-1 pr-2 ${
+          connected ? 'cursor-default' : 'hover:border-white focus:outline-none'
         }`}
         onClick={handleConnectDisconnect}
         {...props}
@@ -134,7 +134,7 @@ const ConnectWalletButton = (props) => {
           {({ open }) => (
             <>
               <Menu.Button
-                className={`border border-fgd-4 cursor-pointer default-transition h-12 w-12 py-2 px-2 rounded-r-full hover:bg-bkg-3 focus:outline-none`}
+                className={`border border-fgd-4 cursor-pointer default-transition h-12 w-12 py-2 px-2 hover:border-white focus:outline-none`}
               >
                 <ChevronDownIcon
                   className={`${
@@ -142,12 +142,12 @@ const ConnectWalletButton = (props) => {
                   } default-transition h-5 m-auto ml-1 text-primary-light w-5`}
                 />
               </Menu.Button>
-              <Menu.Items className="absolute bg-bkg-1 border border-fgd-4 p-2 right-0 top-14 shadow-md outline-none rounded-md w-48 z-20">
+              <Menu.Items className="absolute bg-bkg-1 border border-fgd-4 p-2 right-0 top-14 shadow-md outline-none w-48 z-20">
                 <>
                   {WALLET_PROVIDERS.map(({ name, url, icon }) => (
                     <Menu.Item key={name}>
                       <button
-                        className="flex default-transition h-9 items-center p-2 w-full hover:bg-bkg-3 hover:cursor-pointer hover:rounded font-normal focus:outline-none"
+                        className="flex default-transition h-9 items-center p-2 w-full hover:text-white text-fgd-3 hover:cursor-pointer font-normal focus:outline-none"
                         onClick={() =>
                           setWalletStore((s) => {
                             s.providerUrl = url
@@ -180,7 +180,7 @@ const ConnectWalletButton = (props) => {
                           )
                         }
                       >
-                        <button className="flex default-transition h-9 items-center p-2 w-full hover:bg-bkg-3 hover:cursor-pointer hover:rounded font-normal focus:outline-none">
+                        <button className="flex default-transition h-9 items-center p-2 w-full hover:text-white text-fgd-3 hover:cursor-pointer font-normal focus:outline-none">
                           <TwitterIcon className="h-4 w-4 mr-2" />
                           <span className="text-sm">
                             {displayName ? 'Edit Twitter' : 'Link Twitter'}
@@ -191,7 +191,7 @@ const ConnectWalletButton = (props) => {
                         key={'disconnect'}
                         onClick={handleConnectDisconnect}
                       >
-                        <button className="flex default-transition h-9 items-center p-2 w-full hover:bg-bkg-3 hover:cursor-pointer hover:rounded font-normal focus:outline-none">
+                        <button className="flex default-transition h-9 items-center p-2 w-full hover:text-white text-fgd-3 hover:cursor-pointer font-normal focus:outline-none">
                           <BackspaceIcon className="h-4 w-4 mr-2" />
                           <span className="text-sm">Disconnect</span>
                         </button>
@@ -202,7 +202,7 @@ const ConnectWalletButton = (props) => {
                           handleToggleDevnet()
                         }}
                       >
-                        <button className="flex default-transition h-9 items-center p-2 w-full hover:bg-bkg-3 hover:cursor-pointer hover:rounded font-normal focus:outline-none">
+                        <button className="flex default-transition h-9 items-center p-2 w-full hover:text-white text-fgd-3 hover:cursor-pointer font-normal focus:outline-none">
                           <span className="text-sm">Devnet</span>
                           <Switch
                             checked={useDevnet}

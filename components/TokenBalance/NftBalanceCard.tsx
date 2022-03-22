@@ -5,7 +5,7 @@ const NftBalanceCard = () => {
   const connected = useWalletStore((s) => s.connected)
   const wallet = useWalletStore((s) => s.current)
   return (
-    <div className="bg-bkg-2 p-4 md:p-6 rounded-lg">
+    <div className="bg-bkg-2 p-4 md:p-6">
       <h3 className="mb-4">Your NFTS </h3>
       <div className="space-y-4">
         {!connected ? (
