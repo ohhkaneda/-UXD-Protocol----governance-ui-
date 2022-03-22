@@ -33,7 +33,7 @@ const GovernedAccountsTabs: FunctionComponent<GovernedAccountsTabsProps> = ({
             onClick={() => onChange(x)}
             className={`cursor-pointer default-transition flex items-center h-16 px-4 relative w-full hover:bg-bkg-3 ${
               activePubKey?.toBase58() === pubKey.toBase58()
-                ? `bg-bkg-3 rounded-l-none text-primary-light`
+                ? `bg-bkg-3 text-primary-light`
                 : `text-fgd-2 hover:text-primary-light`
             }
             `}

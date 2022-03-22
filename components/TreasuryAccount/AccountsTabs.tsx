@@ -41,7 +41,7 @@ const AccountsTabs: FunctionComponent<AccountsTabsProps> = ({
             onClick={() => onChange(x)}
             className={`cursor-pointer default-transition flex items-center h-24 px-4 relative w-full hover:border-white ${
               activeTab?.transferAddress === x.transferAddress
-                ? `bg-bkg-3 rounded-l-none text-primary-light`
+                ? `bg-bkg-3 text-primary-light`
                 : `text-fgd-2 hover:text-primary-light`
             }
             `}

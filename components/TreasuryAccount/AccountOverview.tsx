@@ -171,7 +171,7 @@ const AccountOverview = () => {
       >
         <div className="relative w-full">
           {isCopied && (
-            <div className="absolute bg-bkg-1 left-1/2 p-2 rounded text-fgd-3 text-xs transform -translate-x-1/2 -top-10">
+            <div className="absolute bg-bkg-1 left-1/2 p-2 text-fgd-3 text-xs transform -translate-x-1/2 -top-10">
               Copied to Clipboard
             </div>
           )}

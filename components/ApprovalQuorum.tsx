@@ -46,14 +46,12 @@ const ApprovalProgress = ({
         </div>
       </div>
       {/* {progress < 100 ? ( */}
-      <div className="bg-bkg-4 h-2 flex flex-grow mt-2.5 rounded w-full">
+      <div className="bg-bkg-4 h-2 flex flex-grow mt-2.5 w-full">
         <div
           style={{
             width: `${progress}%`,
           }}
-          className={`${
-            progress >= 100 ? 'bg-green' : 'bg-fgd-3'
-          } flex rounded`}
+          className={`${progress >= 100 ? 'bg-green' : 'bg-fgd-3'} flex`}
         ></div>
       </div>
       {/* ) : null} */}

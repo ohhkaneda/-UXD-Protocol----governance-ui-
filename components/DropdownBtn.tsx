@@ -27,7 +27,7 @@ const DropdownBtn = ({
       ) : (
         <>
           <button
-            className={`bg-transparent border border-fgd-3 border-r-0 default-transition flex h-12 items-center pl-3 pr-4 rounded-l-full rounded-r-none w-36 hover:bg-bkg-3 focus:outline-none`}
+            className={`bg-transparent border border-fgd-3 border-r-0 default-transition flex h-12 items-center pl-3 pr-4 w-36 hover:bg-bkg-3 focus:outline-none`}
             onClick={() => defaultFunction?.callback()}
           >
             <div className="flex font-bold items-center text-fgd-1 text-left text-sm">
@@ -40,7 +40,7 @@ const DropdownBtn = ({
               {({ open }) => (
                 <>
                   <Menu.Button
-                    className={`border border-fgd-3 cursor-pointer default-transition h-12 w-12 py-2 px-2 rounded-r-full hover:bg-bkg-3 focus:outline-none`}
+                    className={`border border-fgd-3 cursor-pointer default-transition h-12 w-12 py-2 px-2 hover:bg-bkg-3 focus:outline-none`}
                   >
                     <ChevronDownIcon
                       className={`${
@@ -52,7 +52,7 @@ const DropdownBtn = ({
                     {filtredOptions.map((x) => (
                       <Menu.Item key={x.label}>
                         <button
-                          className="flex default-transition h-9 items-center p-2 w-full hover:bg-bkg-3 hover:cursor-pointer hover:rounded font-normal focus:outline-none"
+                          className="flex default-transition h-9 items-center p-2 w-full hover:bg-bkg-3 hover:cursor-pointer font-normal focus:outline-none"
                           onClick={() => x.callback()}
                         >
                           {x.label}

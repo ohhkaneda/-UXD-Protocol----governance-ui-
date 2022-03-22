@@ -12,7 +12,7 @@ const VoteResultStatus = ({
   yesVotesRequired,
 }: VoteResultStatusProps) => {
   return votePassed ? (
-    <div className="bg-bkg-1 flex items-center p-3">
+    <div className="bg-bkg-1 flex items-center p-3 border border-fgd-4">
       <CheckCircleIcon className="h-5 mr-1.5 text-green w-5" />
       <h4 className="mb-0">The proposal has passed</h4>
     </div>
@@ -30,14 +30,12 @@ const VoteResultStatus = ({
           )} more Yes vote${yesVotesRequired > 1 ? 's' : ''} were needed`}</p>
         </div>
       </div>
-      <div className="bg-bkg-4 h-2 flex flex-grow mt-2.5 rounded w-full">
+      <div className="bg-bkg-4 h-2 flex flex-grow mt-2.5 border border-fgd-4 w-full">
         <div
           style={{
             width: `${progress}%`,
           }}
-          className={`${
-            progress >= 100 ? 'bg-green' : 'bg-fgd-3'
-          } flex rounded`}
+          className={`${progress >= 100 ? 'bg-green' : 'bg-fgd-3'} flex`}
         ></div>
       </div>
     </div>

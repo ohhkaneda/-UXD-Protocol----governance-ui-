@@ -79,7 +79,7 @@ const AssetItem = ({
             <div className="flex items-center text-sm text-fgd-3">
               Last deployed slot:{' '}
               {loadSlot ? (
-                <div className="animate-pulse bg-bkg-3 h-5 ml-1 rounded w-16" />
+                <div className="animate-pulse bg-bkg-3 h-5 ml-1 w-16" />
               ) : (
                 <span className="font-bold ml-1 text-fgd-1">{slot}</span>
               )}

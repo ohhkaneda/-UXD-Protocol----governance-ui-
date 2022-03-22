@@ -17,7 +17,11 @@ const VoteResults = ({ isListView, proposal }: VoteResultsProps) => {
   return (
     <div className="flex space-x-4 items-center">
       {proposal ? (
-        <div className={`${!isListView ? 'bg-bkg-1 p-3' : ''} w-full`}>
+        <div
+          className={`${
+            !isListView ? 'bg-bkg-1 p-3' : ''
+          } w-full border border-fgd-4`}
+        >
           <div className="flex">
             <div className="w-1/2">
               <p>Yes Votes</p>
@@ -67,7 +71,7 @@ const VoteResults = ({ isListView, proposal }: VoteResultsProps) => {
         </div>
       ) : (
         <>
-          <div className="animate-pulse bg-bkg-3 h-12 rounded w-full" />
+          <div className="animate-pulse bg-bkg-3 h-12 w-full" />
         </>
       )}
     </div>

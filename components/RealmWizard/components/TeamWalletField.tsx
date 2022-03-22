@@ -65,7 +65,7 @@ const TeamWalletField: React.FC<{
           <StyledLabel>Member {index + 1}:</StyledLabel>
           <div className="flex align-center">
             <div
-              className="bg-gray-700 px-3 py-2 rounded"
+              className="bg-gray-700 px-3 py-2"
               style={{ fontFamily: 'monospace' }}
             >
               {wallet}

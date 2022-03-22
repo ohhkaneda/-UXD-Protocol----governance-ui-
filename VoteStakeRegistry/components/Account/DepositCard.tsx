@@ -128,7 +128,7 @@ const DepositCard = ({ deposit }: { deposit: DepositWithMintAccount }) => {
   const tokenInfo = tokenService.getTokenInfo(deposit.mint.publicKey.toBase58())
   return (
     <div className="border border-fgd-4 flex flex-col">
-      <div className="bg-bkg-3 px-4 py-4 pr-16 rounded-b-none flex items-center">
+      <div className="bg-bkg-3 px-4 py-4 pr-16 flex items-center">
         {tokenInfo?.logoURI && (
           <img className="w-8 h-8 mr-2" src={tokenInfo?.logoURI}></img>
         )}

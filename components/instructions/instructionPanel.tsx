@@ -76,9 +76,7 @@ export function InstructionPanel() {
         {({ open }) => (
           <>
             <Disclosure.Button
-              className={`border border-fgd-4 font-bold px-4 md:px-6 py-4 text-fgd-1 transition-all w-full hover:bg-bkg-3 focus:outline-none ${
-                open && 'rounded-b-none'
-              }`}
+              className={`border border-fgd-4 font-bold px-4 md:px-6 py-4 text-fgd-1 transition-all w-full hover:border-white focus:outline-none`}
             >
               <div className="flex items-center justify-between">
                 <h2 className="mb-0">Instructions</h2>
@@ -90,7 +88,7 @@ export function InstructionPanel() {
               </div>
             </Disclosure.Button>
             <Disclosure.Panel
-              className={`border border-fgd-4 border-t-0 p-4 md:p-6 pt-0 rounded-b-md`}
+              className={`border border-fgd-4 border-t-0 p-4 md:p-6 pt-0`}
             >
               {proposalInstructions.map((pi, idx) => (
                 <div key={pi.pubkey.toBase58()}>

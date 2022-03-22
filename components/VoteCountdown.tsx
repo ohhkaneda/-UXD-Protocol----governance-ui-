@@ -86,21 +86,17 @@ export function VoteCountdown({
           <div className="mr-1 text-fgd-3">Ends</div>
           {countdown && countdown.days > 0 && (
             <>
-              <div className="bg-bkg-1 px-1 py-0.5 rounded">
-                {countdown.days}d
-              </div>
+              <div className="bg-bkg-1 px-1 py-0.5">{countdown.days}d</div>
               <span className="font-bold mx-0.5 text-fgd-3">:</span>
             </>
           )}
-          <div className="bg-bkg-1 px-1 py-0.5 rounded">{countdown.hours}h</div>
+          <div className="bg-bkg-1 px-1 py-0.5">{countdown.hours}h</div>
           <span className="font-bold mx-0.5 text-fgd-3">:</span>
-          <div className="bg-bkg-1 px-1 py-0.5 rounded">
-            {countdown.minutes}m
-          </div>
+          <div className="bg-bkg-1 px-1 py-0.5">{countdown.minutes}m</div>
           {!countdown.days && (
             <>
               <span className="font-bold mx-0.5 text-fgd-3">:</span>
-              <div className="bg-bkg-1 px-1 py-0.5 rounded w-9">
+              <div className="bg-bkg-1 px-1 py-0.5 w-9">
                 {countdown.seconds}s
               </div>
             </>
