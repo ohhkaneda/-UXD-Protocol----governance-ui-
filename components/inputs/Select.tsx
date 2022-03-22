@@ -68,7 +68,7 @@ const Select = ({
                   static
                   className={`text-fgd-1 text-sm max-h-64 ${
                     !noMaxWidth && 'max-w-lg'
-                  } overflow-auto z-20 w-full p-1 absolute left-0 mt-1 border-2 border-fgd-3 bg-bkg-1 origin-top-left divide-y divide-bkg-3 shadow-lg outline-none thin-scroll`}
+                  } overflow-auto z-20 w-full p-1 absolute left-0 mt-1 border border-fgd-3 bg-bkg-1 origin-top-left divide-y divide-bkg-3 shadow-lg outline-none thin-scroll`}
                 >
                   {children}
                 </Listbox.Options>

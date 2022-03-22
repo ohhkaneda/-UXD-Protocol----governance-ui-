@@ -48,7 +48,7 @@ const ProposalFilter = ({ filters, setFilters }) => {
       {({ open }) => (
         <>
           <Disclosure.Button
-            className={`default-transition font-normal pl-3 pr-2 py-2.5 border-fgd-3 border-2 text-fgd-1 text-sm hover:border-white`}
+            className={`default-transition font-normal pl-3 pr-2 py-2.5 border-fgd-3 border text-fgd-1 text-sm hover:border-white`}
           >
             {filters.length > 0 ? (
               <div className="absolute -top-3 -right-1.5 z-20">

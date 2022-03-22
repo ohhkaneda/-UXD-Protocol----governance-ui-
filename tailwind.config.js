@@ -12,8 +12,8 @@ module.exports = {
   darkMode: false,
   theme: {
     fontFamily: {
-      display: ['PT Mono, monospace'],
-      body: ['Inter, sans-serif'],
+      display: ['Inconsolata, PT Mono, monospace'],
+      body: ['Inconsolata, Inter, sans-serif'],
     },
     extend: {
       cursor: {

@@ -28,8 +28,8 @@ const Button: FunctionComponent<ButtonProps> = ({
         small ? 'py-1' : 'py-2.5'
       } text-sm focus:outline-none ${
         disabled
-          ? 'cursor-not-allowed text-fgd-2 border-2 border-fgd-4'
-          : 'text-primary hover:border-white border-2 border-fgd-3'
+          ? 'cursor-not-allowed text-fgd-2 border border-fgd-4'
+          : 'text-primary hover:border-white border border-fgd-3'
       }`}
       {...props}
       style={style}

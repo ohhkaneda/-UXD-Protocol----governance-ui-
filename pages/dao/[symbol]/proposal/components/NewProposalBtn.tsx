@@ -56,7 +56,7 @@ const NewProposalBtn = () => {
                 !canCreateProposal
                   ? 'cursor-not-allowed pointer-events-none'
                   : 'hover:border-white'
-              } default-transition flex items-center border-2 border-fgd-3 px-3 py-2.5 text-fgd-1 text-sm focus:outline-none`}
+              } default-transition flex items-center border border-fgd-3 px-3 py-2.5 text-fgd-1 text-sm focus:outline-none`}
             >
               <PlusCircleIcon className="h-5 mr-1.5 text-primary-light w-5" />
               New
