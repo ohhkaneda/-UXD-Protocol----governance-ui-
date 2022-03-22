@@ -32,6 +32,7 @@
   --bkg-2: theme('colors.uxd-theme["bkg-2"]');
   --bkg-3: theme('colors.uxd-theme["bkg-3"]');
   --bkg-4: theme('colors.uxd-theme["bkg-4"]');
+  --bkg-5: theme('colors.uxd-theme["bkg-5"]');
   --fgd-1: theme('colors.uxd-theme["fgd-1"]');
   --fgd-2: theme('colors.uxd-theme["fgd-2"]');
   --fgd-3: theme('colors.uxd-theme["fgd-3"]');
@@ -114,8 +115,8 @@ button {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 16px;
-  height: 16px;
+  width: 11px;
+  height: 11px;
 }
 
 /* Track */
@@ -126,14 +127,14 @@ button {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--bkg-1);
+  background: var(--bkg-5);
   border-radius: 100vh;
   border: 3px solid var(--bkg-2);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--bkg-3);
+  background: var(--bkg-5);
   cursor: pointer;
 }
 

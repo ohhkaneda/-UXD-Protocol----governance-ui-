@@ -75,7 +75,7 @@ const MembersCompactWrapper = () => {
               )}
             </h3>
 
-            <div className="bg-bkg-1 mb-3 px-4 py-2 w-full">
+            <div className="bg-bkg-1 border border-fgd-4 mb-3 px-4 py-2 w-full">
               <p className="text-fgd-3 text-xs">Total votes cast</p>
 
               <h3 className="mb-0">{totalVotesCast}</h3>

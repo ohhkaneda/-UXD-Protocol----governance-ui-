@@ -35,7 +35,7 @@ const Modal = ({
 
           {isOpen ? (
             <div
-              className={`inline-block bg-bkg-2 ${background}
+              className={`inline-block bg-bkg-2 ${background} border border-white
               text-left px-8 pt-6 pb-8 shadow-lg transform transition-all 
               sm:my-8 align-middle ${sizeClassName} w-full`}
             >
