@@ -165,7 +165,7 @@ const MemberOverview = () => {
         </>
       </h3>
       <div className="bg-bkg-1 px-4 py-2 rounded-md w-full break-all flex items-center">
-        <div className="bg-bkg-4 flex flex-shrink-0 items-center justify-center h-8 rounded-full w-8 mr-2">
+        <div className="bg-bkg-4 flex flex-shrink-0 items-center justify-center h-8 w-8 mr-2">
           <AddressImage
             dark={true}
             connection={connection.current}

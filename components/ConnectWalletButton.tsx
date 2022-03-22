@@ -92,7 +92,7 @@ const ConnectWalletButton = (props) => {
                 height="40px"
                 width="40px"
                 placeholder={
-                  <div className="bg-bkg-4 flex flex-shrink-0 items-center justify-center h-10 rounded-full w-10 mr-2">
+                  <div className="bg-bkg-4 flex flex-shrink-0 items-center justify-center h-10 w-10 mr-2">
                     <UserCircleIcon className="h-9 text-fgd-3 w-9" />
                   </div>
                 }

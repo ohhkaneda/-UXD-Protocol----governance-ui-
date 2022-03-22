@@ -12,7 +12,7 @@ const WizardModeSelect: React.FC<{
       <div className="grid grid-cols-1 gap-2 text-center ">
         <div className="flex justify-center pointer ">
           <div
-            className="border rounded px-5 py-3 w-6/12 hover:bg-bkg-3"
+            className="border rounded px-5 py-3 w-6/12 hover:border-white"
             onClick={() => {
               onSelect(RealmWizardMode.BASIC)
             }}
@@ -29,7 +29,7 @@ const WizardModeSelect: React.FC<{
         </div>
         <div className="flex justify-center ">
           <div
-            className="border rounded px-5 py-3 w-6/12 hover:bg-bkg-3 pointer"
+            className="border rounded px-5 py-3 w-6/12 hover:border-white pointer"
             onClick={() => {
               onSelect(RealmWizardMode.ADVANCED)
             }}
@@ -51,7 +51,7 @@ const WizardModeSelect: React.FC<{
           target="_blank"
           rel="noopener noreferrer"
         >
-          <div className="border rounded px-3 py-1.5 hover:border-primary-light hover:bg-bkg-3 hover:text-primary-dark transition-all duration-200 pointer mt-10 ">
+          <div className="border rounded px-3 py-1.5 hover:border-primary-light hover:border-white hover:text-primary-dark transition-all duration-200 pointer mt-10 ">
             <span className="font-semibold text-sm">Tutorial Docs</span>
           </div>
         </a>

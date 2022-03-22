@@ -107,7 +107,6 @@ export default function InstructionCard({
     }
     getAmountImg()
   }, [proposalInstruction, governedTokenAccountsWithoutNfts.length])
-  const isSol = tokenImgUrl.includes(WSOL_MINT)
 
   const proposalAuthority = tokenRecords[proposal.owner.toBase58()]
   return (
@@ -116,10 +115,7 @@ export default function InstructionCard({
         {`Instruction ${index} `}
         {descriptor?.name && `– ${descriptor.name}`}{' '}
         {tokenImgUrl && (
-          <img
-            className={`w-5 h-5 ml-2 ${isSol && 'rounded-full'}`}
-            src={tokenImgUrl}
-          ></img>
+          <img className={`w-5 h-5 ml-2`} src={tokenImgUrl}></img>
         )}
       </h3>
       <InstructionProgram

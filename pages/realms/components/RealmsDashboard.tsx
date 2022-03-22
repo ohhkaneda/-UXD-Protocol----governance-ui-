@@ -50,16 +50,16 @@ export default function RealmsDashboard({
           certifiedRealms.map((realm: RealmInfo) => (
             <div
               onClick={() => goToRealm(realm)}
-              className="bg-bkg-2 cursor-pointer default-transition flex flex-col items-center p-8 rounded-lg hover:bg-bkg-3"
+              className="bg-bkg-2 cursor-pointer default-transition flex flex-col items-center p-8 rounded-lg hover:border-white"
               key={realm.realmId.toString()}
             >
               <div className="pb-5">
                 {realm.ogImage ? (
-                  <div className="bg-[rgba(255,255,255,0.06)] rounded-full h-16 w-16 flex items-center justify-center">
+                  <div className="bg-[rgba(255,255,255,0.06)] h-16 w-16 flex items-center justify-center">
                     <img className="w-10" src={realm.ogImage}></img>
                   </div>
                 ) : (
-                  <div className="bg-[rgba(255,255,255,0.06)] h-16 w-16 flex font-bold items-center justify-center rounded-full text-fgd-3">
+                  <div className="bg-[rgba(255,255,255,0.06)] h-16 w-16 flex font-bold items-center justify-center text-fgd-3">
                     {realm.displayName?.charAt(0)}
                   </div>
                 )}
@@ -87,11 +87,11 @@ export default function RealmsDashboard({
               >
                 <div className="pb-5">
                   {realm.ogImage ? (
-                    <div className="bg-[rgba(255,255,255,0.06)] rounded-full h-16 w-16 flex items-center justify-center">
+                    <div className="bg-[rgba(255,255,255,0.06)] h-16 w-16 flex items-center justify-center">
                       <img className="w-10" src={realm.ogImage}></img>
                     </div>
                   ) : (
-                    <div className="bg-[rgba(255,255,255,0.06)] h-16 w-16 flex font-bold items-center justify-center rounded-full text-fgd-3">
+                    <div className="bg-[rgba(255,255,255,0.06)] h-16 w-16 flex font-bold items-center justify-center text-fgd-3">
                       {realm.displayName?.charAt(0)}
                     </div>
                   )}

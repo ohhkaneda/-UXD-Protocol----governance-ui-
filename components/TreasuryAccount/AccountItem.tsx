@@ -14,19 +14,11 @@ const AccountItem = ({
     name,
     symbol,
     displayPrice,
-    isSol,
   } = getTreasuryAccountItemInfo(governedAccountTokenAccount, governanceNfts)
 
   return (
     <div className="flex items-start text-fgd-1 border border-fgd-4 p-3 rounded-lg w-full">
-      {logo && (
-        <img
-          className={`flex-shrink-0 h-6 w-6 mr-2.5 mt-1 ${
-            isSol && 'rounded-full'
-          }`}
-          src={logo}
-        />
-      )}
+      {logo && <img className="flex-shrink-0 h-6 w-6 mr-2.5 mt-1" src={logo} />}
       <div className="w-full">
         <div className="flex items-start justify-between mb-1">
           <div className="text-xs text-th-fgd-1">{name}</div>

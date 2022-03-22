@@ -48,11 +48,11 @@ const ProposalFilter = ({ filters, setFilters }) => {
       {({ open }) => (
         <>
           <Disclosure.Button
-            className={`default-transition font-normal pl-3 pr-2 py-2.5 ring-1 ring-fgd-3 rounded-md text-fgd-1 text-sm hover:bg-bkg-3 focus:outline-none`}
+            className={`default-transition font-normal pl-3 pr-2 py-2.5 border-fgd-3 border-2 text-fgd-1 text-sm hover:border-white`}
           >
             {filters.length > 0 ? (
               <div className="absolute -top-3 -right-1.5 z-20">
-                <StyledAlertCount className="w-4 h-4 bg-red relative inline-flex rounded-full flex items-center justify-center">
+                <StyledAlertCount className="w-4 h-4 bg-red relative inline-flex flex items-center justify-center">
                   {filters.length}
                 </StyledAlertCount>
               </div>

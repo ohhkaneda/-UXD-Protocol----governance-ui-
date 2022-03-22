@@ -5,24 +5,24 @@
 /* Theme */
 
 :root {
-  --primary-light: theme('colors.sierra-theme.primary.light');
-  --primary-dark: theme('colors.sierra-theme.primary.dark');
-  --secondary-1: theme('colors.sierra-theme["secondary-1"].light');
-  --secondary-1-dark: theme('colors.sierra-theme["secondary-1"].dark');
-  --secondary-2: theme('colors.sierra-theme["secondary-2"].light');
-  --secondary-2-dark: theme('colors.sierra-theme["secondary-2"].dark');
-  --red: theme('colors.sierra-theme.red');
-  --green: theme('colors.sierra-theme.green');
-  --orange: theme('colors.sierra-theme.orange');
-  --blue: theme('colors.sierra-theme.blue');
-  --bkg-1: theme('colors.sierra-theme["bkg-1"]');
-  --bkg-2: theme('colors.sierra-theme["bkg-2"]');
-  --bkg-3: theme('colors.sierra-theme["bkg-3"]');
-  --bkg-4: theme('colors.sierra-theme["bkg-4"]');
-  --fgd-1: theme('colors.sierra-theme["fgd-1"]');
-  --fgd-2: theme('colors.sierra-theme["fgd-2"]');
-  --fgd-3: theme('colors.sierra-theme["fgd-3"]');
-  --fgd-4: theme('colors.sierra-theme["fgd-4"]');
+  --primary-light: theme('colors.uxd-theme.primary.light');
+  --primary-dark: theme('colors.uxd-theme.primary.dark');
+  --secondary-1: theme('colors.uxd-theme["secondary-1"].light');
+  --secondary-1-dark: theme('colors.uxd-theme["secondary-1"].dark');
+  --secondary-2: theme('colors.uxd-theme["secondary-2"].light');
+  --secondary-2-dark: theme('colors.uxd-theme["secondary-2"].dark');
+  --red: theme('colors.uxd-theme.red');
+  --green: theme('colors.uxd-theme.green');
+  --orange: theme('colors.uxd-theme.orange');
+  --blue: theme('colors.uxd-theme.blue');
+  --bkg-1: theme('colors.uxd-theme["bkg-1"]');
+  --bkg-2: theme('colors.uxd-theme["bkg-2"]');
+  --bkg-3: theme('colors.uxd-theme["bkg-3"]');
+  --bkg-4: theme('colors.uxd-theme["bkg-4"]');
+  --fgd-1: theme('colors.uxd-theme["fgd-1"]');
+  --fgd-2: theme('colors.uxd-theme["fgd-2"]');
+  --fgd-3: theme('colors.uxd-theme["fgd-3"]');
+  --fgd-4: theme('colors.uxd-theme["fgd-4"]');
 }
 
 /* base */

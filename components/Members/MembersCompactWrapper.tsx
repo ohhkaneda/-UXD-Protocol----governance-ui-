@@ -62,12 +62,12 @@ const MembersCompactWrapper = () => {
                     onClick={() => setOpenAddMemberModal(!openAddMemberModal)}
                     className={`bg-bkg-2 default-transition 
                 flex flex-col items-center justify-center
-                rounded-lg hover:bg-bkg-3 ml-auto 
+                rounded-lg hover:border-white ml-auto 
                 hover:cursor-pointer ${
                   addNewMemberTooltip ? 'opacity-60 pointer-events-none' : ''
                 }`}
                   >
-                    <div className="bg-[rgba(255,255,255,0.06)] h-6 w-6 flex font-bold items-center justify-center rounded-full text-fgd-3">
+                    <div className="bg-[rgba(255,255,255,0.06)] h-6 w-6 flex font-bold items-center justify-center text-fgd-3">
                       <PlusIcon />
                     </div>
                   </div>

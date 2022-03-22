@@ -294,7 +294,7 @@ const AccountOverview = () => {
               }
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-fgd-4 default-transition flex items-center justify-between rounded-md hover:bg-bkg-3 hover:border-primary-light p-4 text-sm text-th-fgd-1 mb-2"
+              className="border border-fgd-4 default-transition flex items-center justify-between rounded-md hover:border-white hover:border-primary-light p-4 text-sm text-th-fgd-1 mb-2"
               key={activity.signature}
             >
               <div>{activity.signature.substring(0, 12)}...</div>
@@ -398,10 +398,7 @@ const StrategyCard = ({
     <div className="border border-fgd-4 flex items-center justify-between mt-2 p-4 rounded-md">
       <div className="flex items-center">
         {handledTokenImgSrc ? (
-          <img
-            src={strat.handledTokenImgSrc}
-            className="h-8 mr-3 rounded-full w-8"
-          ></img>
+          <img src={strat.handledTokenImgSrc} className="h-8 mr-3 w-8"></img>
         ) : null}
         <div>
           <p className="text-xs">{`${strategyName} ${handledTokenSymbol} on ${protocolName}`}</p>

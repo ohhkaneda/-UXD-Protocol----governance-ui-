@@ -52,7 +52,7 @@ const RealmHeader = () => {
                   src={realmInfo?.ogImage}
                 ></img>
               ) : (
-                <div className="bg-[rgba(255,255,255,0.1)] h-14 w-14 flex font-bold items-center justify-center rounded-full text-fgd-3">
+                <div className="bg-[rgba(255,255,255,0.1)] h-14 w-14 flex font-bold items-center justify-center text-fgd-3">
                   {realmDisplayName?.charAt(0)}
                 </div>
               )}
