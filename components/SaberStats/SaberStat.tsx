@@ -1,13 +1,7 @@
 import { SaberStats } from '@hooks/useSaberStats'
 
 const SaberStat = ({
-  saberStat: {
-    liquidityPoolName,
-    uiBalance,
-    uiRewardsEarned,
-    mintName,
-    rewardsTokenMintName,
-  },
+  saberStat: { liquidityPoolName, uiBalance, pendingRewards, mintName },
 }: {
   saberStat: SaberStats
 }) => {
@@ -16,12 +10,17 @@ const SaberStat = ({
       <span>{liquidityPoolName}</span>
       <div className="flex flex-col mt-3">
         <span className="text-xs">Balance</span>
-        <span className="text-fgd-3 text-xs mt-1">{`${uiBalance} ${mintName}`}</span>
+        <span className="text-fgd-3 text-xs mt-1">{`${uiBalance.toLocaleString()} ${mintName}`}</span>
       </div>
 
       <div className="flex flex-col mt-2">
-        <span className="text-xs">Claimable Rewards</span>
-        <span className="text-fgd-3 text-xs mt-1">{`${uiRewardsEarned} ${rewardsTokenMintName}`}</span>
+        <span className="text-xs">Pending Rewards</span>
+        {pendingRewards.map(({ name, uiPendingAmount }) => (
+          <span
+            key={name}
+            className="text-fgd-3 text-xs mt-1"
+          >{`${uiPendingAmount.toLocaleString()} ${name}`}</span>
+        ))}
       </div>
     </div>
   )

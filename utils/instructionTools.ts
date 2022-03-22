@@ -18,7 +18,7 @@ import {
   parseMintNaturalAmountFromDecimal,
 } from '@tools/sdk/units'
 import type { ConnectionContext } from 'utils/connection'
-import { getATA } from './ataTools'
+import { findATAAddrSync, getATA } from './ataTools'
 import { isFormValid } from './formValidation'
 import {
   getTokenAccountsByMint,
@@ -26,6 +26,7 @@ import {
   GovernedTokenAccount,
 } from './tokens'
 import { UiInstruction } from './uiTypes/proposalCreationTypes'
+import { isExistingTokenAccount } from './validations'
 
 export const validateInstruction = async ({
   schema,
@@ -65,6 +66,8 @@ export async function getTransferInstruction({
     governedTokenAccount?.token &&
     governedTokenAccount?.mint?.account
   ) {
+    console.log('In transfer function')
+
     const sourceAccount = governedTokenAccount.token?.account.address
     //this is the original owner
     const destinationAccount = new PublicKey(form.destinationAccount)
@@ -74,16 +77,34 @@ export async function getTransferInstruction({
       governedTokenAccount.mint.account.decimals
     )
 
+    const [receiverAddress] = findATAAddrSync(destinationAccount, mintPK)
+
+    const needToCreateAta = !(await isExistingTokenAccount(
+      connection,
+      receiverAddress
+    ))
+
+    console.log('infos', {
+      mintPK: mintPK.toString(),
+      destinationAccount: destinationAccount.toString(),
+      receiverAddress: receiverAddress.toString(),
+      needToCreateAta,
+    })
+
+    /* Do not work if the account is not initialized
     //we find true receiver address if its wallet and we need to create ATA the ata address will be the receiver
     const { currentAddress: receiverAddress, needToCreateAta } = await getATA({
       connection: connection,
       receiverAddress: destinationAccount,
       mintPK,
       wallet: wallet!,
-    })
+    })*/
+
     //we push this createATA instruction to transactions to create right before creating proposal
     //we don't want to create ata only when instruction is serialized
     if (needToCreateAta) {
+      console.log('Needs to create ATA')
+
       prerequisiteInstructions.push(
         Token.createAssociatedTokenAccountInstruction(
           ASSOCIATED_TOKEN_PROGRAM_ID, // always ASSOCIATED_TOKEN_PROGRAM_ID

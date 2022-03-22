@@ -63,12 +63,14 @@ export async function getATA({
     connection,
     receiverAddress
   )
+
   if (!isExistingAccount) {
     const existingAta = await tryGetAta(
       connection.current,
       mintPK,
       currentAddress
     )
+
     if (!existingAta) {
       const ata = await Token.getAssociatedTokenAddress(
         ASSOCIATED_TOKEN_PROGRAM_ID, // always ASSOCIATED_TOKEN_PROGRAM_ID

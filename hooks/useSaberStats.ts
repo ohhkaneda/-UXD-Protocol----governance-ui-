@@ -18,6 +18,7 @@ import QuarryMineConfiguration, {
 import { tryGetMint } from '@utils/tokens'
 import { BN } from '@project-serum/anchor'
 import BigNumber from 'bignumber.js'
+import { getSplTokenNameByMint } from '@utils/splTokens'
 
 const SaberAccountOwner = {
   UXDProtocol: {
@@ -34,8 +35,11 @@ export type SaberStats = {
   liquidityPoolName: string
   balance: BN
   uiBalance: number
-  rewardsEarned: BN
-  uiRewardsEarned: number
+  pendingRewards: {
+    mint: PublicKey
+    name: string
+    uiPendingAmount: number
+  }[]
   mintName: string
   rewardsTokenMintName: string
 }
@@ -65,7 +69,6 @@ const useSaberStats = () => {
       const {
         mint,
         rewarder,
-        rewardsTokenMintDecimals,
         mintName,
         rewardsTokenMintName,
       } = QuarryMineConfiguration.mintSpecificAddresses[SABER_UXD_USDC_LP]
@@ -86,6 +89,23 @@ const useSaberStats = () => {
         ),
       })
 
+      const sonarData = await fetch(
+        'https://api-uxd.sonar.watch/uxd'
+      ).then((res) => res.json())
+      const saberAccountSonarData = sonarData.find(
+        ({ platform, owner }) =>
+          platform === 'quarry' &&
+          owner === saberAccountOwner.publicKey.toBase58()
+      )
+
+      const pendingRewards = saberAccountSonarData.rewardAssets.map(
+        (asset) => ({
+          mint: new PublicKey(asset.mint),
+          name: getSplTokenNameByMint(new PublicKey(asset.mint)),
+          uiPendingAmount: asset.pending,
+        })
+      )
+
       const minerData = await sdk.programs.Mine.account.miner.fetch(miner)
 
       const lpMintInfo = await tryGetMint(connection.current, mint)
@@ -99,10 +119,7 @@ const useSaberStats = () => {
           uiBalance: new BigNumber(minerData.balance.toString())
             .shiftedBy(-lpMintInfo.account.decimals)
             .toNumber(),
-          rewardsEarned: minerData.rewardsEarned,
-          uiRewardsEarned: new BigNumber(minerData.rewardsEarned.toString())
-            .shiftedBy(-rewardsTokenMintDecimals)
-            .toNumber(),
+          pendingRewards,
           mintName,
           rewardsTokenMintName,
         },
