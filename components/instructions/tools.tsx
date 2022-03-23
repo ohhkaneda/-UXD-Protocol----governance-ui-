@@ -19,6 +19,7 @@ import { VOTE_STAKE_REGISTRY_INSTRUCTIONS } from './programs/voteStakeRegistry'
 import { MARINADE_INSTRUCTIONS } from './programs/marinade'
 import { SOLEND_PROGRAM_INSTRUCTIONS } from './programs/solend'
 import { ATA_PROGRAM_INSTRUCTIONS } from './programs/associatedTokenAccount'
+import { FRIKTION_PROGRAM_INSTRUCTIONS } from './programs/friktion'
 /**
  * Default governance program id instance
  */
@@ -176,6 +177,7 @@ export const INSTRUCTION_DESCRIPTORS = {
   ...ATA_PROGRAM_INSTRUCTIONS,
   ...SYSTEM_INSTRUCTIONS,
   ...VOTE_STAKE_REGISTRY_INSTRUCTIONS,
+  ...FRIKTION_PROGRAM_INSTRUCTIONS,
 }
 
 export async function getInstructionDescriptor(
