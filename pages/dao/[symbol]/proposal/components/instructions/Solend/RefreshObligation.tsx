@@ -70,19 +70,19 @@ const RefreshObligation = ({
       !isValid ||
       !programId ||
       !form.governedAccount?.governance?.account ||
-      !form.mintName ||
+      !form.lendingMarketName ||
       !wallet?.publicKey
     ) {
       return invalid
     }
 
-    const pubkey = getGovernedAccountPublicKey(form.governedAccount)
+    const pubkey = getGovernedAccountPublicKey(form.governedAccount, true)
 
     if (!pubkey) return invalid
 
     const tx = await refreshObligation({
       obligationOwner: pubkey,
-      mintNames: [form.mintName],
+      lendingMarketName: form.lendingMarketName,
     })
 
     return {
@@ -119,7 +119,7 @@ const RefreshObligation = ({
       .object()
       .nullable()
       .required('Governed account is required'),
-    mintName: yup.string().required('Token Name is required'),
+    lendingMarketName: yup.string().required('Lending market is required'),
   })
 
   return (
@@ -137,13 +137,15 @@ const RefreshObligation = ({
       />
 
       <Select
-        label="Token Name to refresh obligation for"
-        value={form.mintName}
+        label="Lending Market"
+        value={form.lendingMarketName}
         placeholder="Please select..."
-        onChange={(value) => handleSetForm({ value, propertyName: 'mintName' })}
+        onChange={(value) =>
+          handleSetForm({ value, propertyName: 'lendingMarketName' })
+        }
         error={formErrors['baseTokenName']}
       >
-        {SolendConfiguration.getSupportedMintNames().map((value) => (
+        {SolendConfiguration.getSupportedLendingMarketNames().map((value) => (
           <Select.Option key={value} value={value}>
             {value}
           </Select.Option>

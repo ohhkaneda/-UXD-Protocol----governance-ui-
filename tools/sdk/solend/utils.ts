@@ -3,11 +3,12 @@ import { PublicKey } from '@solana/web3.js'
 import SolendConfiguration from './configuration'
 
 export async function deriveObligationAddressFromWalletAndSeed(
-  walletAddress: PublicKey
+  walletAddress: PublicKey,
+  seed
 ) {
   return PublicKey.createWithSeed(
     walletAddress,
-    SolendConfiguration.createObligationConfiguration.seed,
+    seed,
     SolendConfiguration.programID
   )
 }

@@ -4,7 +4,10 @@ import { ProgramAccount } from '@solana/spl-governance'
 import { RpcContext } from '@solana/spl-governance'
 import { MintInfo } from '@solana/spl-token'
 import { PublicKey, TransactionInstruction } from '@solana/web3.js'
-import { SupportedMintName as SolendSupportedMintName } from '@tools/sdk/solend/configuration'
+import {
+  SupportedLendingMarketName as SolendSupportedLendingMarketName,
+  SupportedTokenName as SolendSupportedTokenName,
+} from '@tools/sdk/solend/configuration'
 import { SupportedMintName as QuarryMineSupportedMintName } from '@tools/sdk/quarryMine/configuration'
 import { SplTokenUIName } from '@utils/splTokens'
 import { getNameOf } from '@tools/core/script'
@@ -132,33 +135,38 @@ export interface CreateAssociatedTokenAccountForm {
 
 export interface CreateSolendObligationAccountForm {
   governedAccount?: GovernedMultiTypeAccount
+  lendingMarketName?: SolendSupportedLendingMarketName
 }
 
 export interface InitSolendObligationAccountForm {
   governedAccount?: GovernedMultiTypeAccount
+  lendingMarketName?: SolendSupportedLendingMarketName
 }
 
 export interface DepositReserveLiquidityAndObligationCollateralForm {
   governedAccount?: GovernedMultiTypeAccount
   uiAmount: string
-  mintName?: SolendSupportedMintName
+  lendingMarketName?: SolendSupportedLendingMarketName
+  tokenName?: SolendSupportedTokenName
 }
 
 export interface WithdrawObligationCollateralAndRedeemReserveLiquidityForm {
   governedAccount?: GovernedMultiTypeAccount
   uiAmount: string
-  mintName?: SolendSupportedMintName
+  lendingMarketName?: SolendSupportedLendingMarketName
   destinationLiquidity?: string
+  tokenName?: SolendSupportedTokenName
 }
 
 export interface RefreshObligationForm {
   governedAccount?: GovernedMultiTypeAccount
-  mintName?: SolendSupportedMintName
+  lendingMarketName?: SolendSupportedLendingMarketName
 }
 
 export interface RefreshReserveForm {
   governedAccount?: GovernedMultiTypeAccount
-  mintName?: SolendSupportedMintName
+  lendingMarketName?: SolendSupportedLendingMarketName
+  tokenName?: SolendSupportedTokenName
 }
 
 export interface TokenTransferBetweenInternalGovernanceAccountsForm {

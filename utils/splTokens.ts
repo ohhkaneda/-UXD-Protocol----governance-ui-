@@ -1,6 +1,6 @@
 import { PublicKey } from '@solana/web3.js'
 import solendConfiguration, {
-  SupportedCollateralMintNames as SolendSupportedCollateralMintNames,
+  SupportedCollateralMintName as SolendSupportedCollateralMintName,
 } from '@tools/sdk/solend/configuration'
 
 import saberPoolsConfiguration, {
@@ -26,7 +26,7 @@ export type SupportedSplTokenNames =
   | 'SUNNY'
   | 'UXP'
   | 'UXD'
-  | SolendSupportedCollateralMintNames
+  | SolendSupportedCollateralMintName
   | SupportedSaberPoolNames
 
 export const SPL_TOKENS: {

@@ -60,9 +60,10 @@ const RefreshReserve = ({
       !connection ||
       !isValid ||
       !programId ||
-      !form.mintName ||
+      !form.lendingMarketName ||
       !form.governedAccount?.governance.account ||
-      !wallet?.publicKey
+      !wallet?.publicKey ||
+      !form.tokenName
     ) {
       return {
         serializedInstruction: '',
@@ -72,7 +73,8 @@ const RefreshReserve = ({
     }
 
     const tx = await refreshReserve({
-      mintName: form.mintName,
+      lendingMarketName: form.lendingMarketName,
+      tokenName: form.tokenName,
     })
 
     return {
@@ -109,7 +111,8 @@ const RefreshReserve = ({
       .object()
       .nullable()
       .required('Governed account is required'),
-    mintName: yup.string().required('Token Name is required'),
+    lendingMarketName: yup.string().required('Lending Market Name is required'),
+    tokenName: yup.string().required('Token name is required'),
   })
 
   return (
@@ -125,19 +128,44 @@ const RefreshReserve = ({
         shouldBeGoverned={shouldBeGoverned}
         governance={governance}
       />
+
       <Select
-        label="Token Name to refresh reserve for"
-        value={form.mintName}
+        label="Lending Market"
+        value={form.lendingMarketName}
         placeholder="Please select..."
-        onChange={(value) => handleSetForm({ value, propertyName: 'mintName' })}
+        onChange={(value) =>
+          handleSetForm({ value, propertyName: 'lendingMarketName' })
+        }
         error={formErrors['baseTokenName']}
       >
-        {SolendConfiguration.getSupportedMintNames().map((value) => (
+        {SolendConfiguration.getSupportedLendingMarketNames().map((value) => (
           <Select.Option key={value} value={value}>
             {value}
           </Select.Option>
         ))}
       </Select>
+
+      {form.lendingMarketName ? (
+        <Select
+          label="Token Name"
+          value={form.tokenName}
+          placeholder="Please select..."
+          onChange={(value) =>
+            handleSetForm({ value, propertyName: 'tokenName' })
+          }
+          error={formErrors['baseTokenName']}
+        >
+          {Object.keys(
+            SolendConfiguration.getSupportedLendingMarketInformation(
+              form.lendingMarketName
+            ).supportedTokens
+          ).map((tokenName) => (
+            <Select.Option key={tokenName} value={tokenName}>
+              {tokenName}
+            </Select.Option>
+          ))}
+        </Select>
+      ) : null}
     </>
   )
 }

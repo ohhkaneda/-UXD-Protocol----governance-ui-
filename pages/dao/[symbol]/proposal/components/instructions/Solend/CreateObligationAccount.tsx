@@ -4,6 +4,7 @@ import {
   ProgramAccount,
   serializeInstructionToBase64,
 } from '@solana/spl-governance'
+import SolendConfiguration from '@tools/sdk/solend/configuration'
 import * as yup from 'yup'
 import { PublicKey } from '@solana/web3.js'
 import useGovernedMultiTypeAccounts from '@hooks/useGovernedMultiTypeAccounts'
@@ -20,6 +21,7 @@ import useWalletStore from 'stores/useWalletStore'
 
 import { NewProposalContext } from '../../../new'
 import GovernedAccountSelect from '../../GovernedAccountSelect'
+import Select from '@components/inputs/Select'
 
 const CreateObligationAccount = ({
   index,
@@ -67,18 +69,20 @@ const CreateObligationAccount = ({
       !isValid ||
       !programId ||
       !form.governedAccount?.governance?.account ||
-      !wallet?.publicKey
+      !wallet?.publicKey ||
+      !form.lendingMarketName
     ) {
       return invalid
     }
 
-    const pubkey = getGovernedAccountPublicKey(form.governedAccount)
+    const pubkey = getGovernedAccountPublicKey(form.governedAccount, true)
 
     if (!pubkey) return invalid
 
     const tx = await createObligationAccount({
-      fundingAddress: wallet.publicKey,
-      walletAddress: pubkey,
+      payer: wallet.publicKey,
+      authority: pubkey,
+      lendingMarketName: form.lendingMarketName,
     })
 
     return {
@@ -115,20 +119,39 @@ const CreateObligationAccount = ({
       .object()
       .nullable()
       .required('Governed account is required'),
+    lendingMarketName: yup.string().required('Lending market is required'),
   })
 
   return (
-    <GovernedAccountSelect
-      label="Governance"
-      governedAccounts={governedMultiTypeAccounts}
-      onChange={(value) => {
-        handleSetForm({ value, propertyName: 'governedAccount' })
-      }}
-      value={form.governedAccount}
-      error={formErrors['governedAccount']}
-      shouldBeGoverned={shouldBeGoverned}
-      governance={governance}
-    />
+    <>
+      <GovernedAccountSelect
+        label="Governance"
+        governedAccounts={governedMultiTypeAccounts}
+        onChange={(value) => {
+          handleSetForm({ value, propertyName: 'governedAccount' })
+        }}
+        value={form.governedAccount}
+        error={formErrors['governedAccount']}
+        shouldBeGoverned={shouldBeGoverned}
+        governance={governance}
+      />
+
+      <Select
+        label="Lending Market"
+        value={form.lendingMarketName}
+        placeholder="Please select..."
+        onChange={(value) =>
+          handleSetForm({ value, propertyName: 'lendingMarketName' })
+        }
+        error={formErrors['baseTokenName']}
+      >
+        {SolendConfiguration.getSupportedLendingMarketNames().map((value) => (
+          <Select.Option key={value} value={value}>
+            {value}
+          </Select.Option>
+        ))}
+      </Select>
+    </>
   )
 }
 

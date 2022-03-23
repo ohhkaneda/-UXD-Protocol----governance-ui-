@@ -52,7 +52,7 @@ export const SOLEND_PROGRAM_INSTRUCTIONS = {
 
         const reserveNames = reserveAccounts.map(
           (reserveAcc) =>
-            SolendConfiguration.getTokenNameByReservePublicKey(
+            SolendConfiguration.retroEngineerTokenNameUsingReserve(
               reserveAcc.pubkey
             ) ?? 'unknown'
         )
@@ -81,8 +81,9 @@ export const SOLEND_PROGRAM_INSTRUCTIONS = {
         const reserve = accounts[0]
 
         const tokenName =
-          SolendConfiguration.getTokenNameByReservePublicKey(reserve.pubkey) ??
-          'unknown'
+          SolendConfiguration.retroEngineerTokenNameUsingReserve(
+            reserve.pubkey
+          ) ?? 'unknown'
 
         return (
           <div className="flex justify-between">
@@ -123,8 +124,9 @@ export const SOLEND_PROGRAM_INSTRUCTIONS = {
         const reserve = accounts[2]
 
         const tokenName =
-          SolendConfiguration.getTokenNameByReservePublicKey(reserve.pubkey) ??
-          'unknown'
+          SolendConfiguration.retroEngineerTokenNameUsingReserve(
+            reserve.pubkey
+          ) ?? 'unknown'
 
         return (
           <div className="flex flex-col">
@@ -171,8 +173,9 @@ export const SOLEND_PROGRAM_INSTRUCTIONS = {
         const reserve = accounts[2]
 
         const tokenName =
-          SolendConfiguration.getTokenNameByReservePublicKey(reserve.pubkey) ??
-          'unknown'
+          SolendConfiguration.retroEngineerTokenNameUsingReserve(
+            reserve.pubkey
+          ) ?? 'unknown'
 
         return (
           <div className="flex flex-col">
