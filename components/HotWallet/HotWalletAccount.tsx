@@ -12,7 +12,7 @@ const HotWalletAccount = ({ info }: { info: HotWalletAccountInfo }) => {
   const linkRef = createRef<HTMLAnchorElement>()
 
   const amountFormatted = Number(
-    new BigNumber(info.amount.toNumber()).shiftedBy(-info.decimals).toString()
+    new BigNumber(info.amount.toString()).shiftedBy(-info.decimals).toString()
   ).toLocaleString()
 
   const usdTotalValueFormatted = Number(
