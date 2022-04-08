@@ -18,7 +18,10 @@ abstract class ASolendConfiguration {
   ): string | undefined
 }
 
-export type SupportedLendingMarketName = 'MainPool' | 'StablePool'
+export type SupportedLendingMarketName =
+  | 'MainPool'
+  | 'StablePool'
+  | 'Coin98Pool'
 
 // There must be one SupportedCollateralMintName per SupportedTokenName
 export type SupportedTokenName = 'USDC' | 'UXD'
@@ -26,6 +29,7 @@ export type SupportedCollateralMintName =
   | 'cUSDC - main pool'
   | 'cUSDC - stable pool'
   | 'cUXD - stable pool'
+  | 'cUXD - coin98 pool'
 
 type SupportedCollateralMintInformation = {
   name: string
@@ -77,8 +81,14 @@ class SolendConfiguration implements ASolendConfiguration {
     },
 
     'cUXD - stable pool': {
-      name: 'Solend Protocol: cUXD',
+      name: 'Solend Protocol: cUXD - stable pool',
       mint: new PublicKey('3R3mzc8o9oXCsBX2dKG7Bzc3ov1m7t4UHtb81ktAeCxY'),
+      decimals: 6,
+    },
+
+    'cUXD - coin98 pool': {
+      name: 'Solend Protocol: cUXD - coin98 pool',
+      mint: new PublicKey('ErJswCkk3oRS9poFdRxJHt6j9yQisTB8YQAqJkE7iC5U'),
       decimals: 6,
     },
   }
@@ -176,6 +186,43 @@ class SolendConfiguration implements ASolendConfiguration {
           ),
           reserveCollateralSupplySplTokenAccount: new PublicKey(
             '7JF8e93t52SGFUHzMt5cD7vte4b8gWZHY99GLziAUeiP'
+          ),
+        },
+      },
+    },
+
+    Coin98Pool: {
+      lendingMarket: new PublicKey(
+        '7tiNvRHSjYDfc6usrWnSNPyuN68xQfKs1ZG2oqtR5F46'
+      ),
+      lendingMarketAuthority: new PublicKey(
+        '8web9hJK4TQJBV23WQpBw9jMvn3YE1EV3PEcnXJvgwQa'
+      ),
+
+      // First 32 bytes of lending Market
+      seed: '7tiNvRHSjYDfc6usrWnSNPyuN68xQfKs1ZG2oqtR5F46'.slice(0, 32),
+
+      supportedTokens: {
+        UXD: {
+          relatedCollateralMint: this.supportedCollateralMintsInformation[
+            'cUXD - coin98 pool'
+          ],
+          mint: new PublicKey('7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT'),
+          decimals: 6,
+          reserve: new PublicKey(
+            '46Lh1P2XmTNG8Gnt4zkTdG1BXi2V18NggfYTbXpSzAYy'
+          ),
+          reserveLiquiditySupply: new PublicKey(
+            'Fr3A2agcj8G8jEVPhE1rYUQsGF85meEN5fDQ4etFp5Wi'
+          ),
+          pythOracle: new PublicKey(
+            'nu11111111111111111111111111111111111111111'
+          ),
+          switchboardFeedAddress: new PublicKey(
+            'Lj3y2beRYhCaQQH9SYjmMJv3uuTcqpCJjQYe4829FAL'
+          ),
+          reserveCollateralSupplySplTokenAccount: new PublicKey(
+            'BdjGeJQNEZhCLyW89RNWgxkn3hwRMsAxncc29QNuHvRf'
           ),
         },
       },
