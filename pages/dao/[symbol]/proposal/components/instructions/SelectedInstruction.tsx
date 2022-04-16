@@ -8,6 +8,7 @@ import FriktionDeposit from './Friktion/FriktionDeposit';
 import NativeMint from './Native/Mint';
 import NativeEmpty from './Native/Empty';
 import NativeCustomBase64 from './Native/CustomBase64';
+import NativeGovernanceUnderlyingTokenAccountTransfer from './Native/GovernanceUnderlyingAccountTokenTransfer';
 import SetProgramAuthority from './Native/SetProgramAuthority';
 import SplTokenTransfer from './Native/SplTokenTransfer';
 import LifinityDepositToPool from './Lifinity/DepositToPool';
@@ -67,6 +68,13 @@ const SelectedInstruction = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   switch (itxType) {
+    case InstructionEnum.GovernanceUnderlyingTokenAccountTransfer:
+      return (
+        <NativeGovernanceUnderlyingTokenAccountTransfer
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
     case InstructionEnum.Transfer:
       return <SplTokenTransfer index={index} governance={null} />;
     case InstructionEnum.ProgramUpgrade:

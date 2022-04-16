@@ -105,6 +105,13 @@ export interface EmptyInstructionForm {
   governedAccount?: GovernedMultiTypeAccount;
 }
 
+export interface GovernanceUnderlyingTokenAccountTransferForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  sourceAccount?: string;
+  receiverAccount?: string;
+  uiAmount?: number;
+}
+
 export interface LifinityDepositToPoolForm {
   governedAccount?: GovernedMultiTypeAccount;
   liquidityPool?: string;
@@ -407,6 +414,7 @@ export interface UXDStakingRefillRewardVaultForm {
 
 export enum InstructionEnum {
   Transfer,
+  GovernanceUnderlyingTokenAccountTransfer,
   ProgramUpgrade,
   SetProgramAuthority,
   Mint,

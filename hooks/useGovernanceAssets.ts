@@ -434,6 +434,12 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.Friktion,
     },
+    [InstructionEnum.GovernanceUnderlyingTokenAccountTransfer]: {
+      name: 'Governance Underlying Token Account Transfer',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Native,
+      tag: 'deprecated',
+    },
     [InstructionEnum.Transfer]: {
       name: 'Transfer Tokens',
       isVisible: canUseTokenTransferInstruction,
