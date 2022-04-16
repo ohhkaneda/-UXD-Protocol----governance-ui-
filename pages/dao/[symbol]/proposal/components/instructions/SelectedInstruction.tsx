@@ -9,6 +9,7 @@ import NativeMint from './Native/Mint';
 import NativeEmpty from './Native/Empty';
 import NativeCustomBase64 from './Native/CustomBase64';
 import NativeGovernanceUnderlyingTokenAccountTransfer from './Native/GovernanceUnderlyingAccountTokenTransfer';
+import NativeTokenTransferBetweenInternalGovernanceAccounts from './Native/TokenTransferBetweenInternalGovernanceAccounts';
 import SetProgramAuthority from './Native/SetProgramAuthority';
 import SplTokenTransfer from './Native/SplTokenTransfer';
 import LifinityDepositToPool from './Lifinity/DepositToPool';
@@ -71,6 +72,13 @@ const SelectedInstruction = ({
     case InstructionEnum.GovernanceUnderlyingTokenAccountTransfer:
       return (
         <NativeGovernanceUnderlyingTokenAccountTransfer
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
+    case InstructionEnum.TokenTransferBetweenInternalGovernanceAccounts:
+      return (
+        <NativeTokenTransferBetweenInternalGovernanceAccounts
           index={index}
           governedAccount={governedAccount}
         />

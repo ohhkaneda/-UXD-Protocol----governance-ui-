@@ -440,6 +440,12 @@ export default function useGovernanceAssets() {
       packageId: PackageEnum.Native,
       tag: 'deprecated',
     },
+    [InstructionEnum.TokenTransferBetweenInternalGovernanceAccounts]: {
+      name: 'Token Transfer Between Internal Governance Accounts',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Native,
+      tag: 'deprecated',
+    },
     [InstructionEnum.Transfer]: {
       name: 'Transfer Tokens',
       isVisible: canUseTokenTransferInstruction,

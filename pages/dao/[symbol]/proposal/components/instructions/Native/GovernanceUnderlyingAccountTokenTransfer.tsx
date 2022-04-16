@@ -41,7 +41,7 @@ const GovernanceUnderlyingTokenAccountTransfer = ({
       if (!ownedTokenAccountsInfo)
         throw new Error('could not load ownedTokenAccountsInfo');
       const { mintDecimals } = ownedTokenAccountsInfo![form.sourceAccount!]!;
-      console.log('form', form);
+
       return Token.createTransferInstruction(
         TOKEN_PROGRAM_ID,
         new PublicKey(form.sourceAccount!),
