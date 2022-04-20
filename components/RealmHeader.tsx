@@ -1,7 +1,6 @@
 import React from 'react';
 import useRealm from 'hooks/useRealm';
 import { CogIcon, GlobeAltIcon } from '@heroicons/react/outline';
-import { ArrowLeftIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 import { TwitterIcon } from './icons';
 import useQueryContext from 'hooks/useQueryContext';
@@ -9,26 +8,9 @@ import useQueryContext from 'hooks/useQueryContext';
 const RealmHeader = () => {
   const { fmtUrlWithCluster } = useQueryContext();
   const { realmInfo, realmDisplayName, symbol } = useRealm();
-  const { REALM } = process.env;
-
-  const isBackNavVisible = realmInfo?.symbol !== REALM; // hide backnav for the default realm
 
   return (
     <div className="pb-4">
-      <div
-        className={`flex items-center ${
-          isBackNavVisible ? 'justify-between' : 'justify-end'
-        } mb-2 md:mb-4`}
-      >
-        {isBackNavVisible ? (
-          <Link href={fmtUrlWithCluster('/realms')}>
-            <a className="default-transition flex items-center text-fgd-3 text-sm transition-all hover:text-fgd-1">
-              <ArrowLeftIcon className="h-4 w-4 mr-1 text-primary-light" />
-              Back
-            </a>
-          </Link>
-        ) : null}
-      </div>
       <div className="flex flex-col md:flex-row items-center pb-3  md:justify-between">
         {realmDisplayName ? (
           <div className="flex items-center">
