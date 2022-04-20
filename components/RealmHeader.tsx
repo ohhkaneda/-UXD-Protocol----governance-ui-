@@ -5,8 +5,6 @@ import { ArrowLeftIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 import { TwitterIcon } from './icons';
 import useQueryContext from 'hooks/useQueryContext';
-import { ExternalLinkIcon } from '@heroicons/react/outline';
-import { getRealmExplorerHost } from 'tools/routing';
 
 const RealmHeader = () => {
   const { fmtUrlWithCluster } = useQueryContext();
@@ -14,9 +12,6 @@ const RealmHeader = () => {
   const { REALM } = process.env;
 
   const isBackNavVisible = realmInfo?.symbol !== REALM; // hide backnav for the default realm
-
-  const explorerHost = getRealmExplorerHost(realmInfo);
-  const realmUrl = `https://${explorerHost}/#/realm/${realmInfo?.realmId.toBase58()}?programId=${realmInfo?.programId.toBase58()}`;
 
   return (
     <div className="pb-4">
@@ -33,14 +28,6 @@ const RealmHeader = () => {
             </a>
           </Link>
         ) : null}
-        <a
-          className="default-transition flex items-center text-fgd-3 hover:text-fgd-1 text-sm"
-          href={realmUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <ExternalLinkIcon className="flex-shrink-0 h-4 w-4 ml-1" />
-        </a>
       </div>
       <div className="flex flex-col md:flex-row items-center pb-3  md:justify-between">
         {realmDisplayName ? (
