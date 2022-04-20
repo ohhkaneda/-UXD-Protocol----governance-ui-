@@ -128,6 +128,11 @@ const FriktionDeposit = ({
 
   // Now I have allowed only one vault -> 9cHT8d7d35ngj5i8WBZB8ibjnPLnvnym4tp4KoTCQtxw, our vault
 
+  const allowedVaults = [
+    '9cHT8d7d35ngj5i8WBZB8ibjnPLnvnym4tp4KoTCQtxw', // SOL-UXD vault
+    '2yPs4YTdMzuKmYeubfNqH2xxgdEkXMxVcFWnAFbsojS2', // Funding Rate vault
+  ]
+
   return (
     <>
       <GovernedAccountSelect
@@ -160,11 +165,7 @@ const FriktionDeposit = ({
             error={formErrors['voltVaultId']}
           >
             {(friktionVolts ?? [])
-              .filter(
-                (x) =>
-                  x.voltVaultId ===
-                  '9cHT8d7d35ngj5i8WBZB8ibjnPLnvnym4tp4KoTCQtxw'
-              )
+              .filter((x) => allowedVaults.includes(x.voltVaultId))
               .map((value) => (
                 <Select.Option
                   key={value.voltVaultId}
