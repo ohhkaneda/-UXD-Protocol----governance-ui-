@@ -54,7 +54,7 @@ const InitObligationAccount = ({
       onChange={(value) =>
         handleSetForm({ value, propertyName: 'lendingMarketName' })
       }
-      error={formErrors['baseTokenName']}
+      error={formErrors['lendingMarketName']}
     >
       <SelectOptionList
         list={SolendConfiguration.getSupportedLendingMarketNames()}

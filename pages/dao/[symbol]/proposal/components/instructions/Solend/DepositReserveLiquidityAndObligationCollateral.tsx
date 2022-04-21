@@ -97,7 +97,7 @@ const DepositReserveLiquidityAndObligationCollateral = ({
           onChange={(value) =>
             handleSetForm({ value, propertyName: 'tokenName' })
           }
-          error={formErrors['baseTokenName']}
+          error={formErrors['tokenName']}
         >
           <SelectOptionList
             list={Object.keys(
