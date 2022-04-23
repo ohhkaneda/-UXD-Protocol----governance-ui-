@@ -1,0 +1,60 @@
+diff --git a/node_modules/@friktion-labs/friktion-sdk/dist/cjs/src/programs/Volt/ConnectedVoltSDK.js b/node_modules/@friktion-labs/friktion-sdk/dist/cjs/src/programs/Volt/ConnectedVoltSDK.js
+index 9232d8b..33dd587 100644
+--- a/node_modules/@friktion-labs/friktion-sdk/dist/cjs/src/programs/Volt/ConnectedVoltSDK.js
++++ b/node_modules/@friktion-labs/friktion-sdk/dist/cjs/src/programs/Volt/ConnectedVoltSDK.js
+@@ -256,7 +256,7 @@ ConnectedVoltSDK.prototype.getFeeTokenAccount = function () {
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            return tslib_1.__generator(this, function (_a) {
+                switch (_a.label) {
+-                    case 0: return [4 /*yield*/, spl_token_1.Token.getAssociatedTokenAddress(spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID, spl_token_1.TOKEN_PROGRAM_ID, this.voltVault.underlyingAssetMint, __1.REFERRAL_AUTHORITY)];
++                    case 0: return [4 /*yield*/, spl_token_1.Token.getAssociatedTokenAddress(spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID, spl_token_1.TOKEN_PROGRAM_ID, this.voltVault.underlyingAssetMint, __1.REFERRAL_AUTHORITY, true)];
+                     case 1: return [2 /*return*/, _a.sent()];
+                 }
+             });
+@@ -266,7 +266,7 @@ ConnectedVoltSDK.prototype.getSoloptionsMintFeeAccount = function () {
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            return tslib_1.__generator(this, function (_a) {
+                switch (_a.label) {
+-                    case 0: return [4 /*yield*/, spl_token_1.Token.getAssociatedTokenAddress(spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID, spl_token_1.TOKEN_PROGRAM_ID, this.voltVault.underlyingAssetMint, __1.SOLOPTIONS_FEE_OWNER)];
++                    case 0: return [4 /*yield*/, spl_token_1.Token.getAssociatedTokenAddress(spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID, spl_token_1.TOKEN_PROGRAM_ID, this.voltVault.underlyingAssetMint, __1.SOLOPTIONS_FEE_OWNER, true)];
+                     case 1: return [2 /*return*/, _a.sent()];
+                 }
+             });
+@@ -276,7 +276,7 @@ ConnectedVoltSDK.prototype.getInertiaMintFeeAccount = function () {
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            return tslib_1.__generator(this, function (_a) {
+                switch (_a.label) {
+-                    case 0: return [4 /*yield*/, spl_token_1.Token.getAssociatedTokenAddress(spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID, spl_token_1.TOKEN_PROGRAM_ID, this.voltVault.underlyingAssetMint, __1.INERTIA_FEE_OWNER)];
++                    case 0: return [4 /*yield*/, spl_token_1.Token.getAssociatedTokenAddress(spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID, spl_token_1.TOKEN_PROGRAM_ID, this.voltVault.underlyingAssetMint, __1.INERTIA_FEE_OWNER, true)];
+                     case 1: return [2 /*return*/, _a.sent()];
+                 }
+             });
+@@ -943,13 +943,13 @@ ConnectedVoltSDK = /** @class */ (function (_super) {
+                         underlyingToken = new spl_token_1.Token(this.connection, optionMarket.underlyingAssetMint, spl_token_1.TOKEN_PROGRAM_ID, undefined);
+                         remainingAccounts = [];
+                         if (!(optionsProtocol === "Inertia")) return [3 /*break*/, 4];
+-                        return [4 /*yield*/, spl_token_1.Token.getAssociatedTokenAddress(spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID, spl_token_1.TOKEN_PROGRAM_ID, underlyingToken.publicKey, __1.INERTIA_FEE_OWNER)];
++                        return [4 /*yield*/, spl_token_1.Token.getAssociatedTokenAddress(spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID, spl_token_1.TOKEN_PROGRAM_ID, underlyingToken.publicKey, __1.INERTIA_FEE_OWNER, true)];
+                     case 3:
+                         feeDestinationKey = _a.sent();
+                         return [3 /*break*/, 7];
+                     case 4:
+                         if (!(optionsProtocol === "Soloptions")) return [3 /*break*/, 6];
+-                        return [4 /*yield*/, spl_token_1.Token.getAssociatedTokenAddress(spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID, spl_token_1.TOKEN_PROGRAM_ID, underlyingToken.publicKey, __1.SOLOPTIONS_FEE_OWNER)];
++                        return [4 /*yield*/, spl_token_1.Token.getAssociatedTokenAddress(spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID, spl_token_1.TOKEN_PROGRAM_ID, underlyingToken.publicKey, __1.SOLOPTIONS_FEE_OWNER, true)];
+                     case 5:
+                         feeDestinationKey = _a.sent();
+                         return [3 /*break*/, 7];
+diff --git a/node_modules/@friktion-labs/friktion-sdk/dist/cjs/src/programs/Volt/VoltSDK.js b/node_modules/@friktion-labs/friktion-sdk/dist/cjs/src/programs/Volt/VoltSDK.js
+index 2f0703e..0bf4677 100644
+--- a/node_modules/@friktion-labs/friktion-sdk/dist/cjs/src/programs/Volt/VoltSDK.js
++++ b/node_modules/@friktion-labs/friktion-sdk/dist/cjs/src/programs/Volt/VoltSDK.js
+@@ -488,7 +488,7 @@ var VoltSDK = /** @class */ (function () {
+                         return [4 /*yield*/, vaultToken.getMintInfo()];
+                     case 4:
+                         voltTokenSupply = new (_b.apply(decimal_js_1.Decimal, [void 0, (_r.sent()).supply.toString()]))().add(new decimal_js_1.Decimal(roundInfo.voltTokensFromPendingWithdrawals.toString()));
+-                        return [4 /*yield*/, spl_token_1.Token.getAssociatedTokenAddress(spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID, spl_token_1.TOKEN_PROGRAM_ID, voltVault.vaultMint, pubkey)];
++                        return [4 /*yield*/, spl_token_1.Token.getAssociatedTokenAddress(spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID, spl_token_1.TOKEN_PROGRAM_ID, voltVault.vaultMint, pubkey, true)];
+                     case 5:
+                         vaultTokenAccount = _r.sent();
+                         userVoltTokens = new decimal_js_1.Decimal(0);

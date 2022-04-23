@@ -37,17 +37,17 @@ export interface FormInstructionData {
 export interface SplTokenTransferForm {
   destinationAccount: string;
   amount: number | undefined;
-  governedTokenAccount: GovernedTokenAccount | undefined;
+  governedTokenAccount?: GovernedTokenAccount | undefined;
   programId: string | undefined;
   mintInfo: MintInfo | undefined;
 }
 
 export interface FriktionDepositForm {
-  amount: number | undefined;
-  governedTokenAccount: GovernedTokenAccount | undefined;
-  voltVaultId: string;
-  programId: string | undefined;
-  mintInfo: MintInfo | undefined;
+  uiAmount: number;
+  governedAccount?: GovernedMultiTypeAccount;
+  volt?: string;
+  sourceAccount?: string;
+  mintInfo?: MintInfo;
 }
 
 export interface GrantForm {

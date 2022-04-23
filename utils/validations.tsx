@@ -188,6 +188,7 @@ export const validateBuffer = async (
   }
 };
 
+//TODO: delete this shit
 export const getFriktionDepositSchema = ({ form }) => {
   const governedTokenAccount = form.governedTokenAccount as GovernedTokenAccount;
   return yup.object().shape({

@@ -4,7 +4,7 @@ import ProgramUpgrade from './bpfUpgradeableLoader/ProgramUpgrade';
 import CreateAssociatedTokenAccount from './Native/CreateAssociatedTokenAccount';
 import RaydiumAddLiquidityToPool from './Raydium/AddLiquidityToPool';
 import RaydiumRemoveLiquidityFromPool from './Raydium/RemoveLiquidityFromPool';
-import FriktionDeposit from './Friktion/FriktionDeposit';
+import FriktionDeposit from './Friktion/Deposit';
 import NativeMint from './Native/Mint';
 import NativeEmpty from './Native/Empty';
 import NativeCustomBase64 from './Native/CustomBase64';
@@ -341,7 +341,9 @@ const SelectedInstruction = ({
         />
       );
     case InstructionEnum.FriktionDepositIntoVolt:
-      return <FriktionDeposit index={index} governance={null} />;
+      return (
+        <FriktionDeposit index={index} governedAccount={governedAccount} />
+      );
     case InstructionEnum.Mint:
       return <NativeMint index={index} governance={null} />;
     /*case InstructionEnum.Grant:
