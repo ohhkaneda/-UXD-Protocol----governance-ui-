@@ -16,14 +16,14 @@ export type PoolName = 'USDC';
 
 export type Pools = {
   [key in PoolName]: {
-    lender: PublicKey;
+    // lender: PublicKey;
     pool: PublicKey;
     globals: PublicKey;
     poolLocker: PublicKey;
     sharesMint: PublicKey;
-    lockedShares: PublicKey;
-    lenderShares: PublicKey;
-    lenderLocker: PublicKey;
+    // lockedShares: PublicKey;
+    // lenderShares: PublicKey;
+    // lenderLocker: PublicKey;
     baseMint: SplTokenInformation;
   };
 };
@@ -35,20 +35,10 @@ export class MapleFinance {
 
   public static readonly pools: Pools = {
     USDC: {
-      lender: new PublicKey('9QDAZ359L3seBhe9N3G5Dc2BaUR4LYm61Z7uYDrKDHTR'),
       pool: new PublicKey('TamdAwg85s9aZ6mwSeAHoczzAV53rFokL5FVKzaF1Tb'),
       globals: new PublicKey('DtnAPKSHwJaYbFdjYibNcjxihVd6pK1agpT86N5tMVPX'),
       poolLocker: new PublicKey('92oAd9cm4rV4K4Xx9HPRMoFn7GwMaKsjNSPe7QVxywcy'),
       sharesMint: new PublicKey('CesxqgX4BvYudTNU45PArqTgefrRFhE1CwR7ECTDshfY'),
-      lockedShares: new PublicKey(
-        'CQrZEYjJQ6ThGxbSfJ9jUKUQMDDj4s295wFRHkcMGwmS',
-      ),
-      lenderShares: new PublicKey(
-        'HRPeAdJ6ZBkm1LxNvhqL3tspUmxxBFUStFDkzCU2jhyT',
-      ),
-      lenderLocker: new PublicKey(
-        'DkzZkaHN3GmNFgFtvrUCG4jA9KzbGFA9pdMnzG7vzoY6',
-      ),
       baseMint: SPL_TOKENS.USDC,
     },
   };
@@ -82,6 +72,37 @@ export class MapleFinance {
       throw new Error('MapleFinance Configuration error: no programs');
     return programs;
   }
+
+  public static async findLenderAddress(
+    poolName: PoolName,
+    lenderUser: PublicKey,
+  ): Promise<PublicKey> {
+    return (
+      await PublicKey.findProgramAddress(
+        [
+          Buffer.from('lender'),
+          MapleFinance.pools[poolName].pool.toBytes(),
+          lenderUser.toBytes(),
+        ],
+        MapleFinance.SyrupProgramId,
+      )
+    )[0];
+  }
+
+  public static async findLockedSharesAddress(
+    lender: PublicKey,
+  ): Promise<PublicKey> {
+    return (
+      await PublicKey.findProgramAddress(
+        [Buffer.from('locked_shares'), lender.toBytes()],
+        MapleFinance.SyrupProgramId,
+      )
+    )[0];
+  }
+
+  public static readonly syrupProgramInstructions = {
+    lenderDeposit: 151,
+  };
 }
 
 export default new MapleFinance();

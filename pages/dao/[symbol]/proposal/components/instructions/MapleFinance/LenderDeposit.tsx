@@ -11,6 +11,7 @@ import { uiAmountToNativeBN } from '@tools/sdk/units';
 import TokenAccountSelect from '../../TokenAccountSelect';
 import useGovernanceUnderlyingTokenAccounts from '@hooks/useGovernanceUnderlyingTokenAccounts';
 import Select from '@components/inputs/Select';
+import { PublicKey } from '@solana/web3.js';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -61,6 +62,7 @@ const LenderDeposit = ({
           MapleFinance.pools[form.poolName!].baseMint.decimals,
         ),
         poolName: form.poolName!,
+        sourceAccount: new PublicKey(form.sourceAccount!),
       });
     },
   });

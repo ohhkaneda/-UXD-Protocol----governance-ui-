@@ -223,6 +223,7 @@ export default function useGovernanceAssets() {
       name: 'Lender Deposit',
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.MapleFinance,
+      tag: 'beta',
     },
     [InstructionEnum.LifinityDepositToPool]: {
       name: 'Deposit To Pool',
