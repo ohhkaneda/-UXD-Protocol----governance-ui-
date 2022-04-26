@@ -54,7 +54,7 @@ const FriktionDeposit = ({
         wallet,
         voltVaultId: volt.voltVaultId,
         governancePubkey: governedAccountPubkey,
-        receiverAddress: new PublicKey(volt.depositPool),
+        sourceTokenAccount: new PublicKey(form.sourceAccount!),
         amount: form.uiAmount!,
         decimals: volt.shareTokenDecimals,
       });

@@ -9,7 +9,7 @@ const depositToVolt = async ({
   wallet,
   voltVaultId,
   governancePubkey,
-  receiverAddress,
+  sourceTokenAccount,
   amount,
   decimals,
 }: {
@@ -17,7 +17,7 @@ const depositToVolt = async ({
   wallet: Wallet;
   voltVaultId: string;
   governancePubkey: PublicKey;
-  receiverAddress: PublicKey;
+  sourceTokenAccount: PublicKey;
   amount: number;
   decimals: number;
 }) => {
@@ -33,15 +33,15 @@ const depositToVolt = async ({
     await sdk.loadVoltByKey(new PublicKey(voltVaultId)),
   );
 
-  //const voltVault = cVoltSDK.voltVault;
-  const vaultMint = cVoltSDK.voltVault.vaultMint;
-
-  const [govATA] = findATAAddrSync(governancePubkey, vaultMint);
+  const [govVoltMintATA] = findATAAddrSync(
+    governancePubkey,
+    cVoltSDK.voltVault.vaultMint,
+  );
 
   return cVoltSDK.deposit(
     new Decimal(amount),
-    govATA,
-    receiverAddress,
+    sourceTokenAccount,
+    govVoltMintATA,
     governancePubkey,
     decimals,
   );
