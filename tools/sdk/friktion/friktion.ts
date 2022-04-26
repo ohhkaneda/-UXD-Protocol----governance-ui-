@@ -9,7 +9,7 @@ const FRIKTION_SNAPSHOT_URL =
 // Now I have allowed only one vault -> 9cHT8d7d35ngj5i8WBZB8ibjnPLnvnym4tp4KoTCQtxw, our vault
 const ALLOWED_VAULTS = [
   '9cHT8d7d35ngj5i8WBZB8ibjnPLnvnym4tp4KoTCQtxw', // SOL-UXD vault
-  //'2yPs4YTdMzuKmYeubfNqH2xxgdEkXMxVcFWnAFbsojS2', // Funding Rate vault
+  '2yPs4YTdMzuKmYeubfNqH2xxgdEkXMxVcFWnAFbsojS2', // Funding Rate vault
 ];
 
 const VOLT_TYPES = {

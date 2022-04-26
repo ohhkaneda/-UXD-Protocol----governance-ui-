@@ -5,6 +5,7 @@ import CreateAssociatedTokenAccount from './Native/CreateAssociatedTokenAccount'
 import RaydiumAddLiquidityToPool from './Raydium/AddLiquidityToPool';
 import RaydiumRemoveLiquidityFromPool from './Raydium/RemoveLiquidityFromPool';
 import FriktionDeposit from './Friktion/Deposit';
+import FriktionWithdraw from './Friktion/Withdraw';
 import NativeMint from './Native/Mint';
 import NativeEmpty from './Native/Empty';
 import NativeCustomBase64 from './Native/CustomBase64';
@@ -343,6 +344,10 @@ const SelectedInstruction = ({
     case InstructionEnum.FriktionDepositIntoVolt:
       return (
         <FriktionDeposit index={index} governedAccount={governedAccount} />
+      );
+    case InstructionEnum.FriktionWithdrawFromVolt:
+      return (
+        <FriktionWithdraw index={index} governedAccount={governedAccount} />
       );
     case InstructionEnum.Mint:
       return <NativeMint index={index} governance={null} />;

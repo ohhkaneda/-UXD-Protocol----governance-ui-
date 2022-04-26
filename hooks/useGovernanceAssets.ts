@@ -440,6 +440,11 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.Friktion,
     },
+    [InstructionEnum.FriktionWithdrawFromVolt]: {
+      name: 'Withdraw from Volt',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Friktion,
+    },
     [InstructionEnum.Transfer]: {
       name: 'Transfer Tokens',
       isVisible: canUseTokenTransferInstruction,

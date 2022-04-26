@@ -47,7 +47,13 @@ export interface FriktionDepositForm {
   governedAccount?: GovernedMultiTypeAccount;
   volt?: string;
   sourceAccount?: string;
-  mintInfo?: MintInfo;
+}
+
+export interface FriktionWithdrawForm {
+  uiAmount: number;
+  governedAccount?: GovernedMultiTypeAccount;
+  volt?: string;
+  receiverAccount?: string;
 }
 
 export interface GrantForm {
@@ -439,6 +445,7 @@ export enum InstructionEnum {
   // Clawback,
   CreateAssociatedTokenAccount,
   FriktionDepositIntoVolt,
+  FriktionWithdrawFromVolt,
   LifinityDepositToPool,
   LifinityWithdrawFromPool,
   QuarryClaimRewards,
