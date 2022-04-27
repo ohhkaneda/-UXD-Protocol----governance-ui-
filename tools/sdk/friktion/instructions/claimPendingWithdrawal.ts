@@ -1,5 +1,5 @@
 import { FriktionSDK, ConnectedVoltSDK } from '@friktion-labs/friktion-sdk';
-import { Wallet } from '@project-serum/common';
+import { Wallet } from '@project-serum/sol-wallet-adapter';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { findATAAddrSync } from '@utils/ataTools';
 
@@ -27,10 +27,10 @@ const claimPendingWithdrawal = async ({
   );
   const [govVoltMintATA] = findATAAddrSync(
     governancePubkey,
-    cVoltSDK.voltVault.vaultMint,
+    cVoltSDK.voltVault.underlyingAssetMint,
   );
 
-  return cVoltSDK.claimPending(new PublicKey(govVoltMintATA));
+  return cVoltSDK.claimPendingWithdrawal(new PublicKey(govVoltMintATA));
 };
 
 export default claimPendingWithdrawal;

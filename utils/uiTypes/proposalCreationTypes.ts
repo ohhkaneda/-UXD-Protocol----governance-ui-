@@ -56,6 +56,12 @@ export interface FriktionWithdrawForm {
   receiverAccount?: string;
 }
 
+export interface FriktionClaimWithdrawalForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  volt?: string;
+  receiverAccount?: string;
+}
+
 export interface GrantForm {
   destinationAccount: string;
   amount: number | undefined;
@@ -446,6 +452,7 @@ export enum InstructionEnum {
   CreateAssociatedTokenAccount,
   FriktionDepositIntoVolt,
   FriktionWithdrawFromVolt,
+  FriktionClaimWithdrawal,
   LifinityDepositToPool,
   LifinityWithdrawFromPool,
   QuarryClaimRewards,
