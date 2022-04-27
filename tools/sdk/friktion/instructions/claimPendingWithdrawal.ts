@@ -1,25 +1,18 @@
 import { FriktionSDK, ConnectedVoltSDK } from '@friktion-labs/friktion-sdk';
+import { Wallet } from '@project-serum/common';
 import { Connection, PublicKey } from '@solana/web3.js';
-import { Wallet } from '@project-serum/sol-wallet-adapter';
-import Decimal from 'decimal.js';
 import { findATAAddrSync } from '@utils/ataTools';
 
-const depositToVolt = async ({
+const claimPendingWithdrawal = async ({
   connection,
   wallet,
-  voltVaultId,
   governancePubkey,
-  sourceTokenAccount,
-  amount,
-  decimals,
+  voltVaultId,
 }: {
   connection: Connection;
   wallet: Wallet;
-  voltVaultId: string;
   governancePubkey: PublicKey;
-  sourceTokenAccount: PublicKey;
-  amount: number;
-  decimals: number;
+  voltVaultId: string;
 }) => {
   const sdk = new FriktionSDK({
     provider: {
@@ -27,25 +20,17 @@ const depositToVolt = async ({
       wallet,
     },
   });
-
   const cVoltSDK = new ConnectedVoltSDK(
     connection,
     governancePubkey,
     await sdk.loadVoltByKey(new PublicKey(voltVaultId)),
   );
-
   const [govVoltMintATA] = findATAAddrSync(
     governancePubkey,
     cVoltSDK.voltVault.vaultMint,
   );
 
-  return cVoltSDK.deposit(
-    new Decimal(amount),
-    sourceTokenAccount,
-    govVoltMintATA,
-    governancePubkey,
-    decimals,
-  );
+  return cVoltSDK.claimPending(new PublicKey(govVoltMintATA));
 };
 
-export default depositToVolt;
+export default claimPendingWithdrawal;

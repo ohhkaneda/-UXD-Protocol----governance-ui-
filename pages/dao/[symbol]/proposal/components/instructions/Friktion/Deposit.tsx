@@ -10,7 +10,7 @@ import { GovernedMultiTypeAccount } from '@utils/tokens';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import { getVolts, VoltList } from '@tools/sdk/friktion/friktion';
 import SelectOptionList from '../../SelectOptionList';
-import depositToVolt from '@tools/sdk/friktion/depositToVault';
+import depositToVolt from '@tools/sdk/friktion/instructions/depositToVault';
 
 const schema = yup.object().shape({
   governedAccount: yup.object().required('Governance is required'),

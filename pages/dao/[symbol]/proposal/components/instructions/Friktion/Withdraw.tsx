@@ -10,7 +10,7 @@ import Select from '@components/inputs/Select';
 import { PublicKey } from '@solana/web3.js';
 import SelectOptionList from '../../SelectOptionList';
 import TokenAccountSelect from '../../TokenAccountSelect';
-import withdrawFromVault from '@tools/sdk/friktion/withdrawFromVault';
+import withdrawFromVault from '@tools/sdk/friktion/instructions/withdrawFromVault';
 import { BN } from '@project-serum/anchor';
 
 const schema = yup.object().shape({
