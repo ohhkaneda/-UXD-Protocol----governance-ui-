@@ -11,7 +11,7 @@ import { PublicKey } from '@solana/web3.js';
 import SelectOptionList from '../../SelectOptionList';
 import TokenAccountSelect from '../../TokenAccountSelect';
 import withdrawFromVault from '@tools/sdk/friktion/instructions/withdrawFromVault';
-import { BN } from '@project-serum/anchor';
+import { uiAmountToNativeBN } from '@tools/sdk/units';
 
 const schema = yup.object().shape({
   governedAccount: yup.object().required('Governance is required'),
@@ -55,7 +55,10 @@ const Withdraw = ({
         wallet,
         voltVaultId: volt.voltVaultId,
         governancePubkey: governedAccountPubkey,
-        amount: new BN(form.uiAmount!.toString()),
+        amount: uiAmountToNativeBN(
+          form.uiAmount!.toString(),
+          volt.shareTokenDecimals,
+        ),
       });
     },
   });
