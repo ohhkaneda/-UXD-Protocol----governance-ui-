@@ -10,7 +10,7 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from '@solana/web3.js';
-import { findATAAddrSync } from '@uxd-protocol/uxd-client';
+import { findATAAddrSync } from '@utils/ataTools';
 import QuarryMineConfiguration, { SupportedMintName } from '../configuration';
 
 export async function createMinerInstruction({
