@@ -7,7 +7,7 @@ import {
   Controller,
   findATAAddrSync,
   UXD_DECIMALS,
-} from '@uxdprotocol/uxd-client';
+} from '@uxd-protocol/uxd-client';
 import type { ConnectionContext } from 'utils/connection';
 import {
   getDepositoryMintKey,

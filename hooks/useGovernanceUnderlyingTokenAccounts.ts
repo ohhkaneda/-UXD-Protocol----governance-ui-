@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 import { useCallback, useEffect, useState } from 'react';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { BN } from '@project-serum/anchor';
-import { findATAAddrSync } from '@uxdprotocol/uxd-client';
+import { findATAAddrSync } from '@uxd-protocol/uxd-client';
 import { SPL_TOKENS } from '@utils/splTokens';
 import { getOwnedTokenAccounts, tryGetMint } from '@utils/tokens';
 import useWalletStore from 'stores/useWalletStore';
