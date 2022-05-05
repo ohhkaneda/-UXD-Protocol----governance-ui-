@@ -1,17 +1,17 @@
 import * as yup from 'yup';
-import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
-import { GovernedMultiTypeAccount } from '@utils/tokens';
-import { FriktionWithdrawForm } from '@utils/uiTypes/proposalCreationTypes';
-import useGovernanceUnderlyingTokenAccounts from '@hooks/useGovernanceUnderlyingTokenAccounts';
-import { VoltList, getVolts } from '@tools/sdk/friktion/friktion';
-import { useState, useEffect } from 'react';
+import { PublicKey } from '@solana/web3.js';
 import Input from '@components/inputs/Input';
 import Select from '@components/inputs/Select';
-import { PublicKey } from '@solana/web3.js';
-import SelectOptionList from '../../SelectOptionList';
-import TokenAccountSelect from '../../TokenAccountSelect';
+import useFriktionVolt from '@hooks/usefriktionVolts';
+import useGovernanceUnderlyingTokenAccounts from '@hooks/useGovernanceUnderlyingTokenAccounts';
+import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
+import { VoltData } from '@tools/sdk/friktion/friktion';
 import withdrawFromVault from '@tools/sdk/friktion/instructions/withdrawFromVault';
 import { uiAmountToNativeBN } from '@tools/sdk/units';
+import { GovernedMultiTypeAccount } from '@utils/tokens';
+import { FriktionWithdrawForm } from '@utils/uiTypes/proposalCreationTypes';
+import SelectOptionDetailed, { Flag } from '../../SelectOptionDetailed';
+import TokenAccountSelect from '../../TokenAccountSelect';
 
 const schema = yup.object().shape({
   governedAccount: yup.object().required('Governance is required'),
@@ -28,6 +28,8 @@ const Withdraw = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   const {
+    connection,
+    wallet,
     form,
     formErrors,
     handleSetForm,
@@ -63,20 +65,32 @@ const Withdraw = ({
     },
   });
 
-  const [friktionVolts, setFriktionVolts] = useState<VoltList | null>(null);
+  const { friktionVolts } = useFriktionVolt({
+    connection: connection.current,
+    wallet,
+    governedAccountPubkey,
+  });
 
   const { ownedTokenAccountsInfo } = useGovernanceUnderlyingTokenAccounts(
     governedAccountPubkey ?? undefined,
   );
 
-  useEffect(() => {
-    // call for the mainnet friktion volts
-    if (!governedAccount) return;
-    (async () => {
-      const volts = await getVolts();
-      setFriktionVolts(volts);
-    })();
-  }, [JSON.stringify(governedAccount)]);
+  const getVoltDetail = (volt: VoltData) => ({
+    'Underlying Mint': { text: volt.underlyingTokenSymbol },
+    'Volt APY': { text: volt.apy.toString() + '%' },
+    'Pending Withdrawal': {
+      text: volt.pendingWithdrawal,
+      flag: Number(volt.deposited) > 0 ? Flag.Warning : Flag.OK,
+    },
+  });
+
+  const getDiffValue = (amount: number) =>
+    amount > 0
+      ? {
+          text: `Amount deposited: ${amount}`,
+          flag: Flag.OK,
+        }
+      : { text: 'No settled deposit on this volt', flag: Flag.Danger };
 
   return (
     <>
@@ -85,6 +99,17 @@ const Withdraw = ({
           <Select
             label="Friktion Volt"
             value={form.volt}
+            componentLabel={
+              form.volt ? (
+                <SelectOptionDetailed
+                  title={form.volt}
+                  details={getVoltDetail(friktionVolts[form.volt])}
+                  diffValue={getDiffValue(
+                    Number(friktionVolts[form.volt].deposited),
+                  )}
+                />
+              ) : undefined
+            }
             placeholder="Please select..."
             onChange={(value) => {
               handleSetForm({
@@ -94,7 +119,15 @@ const Withdraw = ({
             }}
             error={formErrors['voltVaultId']}
           >
-            <SelectOptionList list={Object.keys(friktionVolts)} />
+            {Object.entries(friktionVolts).map(([label, volt]) => (
+              <Select.Option key={label} value={label}>
+                <SelectOptionDetailed
+                  title={label}
+                  details={getVoltDetail(volt)}
+                  diffValue={getDiffValue(Number(volt.deposited))}
+                />
+              </Select.Option>
+            ))}
           </Select>
           {form.volt && friktionVolts[form.volt] && (
             <>

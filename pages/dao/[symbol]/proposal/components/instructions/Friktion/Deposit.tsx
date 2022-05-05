@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
 import * as yup from 'yup';
-import Input from '@components/inputs/Input';
 import { PublicKey } from '@solana/web3.js';
-import TokenAccountSelect from '../../TokenAccountSelect';
-import { FriktionDepositForm } from '@utils/uiTypes/proposalCreationTypes';
+import Input from '@components/inputs/Input';
 import Select from '@components/inputs/Select';
+import useFriktionVolt from '@hooks/usefriktionVolts';
 import useGovernanceUnderlyingTokenAccounts from '@hooks/useGovernanceUnderlyingTokenAccounts';
-import { GovernedMultiTypeAccount } from '@utils/tokens';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
-import { getVolts, VoltList } from '@tools/sdk/friktion/friktion';
-import SelectOptionList from '../../SelectOptionList';
+import { VoltData } from '@tools/sdk/friktion/friktion';
 import depositToVolt from '@tools/sdk/friktion/instructions/depositToVault';
+import { GovernedMultiTypeAccount } from '@utils/tokens';
+import { FriktionDepositForm } from '@utils/uiTypes/proposalCreationTypes';
+import SelectOptionDetailed, { Flag } from '../../SelectOptionDetailed';
+import TokenAccountSelect from '../../TokenAccountSelect';
 
 const schema = yup.object().shape({
   governedAccount: yup.object().required('Governance is required'),
@@ -27,6 +27,8 @@ const FriktionDeposit = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   const {
+    connection,
+    wallet,
     form,
     formErrors,
     handleSetForm,
@@ -61,20 +63,28 @@ const FriktionDeposit = ({
     },
   });
 
-  const [friktionVolts, setFriktionVolts] = useState<VoltList | null>(null);
-
+  const { friktionVolts } = useFriktionVolt({
+    connection: connection.current,
+    wallet,
+    governedAccountPubkey,
+  });
   const { ownedTokenAccountsInfo } = useGovernanceUnderlyingTokenAccounts(
     governedAccountPubkey ?? undefined,
   );
 
-  useEffect(() => {
-    // call for the mainnet friktion volts
-    if (!governedAccount) return;
-    (async () => {
-      const volts = await getVolts();
-      setFriktionVolts(volts);
-    })();
-  }, [JSON.stringify(governedAccount)]);
+  const getVoltDetail = (volt: VoltData) => ({
+    'Underlying Mint': { text: volt.underlyingTokenSymbol },
+    'Volt APY': { text: volt.apy.toString() + '%' },
+    Deposited: { text: volt.deposited },
+  });
+
+  const getDiffValue = (amount: number) =>
+    amount > 0
+      ? {
+          text: `Pending Deposit: ${amount}`,
+          flag: Flag.Warning,
+        }
+      : { text: 'No Pending Deposit', flag: Flag.OK };
 
   return (
     <>
@@ -84,6 +94,17 @@ const FriktionDeposit = ({
             label="Friktion Volt"
             value={form.volt}
             placeholder="Please select..."
+            componentLabel={
+              form.volt ? (
+                <SelectOptionDetailed
+                  title={form.volt}
+                  details={getVoltDetail(friktionVolts[form.volt])}
+                  diffValue={getDiffValue(
+                    Number(friktionVolts[form.volt].deposited),
+                  )}
+                />
+              ) : undefined
+            }
             onChange={(value) => {
               handleSetForm({
                 propertyName: 'volt',
@@ -92,7 +113,15 @@ const FriktionDeposit = ({
             }}
             error={formErrors['voltVaultId']}
           >
-            <SelectOptionList list={Object.keys(friktionVolts)} />
+            {Object.entries(friktionVolts).map(([label, volt]) => (
+              <Select.Option key={label} value={label}>
+                <SelectOptionDetailed
+                  title={label}
+                  details={getVoltDetail(volt)}
+                  diffValue={getDiffValue(Number(volt.pendingDeposit))}
+                />
+              </Select.Option>
+            ))}
           </Select>
           {form.volt && friktionVolts[form.volt] && (
             <>

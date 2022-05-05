@@ -1,8 +1,8 @@
 import Decimal from 'decimal.js';
-import { ConnectedVoltSDK, FriktionSDK } from '@friktion-labs/friktion-sdk';
 import { Wallet } from '@project-serum/sol-wallet-adapter';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { findATAAddrSync } from '@utils/ataTools';
+import { buildVoltSDK } from '../friktion';
 
 const depositToVolt = async ({
   connection,
@@ -21,28 +21,24 @@ const depositToVolt = async ({
   amount: number;
   decimals: number;
 }) => {
-  const sdk = new FriktionSDK({
-    provider: {
-      connection,
-      wallet,
-    },
-  });
-
-  const cVoltSDK = new ConnectedVoltSDK(
+  const cVoltSDK = await buildVoltSDK({
     connection,
+    wallet,
+    voltVaultId,
     governancePubkey,
-    await sdk.loadVoltByKey(new PublicKey(voltVaultId)),
-  );
+  });
 
   const [govVoltMintATA] = findATAAddrSync(
     governancePubkey,
     cVoltSDK.voltVault.vaultMint,
   );
 
-  return cVoltSDK.deposit(
+  return cVoltSDK.depositWithClaim(
     new Decimal(amount),
     sourceTokenAccount,
     govVoltMintATA,
+    false,
+    governancePubkey,
     governancePubkey,
     decimals,
   );

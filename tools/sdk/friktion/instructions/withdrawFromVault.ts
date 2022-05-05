@@ -1,8 +1,8 @@
-import { FriktionSDK, ConnectedVoltSDK } from '@friktion-labs/friktion-sdk';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { BN } from '@project-serum/anchor';
 import { Wallet } from '@project-serum/sol-wallet-adapter';
 import { findATAAddrSync } from '@utils/ataTools';
+import { buildVoltSDK } from '../friktion';
 
 const withdrawFromVault = async ({
   connection,
@@ -17,28 +17,24 @@ const withdrawFromVault = async ({
   governancePubkey: PublicKey;
   amount: BN;
 }) => {
-  const sdk = new FriktionSDK({
-    provider: {
-      connection,
-      wallet,
-    },
-  });
-  const cVoltSDK = new ConnectedVoltSDK(
+  const cVoltSDK = await buildVoltSDK({
     connection,
+    wallet,
+    voltVaultId,
     governancePubkey,
-    await sdk.loadVoltByKey(new PublicKey(voltVaultId)),
-  );
+  });
 
   const [govVoltMintATA] = findATAAddrSync(
     governancePubkey,
     cVoltSDK.voltVault.vaultMint,
   );
+
   const [govUnderlyingATA] = findATAAddrSync(
     governancePubkey,
     cVoltSDK.voltVault.underlyingAssetMint,
   );
 
-  return cVoltSDK.withdraw(
+  return cVoltSDK.withdrawWithClaim(
     amount,
     govVoltMintATA,
     govUnderlyingATA,
