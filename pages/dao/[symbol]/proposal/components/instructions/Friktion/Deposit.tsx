@@ -100,7 +100,7 @@ const FriktionDeposit = ({
                   title={form.volt}
                   details={getVoltDetail(friktionVolts[form.volt])}
                   diffValue={getDiffValue(
-                    Number(friktionVolts[form.volt].deposited),
+                    Number(friktionVolts[form.volt].pendingDeposit),
                   )}
                 />
               ) : undefined
