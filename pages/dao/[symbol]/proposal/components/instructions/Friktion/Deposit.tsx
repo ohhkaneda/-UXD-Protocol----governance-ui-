@@ -9,7 +9,9 @@ import { VoltData } from '@tools/sdk/friktion/friktion';
 import depositToVolt from '@tools/sdk/friktion/instructions/depositToVault';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { FriktionDepositForm } from '@utils/uiTypes/proposalCreationTypes';
-import SelectOptionDetailed, { Flag } from '../../SelectOptionDetailed';
+import SelectOptionDetailed, {
+  Flag,
+} from '../../../../../../../components/SelectOptionDetailed';
 import TokenAccountSelect from '../../TokenAccountSelect';
 
 const schema = yup.object().shape({

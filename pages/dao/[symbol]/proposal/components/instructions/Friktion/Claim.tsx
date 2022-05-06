@@ -8,7 +8,9 @@ import { VoltData } from '@tools/sdk/friktion/friktion';
 import claimPendingWithdrawal from '@tools/sdk/friktion/instructions/claimPendingWithdrawal';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { FriktionClaimWithdrawalForm } from '@utils/uiTypes/proposalCreationTypes';
-import SelectOptionDetailed, { Flag } from '../../SelectOptionDetailed';
+import SelectOptionDetailed, {
+  Flag,
+} from '../../../../../../../components/SelectOptionDetailed';
 import TokenAccountSelect from '../../TokenAccountSelect';
 
 const schema = yup.object().shape({

@@ -10,7 +10,9 @@ import withdrawFromVault from '@tools/sdk/friktion/instructions/withdrawFromVaul
 import { uiAmountToNativeBN } from '@tools/sdk/units';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { FriktionWithdrawForm } from '@utils/uiTypes/proposalCreationTypes';
-import SelectOptionDetailed, { Flag } from '../../SelectOptionDetailed';
+import SelectOptionDetailed, {
+  Flag,
+} from '../../../../../../../components/SelectOptionDetailed';
 import TokenAccountSelect from '../../TokenAccountSelect';
 
 const schema = yup.object().shape({
