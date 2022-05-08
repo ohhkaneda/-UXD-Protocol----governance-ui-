@@ -39,6 +39,7 @@ const Claim = ({
       governedAccount,
     },
     schema,
+    shouldSplitIntoSeparateTxs: true,
     buildInstruction: async function ({
       form,
       connection,

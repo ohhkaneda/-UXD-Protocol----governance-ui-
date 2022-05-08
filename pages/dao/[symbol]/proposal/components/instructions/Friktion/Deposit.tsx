@@ -42,6 +42,7 @@ const FriktionDeposit = ({
       uiAmount: 0,
     },
     schema,
+    shouldSplitIntoSeparateTxs: true,
     buildInstruction: async function ({
       form,
       governedAccountPubkey,

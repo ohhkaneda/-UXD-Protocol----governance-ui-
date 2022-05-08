@@ -2258,10 +2258,10 @@
   dependencies:
     buffer "~6.0.3"
 
-"@solana/spl-governance@^0.0.28":
-  version "0.0.28"
-  resolved "https://registry.yarnpkg.com/@solana/spl-governance/-/spl-governance-0.0.28.tgz#70bd2e6ab04cc26ef4a525d77068db3f667e242d"
-  integrity sha512-Y/rTdjHnwVmgdN7lNMAugmRu0+nsJh9n84zSuXt2zkGF7vE83xPwdR+ycCFq34ToeNuoAN/eSeHKFtpBT8dtzg==
+"@solana/spl-governance@0.0.34":
+  version "0.0.34"
+  resolved "https://registry.yarnpkg.com/@solana/spl-governance/-/spl-governance-0.0.34.tgz#c61d81d356dbcee961bbc85e5d3538846fea57ad"
+  integrity sha512-tZppBiiVkUa5v+B/Ds+TqZ4yxR/vaIYLRxBk7x6R22dwk4/9SU87bVE60kRdDqTdMzqScFxIMdhaGl/fCX533A==
   dependencies:
     "@solana/web3.js" "^1.22.0"
     bignumber.js "^9.0.1"
@@ -2447,7 +2447,7 @@
     superstruct "^0.14.2"
     tweetnacl "^1.0.0"
 
-"@solana/web3.js@^1.17.0", "@solana/web3.js@^1.20.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.22.0":
+"@solana/web3.js@^1.17.0", "@solana/web3.js@^1.20.0", "@solana/web3.js@^1.21.0":
   version "1.32.0"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.32.0.tgz#b9821de52d0e773c363516c3dcef9be701295d82"
   integrity sha512-jquZ/VBvM3zXAaTJvdWd9mlP0WiZaZqjji0vw5UAsb5IKIossrLhHtyUqMfo41Qkdwu1aVwf7YWG748i4XIJnw==
@@ -2485,7 +2485,7 @@
     superstruct "^0.14.2"
     tweetnacl "^1.0.0"
 
-"@solana/web3.js@^1.29.2", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.36.0":
+"@solana/web3.js@^1.22.0", "@solana/web3.js@^1.29.2", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.36.0":
   version "1.41.4"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.41.4.tgz#595aa29a4a61c181b8c8f5cf0bbef80b4739cfab"
   integrity sha512-2/mjqUcGsBkLEvKxA+rWFE1vODBycAMa62r3wm3Uzb6nmsXQQNTotB+6YoeLQmF0mxVoy8ZA+/QENzBkGkPzSg==
@@ -11538,7 +11538,12 @@ superstruct@^0.14.2:
   resolved "https://registry.yarnpkg.com/superstruct/-/superstruct-0.14.2.tgz#0dbcdf3d83676588828f1cf5ed35cda02f59025b"
   integrity sha512-nPewA6m9mR3d6k7WkZ8N8zpTWfenFH3q9pA2PkuiZxINr9DKB2+40wEQf0ixn8VaGuJ78AB6iWOtStI+/4FKZQ==
 
-superstruct@^0.15.2, superstruct@^0.15.3:
+superstruct@^0.15.2:
+  version "0.15.4"
+  resolved "https://registry.yarnpkg.com/superstruct/-/superstruct-0.15.4.tgz#e3381dd84ca07e704e19f69eda74eee1a5efb1f9"
+  integrity sha512-eOoMeSbP9ZJChNOm/9RYjE+F36rYR966AAqeG3xhQB02j2sfAUXDp4EQ/7bAOqnlJnuFDB8yvOu50SocvKpUEw==
+
+superstruct@^0.15.3:
   version "0.15.3"
   resolved "https://registry.yarnpkg.com/superstruct/-/superstruct-0.15.3.tgz#07edfc715259ebfe3b4b2e4cb53e8e45b51674a4"
   integrity sha512-wilec1Rg3FtKuRjRyCt70g5W29YUEuaLnybdVQUI+VQ7m0bw8k7TzrRv5iYmo6IpjLVrwxP5t3RgjAVqhYh4Fg==
