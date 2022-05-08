@@ -7,6 +7,9 @@ import {
 import { Wallet } from '@project-serum/sol-wallet-adapter';
 import { Connection, PublicKey } from '@solana/web3.js';
 
+export const FRIKTION_VOLT_PROGRAM =
+  'VoLT1mJz1sbnxwq5Fv2SXjdVDgPXrb9tJyC8WpMDkSp';
+
 const FRIKTION_SNAPSHOT_URL =
   'https://friktion-labs.github.io/mainnet-tvl-snapshots/friktionSnapshot.json';
 
@@ -60,13 +63,13 @@ export const buildVoltSDK = async ({
   );
 };
 
-const fetchVoltsSnapshot = async () => {
+export const fetchVoltsSnapshot = async () => {
   const response = await fetch(FRIKTION_SNAPSHOT_URL);
   const parsedResponse = (await response.json()) as FriktionSnapshot;
   return parsedResponse.allMainnetVolts as VoltSnapshot[];
 };
 
-const createLabel = (
+export const createLabel = (
   voltType: number,
   depositTokenSymbol: string,
   underlyingTokenSymbol: string,
@@ -122,7 +125,7 @@ const fetchVoltRound = async ({
   return {
     pendingDeposit: balances?.pendingDeposits.toString() ?? '0',
     pendingWithdrawal: balances?.pendingWithdrawals.toString() ?? '0',
-    deposited: balances?.normalBalance.toString() ?? '0',
+    deposited: balances?.totalBalance.toString() ?? '0',
     claimable: balances?.claimableUnderlying.toString() ?? '0',
   };
 };
@@ -137,7 +140,7 @@ const getVoltStatus = async ({
   wallet: Wallet;
   governancePubkey: PublicKey;
   volt: VoltSnapshot;
-}) => {
+}): Promise<VoltData> => {
   const state = await fetchVoltRound({
     connection,
     wallet,
@@ -145,7 +148,6 @@ const getVoltStatus = async ({
     voltVaultId: volt.voltVaultId,
     tokenDecimals: volt.shareTokenDecimals,
   });
-  console.log('state', state);
   return { ...volt, ...state };
 };
 
@@ -166,6 +168,9 @@ const getAllVoltsStatus = async ({
     ),
   );
 
+export const fetchVoltList = async () =>
+  filterAllowedVolts(await fetchVoltsSnapshot(), ALLOWED_VAULTS);
+
 export const getVolts = async ({
   connection,
   wallet,
@@ -180,6 +185,6 @@ export const getVolts = async ({
       connection,
       wallet,
       governancePubkey,
-      volts: filterAllowedVolts(await fetchVoltsSnapshot(), ALLOWED_VAULTS),
+      volts: await fetchVoltList(),
     }),
   );
