@@ -1,6 +1,7 @@
 import * as yup from 'yup';
 import { PublicKey } from '@solana/web3.js';
 import Select from '@components/inputs/Select';
+import SelectOptionDetailed, { Flag } from '@components/SelectOptionDetailed';
 import useFriktionVolt from '@hooks/usefriktionVolts';
 import useGovernanceUnderlyingTokenAccounts from '@hooks/useGovernanceUnderlyingTokenAccounts';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
@@ -8,9 +9,6 @@ import { VoltData } from '@tools/sdk/friktion/friktion';
 import claimPendingWithdrawal from '@tools/sdk/friktion/instructions/claimPendingWithdrawal';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { FriktionClaimWithdrawalForm } from '@utils/uiTypes/proposalCreationTypes';
-import SelectOptionDetailed, {
-  Flag,
-} from '../../../../../../../components/SelectOptionDetailed';
 import TokenAccountSelect from '../../TokenAccountSelect';
 
 const schema = yup.object().shape({
@@ -69,23 +67,34 @@ const Claim = ({
     governedAccountPubkey ?? undefined,
   );
 
-  const getVoltDetail = (volt: VoltData) => ({
-    'Underlying Mint': { text: volt.underlyingTokenSymbol },
-    'Volt APY': { text: volt.apy.toString() + '%' },
-    Deposited: { text: volt.deposited },
-    'Pending Withdrawal': {
+  const getVoltDetail = (volt: VoltData) => [
+    {
+      label: 'Underlying Mint',
+      text: volt.underlyingTokenSymbol,
+    },
+    {
+      label: 'Volt APY',
+      text: volt.apy.toString() + '%',
+    },
+    {
+      label: 'Deposited',
+      text: volt.deposited,
+    },
+    {
+      label: 'Pending Withdrawal',
       text: volt.pendingWithdrawal,
       ...(Number(volt.pendingWithdrawal) > 0 && { flag: Flag.Warning }),
     },
-  });
+  ];
 
   const getDiffValue = (amount: number) =>
     amount > 0
       ? {
+          label: 'Claimable',
           text: `Claimable: ${amount}`,
           flag: Flag.OK,
         }
-      : { text: 'No Claimable Token', flag: Flag.Danger };
+      : { label: 'Claimable', text: 'No Claimable Token', flag: Flag.Danger };
 
   return (
     <>

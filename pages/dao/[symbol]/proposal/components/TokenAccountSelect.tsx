@@ -1,9 +1,7 @@
 import { PublicKey } from '@solana/web3.js';
 import Select from '@components/inputs/Select';
+import SelectOptionDetailed, { Flag } from '@components/SelectOptionDetailed';
 import { OwnedTokenAccountsInfo } from '@hooks/useGovernanceUnderlyingTokenAccounts';
-import SelectOptionDetailed, {
-  Flag,
-} from '../../../../../components/SelectOptionDetailed';
 
 const TokenAccountSelect = ({
   label,
@@ -32,13 +30,24 @@ const TokenAccountSelect = ({
     const { mint, uiAmount, mintName, isATA } = ownedTokenAccountsInfo[
       pubkeyString
     ];
-    const details = {
-      'Mint Name': { text: mintName },
-      'UI Balance': { text: uiAmount.toString() },
-      Mint: { text: mint.toBase58() },
-    };
+
+    const details = [
+      {
+        label: 'Mint Name',
+        text: mintName,
+      },
+      {
+        label: 'UI Balance',
+        text: uiAmount.toString(),
+      },
+      {
+        label: 'Mint',
+        text: mint.toBase58(),
+      },
+    ];
 
     const diffValue = {
+      label: 'ATA',
       flag: isATA ? Flag.OK : Flag.Danger,
       text: `${isATA ? 'Not an' : ''} Associated Token Account`,
     };

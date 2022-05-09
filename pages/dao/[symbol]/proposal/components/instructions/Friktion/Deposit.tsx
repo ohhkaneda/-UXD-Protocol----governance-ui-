@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import { PublicKey } from '@solana/web3.js';
 import Input from '@components/inputs/Input';
 import Select from '@components/inputs/Select';
+import SelectOptionDetailed, { Flag } from '@components/SelectOptionDetailed';
 import useFriktionVolt from '@hooks/usefriktionVolts';
 import useGovernanceUnderlyingTokenAccounts from '@hooks/useGovernanceUnderlyingTokenAccounts';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
@@ -9,16 +10,16 @@ import { VoltData } from '@tools/sdk/friktion/friktion';
 import depositToVolt from '@tools/sdk/friktion/instructions/depositToVault';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { FriktionDepositForm } from '@utils/uiTypes/proposalCreationTypes';
-import SelectOptionDetailed, {
-  Flag,
-} from '../../../../../../../components/SelectOptionDetailed';
 import TokenAccountSelect from '../../TokenAccountSelect';
 
 const schema = yup.object().shape({
   governedAccount: yup.object().required('Governance is required'),
-  sourceAccount: yup.string().typeError('Source account is required'),
+  sourceAccount: yup.string().required('Source account is required'),
   volt: yup.string().required('Volt is required'),
-  uiAmount: yup.number().typeError('Amount is required'),
+  uiAmount: yup
+    .number()
+    .typeError('Amount has to be a number')
+    .required('Amount is required'),
 });
 
 const FriktionDeposit = ({
@@ -75,19 +76,29 @@ const FriktionDeposit = ({
     governedAccountPubkey ?? undefined,
   );
 
-  const getVoltDetail = (volt: VoltData) => ({
-    'Underlying Mint': { text: volt.underlyingTokenSymbol },
-    'Volt APY': { text: volt.apy.toString() + '%' },
-    Deposited: { text: volt.deposited },
-  });
+  const getVoltDetail = (volt: VoltData) => [
+    {
+      label: 'Underlying Mint',
+      text: volt.underlyingTokenSymbol,
+    },
+    {
+      label: 'Volt APY',
+      text: volt.apy.toString() + '%',
+    },
+    {
+      label: 'Deposited',
+      text: volt.deposited,
+    },
+  ];
 
   const getDiffValue = (amount: number) =>
     amount > 0
       ? {
+          label: 'Pending Deposit',
           text: `Pending Deposit: ${amount}`,
           flag: Flag.Warning,
         }
-      : { text: 'No Pending Deposit', flag: Flag.OK };
+      : { label: 'Pending Deposit', text: 'No Pending Deposit', flag: Flag.OK };
 
   return (
     <>

@@ -35,11 +35,11 @@ export interface FormInstructionData {
 }
 
 export interface SplTokenTransferForm {
-  destinationAccount: string;
-  amount: number | undefined;
-  governedTokenAccount?: GovernedTokenAccount | undefined;
+  destinationAccount?: string;
+  amount?: number;
+  governedTokenAccount?: GovernedTokenAccount;
   programId: string | undefined;
-  mintInfo: MintInfo | undefined;
+  mintInfo?: MintInfo;
 }
 
 export interface FriktionDepositForm {

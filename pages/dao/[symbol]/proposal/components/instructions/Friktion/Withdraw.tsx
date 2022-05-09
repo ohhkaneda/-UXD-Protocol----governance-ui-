@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import { PublicKey } from '@solana/web3.js';
 import Input from '@components/inputs/Input';
 import Select from '@components/inputs/Select';
+import SelectOptionDetailed, { Flag } from '@components/SelectOptionDetailed';
 import useFriktionVolt from '@hooks/usefriktionVolts';
 import useGovernanceUnderlyingTokenAccounts from '@hooks/useGovernanceUnderlyingTokenAccounts';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
@@ -10,16 +11,13 @@ import withdrawFromVault from '@tools/sdk/friktion/instructions/withdrawFromVaul
 import { uiAmountToNativeBN } from '@tools/sdk/units';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { FriktionWithdrawForm } from '@utils/uiTypes/proposalCreationTypes';
-import SelectOptionDetailed, {
-  Flag,
-} from '../../../../../../../components/SelectOptionDetailed';
 import TokenAccountSelect from '../../TokenAccountSelect';
 
 const schema = yup.object().shape({
   governedAccount: yup.object().required('Governance is required'),
-  receiverAccount: yup.string().typeError('Source account is required'),
+  receiverAccount: yup.string().required('Source account is required'),
   volt: yup.string().required('Volt is required'),
-  uiAmount: yup.number().typeError('Amount is required'),
+  uiAmount: yup.number().required('Amount is required'),
 });
 
 const Withdraw = ({
@@ -78,22 +76,34 @@ const Withdraw = ({
     governedAccountPubkey ?? undefined,
   );
 
-  const getVoltDetail = (volt: VoltData) => ({
-    'Underlying Mint': { text: volt.underlyingTokenSymbol },
-    'Volt APY': { text: volt.apy.toString() + '%' },
-    'Pending Withdrawal': {
+  const getVoltDetail = (volt: VoltData) => [
+    {
+      label: 'Underlying Mint',
+      text: volt.underlyingTokenSymbol,
+    },
+    {
+      label: 'Volt APY',
+      text: volt.apy.toString() + '%',
+    },
+    {
+      label: 'Pending Withdrawal',
       text: volt.pendingWithdrawal,
       flag: Number(volt.deposited) > 0 ? Flag.Warning : Flag.OK,
     },
-  });
+  ];
 
   const getDiffValue = (amount: number) =>
     amount > 0
       ? {
+          label: 'Deposited',
           text: `Amount deposited: ${amount}`,
           flag: Flag.OK,
         }
-      : { text: 'No settled deposit on this volt', flag: Flag.Danger };
+      : {
+          label: 'Deposited',
+          text: 'No settled deposit on this volt',
+          flag: Flag.Danger,
+        };
 
   return (
     <>

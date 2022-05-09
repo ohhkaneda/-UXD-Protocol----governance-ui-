@@ -26,7 +26,7 @@ const useFriktionVolt = ({
       });
       setFriktionVolts(volts);
     })();
-  }, [governedAccountPubkey?.toBase58()]);
+  }, [governedAccountPubkey]);
 
   return { friktionVolts };
 };

@@ -4,26 +4,26 @@ export enum Flag {
   OK,
 }
 
-type OptionText = {
+type OptionDetail = {
+  label: string;
   text: string;
   flag?: Flag;
 };
 
-type OptionDetails = {
-  [label: string]: OptionText;
+const flagColorClassMap: {
+  [flag in Flag]: string;
+} = {
+  [Flag.Danger]: 'text-red',
+  [Flag.Warning]: 'text-orange',
+  [Flag.OK]: 'text-green',
 };
 
 const setFlagColorText = (flag?: Flag) => {
-  switch (flag) {
-    case Flag.Danger:
-      return 'text-red';
-    case Flag.Warning:
-      return 'text-orange';
-    case Flag.OK:
-      return 'text-green';
-    default:
-      return '';
+  if (flag === undefined) {
+    return '';
   }
+
+  return flagColorClassMap[flag];
 };
 
 const SelectOptionDetailed = ({
@@ -32,22 +32,22 @@ const SelectOptionDetailed = ({
   diffValue,
 }: {
   title: string;
-  details: OptionDetails;
-  diffValue?: OptionText;
+  details: OptionDetail[];
+  diffValue?: OptionDetail;
 }) => {
   return (
     <div className="flex flex-col">
       <div className="mb-0.5">{title}</div>
 
       <div className="flex flex-col">
-        {Object.entries(details).map(([label, option]) => (
+        {details.map((opt, i) => (
           <div
-            key={option.text}
+            key={opt.label + i}
             className={`space-y-0.5 text-xs text-fgd-3 ${setFlagColorText(
-              option.flag,
+              opt.flag,
             )}`}
           >
-            {`${label}: ${option.text}`}
+            {`${opt.label}: ${opt.text}`}
           </div>
         ))}
         {diffValue && (

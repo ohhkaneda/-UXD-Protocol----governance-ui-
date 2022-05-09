@@ -1,3 +1,4 @@
+import { nu64, struct, u8 } from 'buffer-layout';
 import { BN } from '@project-serum/anchor';
 import { AccountMetaData } from '@solana/spl-governance';
 import { Connection } from '@solana/web3.js';
@@ -7,7 +8,6 @@ import {
   FRIKTION_VOLT_PROGRAM,
 } from '@tools/sdk/friktion/friktion';
 import { nativeAmountToFormattedUiAmount } from '@tools/sdk/units';
-import { struct, u8, nu64 } from 'buffer-layout';
 
 export const FRIKTION_PROGRAM_INSTRUCTIONS = {
   [FRIKTION_VOLT_PROGRAM]: {
