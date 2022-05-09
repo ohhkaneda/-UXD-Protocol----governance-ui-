@@ -139,7 +139,6 @@ export async function getInstructionDescriptor(
     descriptors = INSTRUCTION_DESCRIPTORS[instruction.programId.toBase58()];
   }
 
-  console.log('instruction', instruction);
   // Make it work for program with one instruction like ATA program
   // and for the one with multiple instructions
   const descriptor = !instruction.data.length
