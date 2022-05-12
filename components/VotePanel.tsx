@@ -15,6 +15,8 @@ import useWalletStore, {
 import Button, { SecondaryButton } from './Button';
 import VoteCommentModal from './VoteCommentModal';
 import { getProgramVersionForRealm } from '@models/registry/api';
+import { VoterWeight } from '@models/voteWeights';
+import { BN } from '@project-serum/anchor';
 
 const VotePanel = () => {
   const [showVoteModal, setShowVoteModal] = useState(false);
@@ -38,15 +40,53 @@ const VotePanel = () => {
   const fetchRealm = useWalletStore((s) => s.actions.fetchRealm);
   const hasVoteTimeExpired = useHasVoteTimeExpired(governance, proposal!);
 
-  const ownVoteRecord =
+  // ---- Here we get the ownTokenRecord of the StakingAccount behind the account 3LAM8JJJBcb4EpGJ6ja7jdUXBpSxyY477x5wc1rX6zKT (burner wallet)
+  const { tokenRecords } = useWalletStore((s) => s.selectedRealm);
+
+  // Look for accounts where the user is the delegate
+  const getDelegatedAccounts = useCallback((): {
+    address: string;
+    nbToken: number;
+  }[] => {
+    if (!wallet?.publicKey) {
+      return [];
+    }
+
+    return Object.entries(tokenRecords)
+      .filter(([, value]) =>
+        value.account.governanceDelegate?.equals(wallet.publicKey!),
+      )
+      .map(([key, value]) => ({
+        address: key,
+        nbToken: value.account.governingTokenDepositAmount
+          .div(new BN(10 ** 6))
+          .toNumber(),
+      }));
+  }, [wallet, tokenRecords]);
+
+  const delegatedAccounts = getDelegatedAccounts();
+
+  let tokenRecord = ownTokenRecord;
+  let voterWeight = ownVoterWeight;
+  let voteRecord =
     wallet?.publicKey && voteRecordsByVoter[wallet.publicKey.toBase58()];
 
+  // If there is at least one delegated account vote with it (for now)
+  // @TODO we should vote with the regular account + every delegated accounts one after another (and if there are tokens to vote with)
+  if (delegatedAccounts.length) {
+    tokenRecord = tokenRecords[delegatedAccounts[0].address];
+    voterWeight = new VoterWeight(tokenRecord, ownCouncilTokenRecord);
+    voteRecord = voteRecordsByVoter[delegatedAccounts[0].address];
+  }
+  // ------
+
+  // ---- Here gotta use the tokenRecord of the StakingAccount because the tokens are owned by the staking account directly
   const voterTokenRecord =
     tokenType === GoverningTokenType.Community
-      ? ownTokenRecord
+      ? tokenRecord
       : ownCouncilTokenRecord;
 
-  const isVoteCast = ownVoteRecord !== undefined;
+  const isVoteCast = voteRecord !== undefined;
   const isVoting =
     proposal?.account.state === EnhancedProposalState.Voting &&
     !hasVoteTimeExpired;
@@ -56,14 +96,12 @@ const VotePanel = () => {
     isVoting &&
     !isVoteCast &&
     voterTokenRecord &&
-    ownVoterWeight.hasMinAmountToVote(
-      voterTokenRecord.account.governingTokenMint,
-    );
+    voterWeight.hasMinAmountToVote(voterTokenRecord.account.governingTokenMint);
 
   const isWithdrawEnabled =
     connected &&
-    ownVoteRecord &&
-    !ownVoteRecord?.account.isRelinquished &&
+    voteRecord &&
+    !voteRecord?.account.isRelinquished &&
     proposal &&
     (proposal!.account.state === EnhancedProposalState.Voting ||
       proposal!.account.state === EnhancedProposalState.Completed ||
@@ -90,6 +128,7 @@ const VotePanel = () => {
         proposal?.account.state === EnhancedProposalState.Voting &&
         hasVoteTimeExpired
       ) {
+        console.log('>>>> withFinalizeVote');
         await withFinalizeVote(
           instructions,
           realmInfo!.programId,
@@ -107,7 +146,7 @@ const VotePanel = () => {
         proposal!,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         voterTokenRecord!.pubkey,
-        ownVoteRecord!.pubkey,
+        voteRecord!.pubkey,
         instructions,
       );
     } catch (ex) {
@@ -136,7 +175,7 @@ const VotePanel = () => {
   const withdrawTooltipContent = !connected
     ? 'You need to connect your wallet'
     : !isWithdrawEnabled
-    ? !ownVoteRecord?.account.isRelinquished
+    ? !voteRecord?.account.isRelinquished
       ? 'Owner vote record is not relinquished'
       : 'The proposal is not in a valid state to execute this action.'
     : '';
@@ -146,7 +185,7 @@ const VotePanel = () => {
     : !isVoting && isVoteCast
     ? 'Proposal is not in a voting state anymore.'
     : !voterTokenRecord ||
-      !ownVoterWeight.hasMinAmountToVote(
+      !voterWeight.hasMinAmountToVote(
         voterTokenRecord.account.governingTokenMint,
       )
     ? 'You don’t have governance power to vote in this realm'
@@ -164,7 +203,7 @@ const VotePanel = () => {
       typeof notVisibleStatesForNotConnectedWallet.find(
         (x) => x === proposal?.account.state,
       ) === 'undefined'
-    : !ownVoteRecord?.account.isRelinquished;
+    : !voteRecord?.account.isRelinquished;
 
   const isPanelVisible = (isVoting || isVoteCast) && isVisibleToWallet;
   return (
@@ -184,7 +223,26 @@ const VotePanel = () => {
                 {isVoting ? 'Withdraw' : 'Release Tokens'}
               </SecondaryButton>
             ) : (
-              <>
+              <div className="flex flex-col">
+                {delegatedAccounts.length && (
+                  <div className="text-xs mb-4">
+                    Delegate of{' '}
+                    <span className="ml-1 mr-1 font-bold">
+                      {delegatedAccounts.length}
+                    </span>{' '}
+                    account{delegatedAccounts.length > 1 ? 's' : ''} for total a
+                    vote power of
+                    <span className="ml-1 mr-1 font-bold">
+                      {delegatedAccounts.reduce(
+                        (total, oneDelegatedAccountInfo) =>
+                          total + oneDelegatedAccountInfo.nbToken,
+                        0,
+                      )}
+                    </span>
+                    tokens
+                  </div>
+                )}
+
                 {isVoting && (
                   <div className="w-full flex justify-between items-center gap-5">
                     <Button
@@ -206,7 +264,7 @@ const VotePanel = () => {
                     </Button>
                   </div>
                 )}
-              </>
+              </div>
             )}
           </div>
 

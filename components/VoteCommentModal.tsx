@@ -69,7 +69,12 @@ const VoteCommentModal: FunctionComponent<VoteCommentModalProps> = ({
         rpcContext,
         realm!,
         proposal!,
+
+        // VOTE WITH STAKING ACCOUNT
+        // Here gotta use the voterTokenRecord of the stakingAccount being the real owner of the tokens
         voterTokenRecord.pubkey,
+        // -----
+
         vote,
         msg,
         client,
