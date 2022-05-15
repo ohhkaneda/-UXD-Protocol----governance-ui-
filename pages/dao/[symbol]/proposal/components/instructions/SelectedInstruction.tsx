@@ -56,6 +56,7 @@ import UXDStakingFinalizeStakingCampaign from './UXDStaking/FinalizeStakingCampa
 import UXDStakingAddStakingOption from './UXDStaking/AddStakingOption';
 import UXDStakingActivateStakingOption from './UXDStaking/ActivateStakingOption';
 import UXDStakingRefillRewardVault from './UXDStaking/RefillRewardVault';
+import UXDMintWithMangoDepository from './UXD/MintWithMangoDepository';
 import TransferTokens from './Native/TransferTokens';
 import MapleFinanceLenderDeposit from './MapleFinance/LenderDeposit';
 
@@ -209,6 +210,13 @@ const SelectedInstruction = ({
     case InstructionEnum.UXDRegisterMangoDepository:
       return (
         <UXDRegisterMangoDeposiory
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
+    case InstructionEnum.UXDMintWithMangoDepository:
+      return (
+        <UXDMintWithMangoDepository
           index={index}
           governedAccount={governedAccount}
         />

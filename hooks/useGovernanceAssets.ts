@@ -425,6 +425,11 @@ export default function useGovernanceAssets() {
       isVisible: canUseUxdInstructions,
       packageId: PackageEnum.UXD,
     },
+    [InstructionEnum.UXDMintWithMangoDepository]: {
+      name: 'Mint With Mango Depository',
+      isVisible: canUseUxdInstructions,
+      packageId: PackageEnum.UXD,
+    },
     [InstructionEnum.RaydiumAddLiquidity]: {
       name: 'Add To Liquidity Pool',
       isVisible: canUseAnyInstruction,

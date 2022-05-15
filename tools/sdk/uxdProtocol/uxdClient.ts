@@ -81,6 +81,7 @@ export const getDepositoryToken = (cluster: Cluster, symbol: string) =>
 export const getInsuranceMintSymbols = (cluster: Cluster): string[] => [
   ...Object.keys(INSURANCE_MINTS[cluster]),
 ];
+
 export const getInsuranceMintKey = (
   cluster: Cluster,
   symbol: string,
@@ -89,6 +90,7 @@ export const getInsuranceMintKey = (
 export const getGovernanceMintSymbols = (cluster: Cluster): string[] => [
   ...Object.keys(GOVERNANCE_MINTS[cluster]),
 ];
+
 export const getGovernanceMintKey = (
   cluster: Cluster,
   symbol: string,
