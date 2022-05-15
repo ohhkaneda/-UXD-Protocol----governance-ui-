@@ -223,8 +223,8 @@ const VotePanel = () => {
                 {isVoting ? 'Withdraw' : 'Release Tokens'}
               </SecondaryButton>
             ) : (
-              <div className="flex flex-col">
-                {delegatedAccounts.length && (
+              <div className="flex flex-col w-full">
+                {delegatedAccounts.length ? (
                   <div className="text-xs mb-4">
                     Delegate of{' '}
                     <span className="ml-1 mr-1 font-bold">
@@ -241,9 +241,9 @@ const VotePanel = () => {
                     </span>
                     tokens
                   </div>
-                )}
+                ) : null}
 
-                {isVoting && (
+                {isVoting ? (
                   <div className="w-full flex justify-between items-center gap-5">
                     <Button
                       tooltipMessage={voteTooltipContent}
@@ -263,7 +263,7 @@ const VotePanel = () => {
                       Vote No
                     </Button>
                   </div>
-                )}
+                ) : null}
               </div>
             )}
           </div>
