@@ -1,5 +1,6 @@
 import { Provider } from '@project-serum/anchor';
 import { TransactionInstruction, PublicKey } from '@solana/web3.js';
+import { tryGetMint } from '@utils/tokens';
 import { Controller, UXD_DECIMALS } from '@uxd-protocol/uxd-client';
 import type { ConnectionContext } from 'utils/connection';
 import {
@@ -40,14 +41,24 @@ const createMintWithMangoDepositoryInstruction = async ({
     insuranceMintName,
   );
 
+  const [depositoryMintInfo, insuranceMintInfo] = await Promise.all([
+    tryGetMint(connection.current, depositoryMint),
+    tryGetMint(connection.current, insuranceMint),
+  ]);
+
+  if (!depositoryMintInfo)
+    throw new Error(`Cannot load mint info about ${depositoryMint.toBase58()}`);
+  if (!insuranceMintInfo)
+    throw new Error(`Cannot load mint info about ${insuranceMint.toBase58()}`);
+
   const depository = instantiateMangoDepository(
     uxdProgramId,
     depositoryMint,
     insuranceMint,
     depositoryMintName,
-    undefined,
+    depositoryMintInfo.account.decimals,
     insuranceMintName,
-    undefined,
+    insuranceMintInfo.account.decimals,
   );
 
   const client = uxdClient(uxdProgramId);

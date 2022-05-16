@@ -427,7 +427,7 @@ export default function useGovernanceAssets() {
     },
     [InstructionEnum.UXDMintWithMangoDepository]: {
       name: 'Mint With Mango Depository',
-      isVisible: canUseUxdInstructions,
+      isVisible: canUseAnyInstruction,
       packageId: PackageEnum.UXD,
       tag: 'beta',
     },
