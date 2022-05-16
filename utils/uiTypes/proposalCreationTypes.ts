@@ -117,6 +117,10 @@ export interface Base64InstructionForm {
   holdUpTime: number;
 }
 
+export interface SyncNativeInstructionForm {
+  governedAccount?: GovernedMultiTypeAccount;
+}
+
 export interface EmptyInstructionForm {
   governedAccount?: GovernedMultiTypeAccount;
 }
@@ -434,7 +438,7 @@ export interface UXDStakingRefillRewardVaultForm {
   uiRewardRefillAmount?: number;
 }
 
-export interface NativeTransferTokensForm {
+export interface NativeTransferTokens {
   governedAccount?: GovernedMultiTypeAccount;
   source?: string;
   destination?: string;
@@ -508,7 +512,8 @@ export enum InstructionEnum {
   UXDStakingActivateStakingOption,
   UXDStakingRefillRewardVault,
   UXDMintWithMangoDepository,
-  NativeTransferTokensForm,
+  NativeTransferTokens,
+  NativeSyncNative,
   MapleFinanceLenderDepositForm,
 }
 

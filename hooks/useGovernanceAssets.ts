@@ -429,6 +429,7 @@ export default function useGovernanceAssets() {
       name: 'Mint With Mango Depository',
       isVisible: canUseUxdInstructions,
       packageId: PackageEnum.UXD,
+      tag: 'beta',
     },
     [InstructionEnum.RaydiumAddLiquidity]: {
       name: 'Add To Liquidity Pool',
@@ -522,8 +523,14 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.UXDStaking,
     },
-    [InstructionEnum.NativeTransferTokensForm]: {
+    [InstructionEnum.NativeTransferTokens]: {
       name: 'Transfer Tokens',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Native,
+      tag: 'beta',
+    },
+    [InstructionEnum.NativeSyncNative]: {
+      name: 'Sync Native (WSOL ATA sync)',
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.Native,
       tag: 'beta',

@@ -57,6 +57,7 @@ import UXDStakingAddStakingOption from './UXDStaking/AddStakingOption';
 import UXDStakingActivateStakingOption from './UXDStaking/ActivateStakingOption';
 import UXDStakingRefillRewardVault from './UXDStaking/RefillRewardVault';
 import UXDMintWithMangoDepository from './UXD/MintWithMangoDepository';
+import NativeSyncNative from './Native/SyncNative';
 import TransferTokens from './Native/TransferTokens';
 import MapleFinanceLenderDeposit from './MapleFinance/LenderDeposit';
 
@@ -360,6 +361,10 @@ const SelectedInstruction = ({
       );
     case InstructionEnum.FriktionClaimWithdrawal:
       return <FriktionClaim index={index} governedAccount={governedAccount} />;
+    case InstructionEnum.NativeSyncNative:
+      return (
+        <NativeSyncNative index={index} governedAccount={governedAccount} />
+      );
     case InstructionEnum.Mint:
       return <NativeMint index={index} governance={null} />;
     /*case InstructionEnum.Grant:
@@ -404,7 +409,7 @@ const SelectedInstruction = ({
       );
     case InstructionEnum.SoceanVest:
       return <SoceanVest index={index} governedAccount={governedAccount} />;
-    case InstructionEnum.NativeTransferTokensForm:
+    case InstructionEnum.NativeTransferTokens:
       return <TransferTokens index={index} governedAccount={governedAccount} />;
     default:
       return null;

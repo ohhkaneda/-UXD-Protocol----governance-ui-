@@ -1,7 +1,9 @@
+import { NATIVE_MINT } from '@solana/spl-token';
 import { PublicKey } from '@solana/web3.js';
 import solendConfiguration, {
   SupportedCollateralMintName as SolendSupportedCollateralMintName,
 } from '@tools/sdk/solend/configuration';
+import { SOL_DECIMALS } from '@uxd-protocol/uxd-client';
 import { abbreviateAddress } from './formatting';
 
 export type SplTokenInformation = {
@@ -12,6 +14,7 @@ export type SplTokenInformation = {
 
 export type SupportedSplTokenNames =
   | 'USDC'
+  | 'SOL'
   | 'WSOL'
   | 'UXP'
   | 'UXD'
@@ -30,6 +33,12 @@ export const SPL_TOKENS: {
     name: 'USD Coin',
     mint: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),
     decimals: 6,
+  },
+
+  SOL: {
+    name: 'SOL',
+    mint: NATIVE_MINT,
+    decimals: SOL_DECIMALS,
   },
 
   WSOL: {

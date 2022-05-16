@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import { GovernedMultiTypeAccount, tryGetTokenMint } from '@utils/tokens';
-import { NativeTransferTokensForm } from '@utils/uiTypes/proposalCreationTypes';
+import { NativeTransferTokens } from '@utils/uiTypes/proposalCreationTypes';
 import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { uiAmountToNativeBN } from '@tools/sdk/units';
 import { PublicKey } from '@solana/web3.js';
@@ -146,7 +146,7 @@ const TransferTokens = ({
     handleSetForm,
     formErrors,
     governedAccountPubkey,
-  } = useInstructionFormBuilder<NativeTransferTokensForm>({
+  } = useInstructionFormBuilder<NativeTransferTokens>({
     index,
     initialFormValues: {
       governedAccount,
