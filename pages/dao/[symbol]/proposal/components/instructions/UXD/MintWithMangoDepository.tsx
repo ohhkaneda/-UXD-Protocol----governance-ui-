@@ -43,6 +43,7 @@ const MintWithMangoDepository = ({
       governedAccount,
     },
     schema,
+    shouldSplitIntoSeparateTxs: true,
     buildInstruction: async function ({ form, wallet, governedAccountPubkey }) {
       return createMintWithMangoDepositoryInstruction({
         connection,
