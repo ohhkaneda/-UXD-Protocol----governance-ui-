@@ -63,7 +63,7 @@ const createMintWithMangoDepositoryInstruction = async ({
 
   const client = uxdClient(uxdProgramId);
 
-  return client.createMintWithMangoDepositoryInstruction(
+  const instruction = await client.createMintWithMangoDepositoryInstruction(
     uiCollateralAmount,
     slippage,
     new Controller('UXD', UXD_DECIMALS, uxdProgramId),
@@ -73,6 +73,14 @@ const createMintWithMangoDepositoryInstruction = async ({
     Provider.defaultOptions(),
     payer,
   );
+
+  instruction.keys.forEach((key) => {
+    if (key.isSigner) {
+      key.isWritable = true;
+    }
+  });
+
+  return instruction;
 };
 
 export default createMintWithMangoDepositoryInstruction;
