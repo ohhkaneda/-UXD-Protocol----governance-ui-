@@ -1,15 +1,11 @@
-import {
-  Keypair,
-  PublicKey,
-  Transaction,
-  TransactionInstruction,
-} from '@solana/web3.js';
+import { Keypair, Transaction, TransactionInstruction } from '@solana/web3.js';
 import {
   ChatMessageBody,
   getGovernanceProgramVersion,
   GOVERNANCE_CHAT_PROGRAM_ID,
   Proposal,
   Realm,
+  TokenOwnerRecord,
   withPostChatMessage,
   YesNoVote,
 } from '@solana/spl-governance';
@@ -23,15 +19,23 @@ import { sendTransaction } from '../utils/send';
 import { withUpdateVoterWeightRecord } from 'VoteStakeRegistry/sdk/withUpdateVoterWeightRecord';
 import { VsrClient } from '@blockworks-foundation/voter-stake-registry-client';
 
-export async function castVote(
-  { connection, wallet, programId, walletPubkey }: RpcContext,
-  realm: ProgramAccount<Realm>,
-  proposal: ProgramAccount<Proposal>,
-  tokeOwnerRecord: PublicKey,
-  yesNoVote: YesNoVote,
-  message?: ChatMessageBody | undefined,
-  client?: VsrClient,
-) {
+export async function castVotes({
+  rpcContext: { connection, wallet, programId, walletPubkey },
+  vote,
+  realm,
+  proposal,
+  tokenOwnerRecordsToVoteWith,
+  message,
+  client,
+}: {
+  rpcContext: RpcContext;
+  realm: ProgramAccount<Realm>;
+  proposal: ProgramAccount<Proposal>;
+  tokenOwnerRecordsToVoteWith: ProgramAccount<TokenOwnerRecord>[];
+  vote: YesNoVote;
+  message?: ChatMessageBody;
+  client?: VsrClient;
+}) {
   const signers: Keypair[] = [];
   const instructions: TransactionInstruction[] = [];
 
@@ -53,22 +57,24 @@ export async function castVote(
     client,
   );
 
-  await withCastVote(
-    instructions,
-    programId,
-    programVersion,
-    realm.pubkey,
-    proposal.account.governance,
-    proposal.pubkey,
-    proposal.account.tokenOwnerRecord,
-    tokeOwnerRecord,
-    governanceAuthority,
+  for (const tokenOwnerRecord of tokenOwnerRecordsToVoteWith) {
+    await withCastVote(
+      instructions,
+      programId,
+      programVersion,
+      realm.pubkey,
+      proposal.account.governance,
+      proposal.pubkey,
+      proposal.account.tokenOwnerRecord,
+      tokenOwnerRecord.pubkey,
+      governanceAuthority,
 
-    proposal.account.governingTokenMint,
-    Vote.fromYesNoVote(yesNoVote),
-    payer,
-    voterWeight,
-  );
+      proposal.account.governingTokenMint,
+      Vote.fromYesNoVote(vote),
+      payer,
+      voterWeight,
+    );
+  }
 
   if (message) {
     await withPostChatMessage(
@@ -79,7 +85,10 @@ export async function castVote(
       realm.pubkey,
       proposal.account.governance,
       proposal.pubkey,
-      tokeOwnerRecord,
+
+      // Use the first Token Owner Record in a completely arbitrary way
+      tokenOwnerRecordsToVoteWith[0].pubkey,
+
       governanceAuthority,
       payer,
       undefined,
