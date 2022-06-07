@@ -7,7 +7,14 @@ import {
 } from '@solana/web3.js';
 import BN from 'bn.js';
 import useRealm from '@hooks/useRealm';
-import { getProposal, Proposal, ProposalState } from '@solana/spl-governance';
+import {
+  getProposal,
+  ProgramAccount,
+  Proposal,
+  ProposalState,
+  TokenOwnerRecord,
+  VoteRecord,
+} from '@solana/spl-governance';
 import { getUnrelinquishedVoteRecords } from '@models/api';
 import { withDepositGoverningTokens } from '@solana/spl-governance';
 import { withRelinquishVote } from '@solana/spl-governance';
@@ -25,9 +32,33 @@ import { chunks } from '@utils/helpers';
 import { getProgramVersionForRealm } from '@models/registry/api';
 import { notify } from '@utils/notifications';
 import { ExclamationIcon } from '@heroicons/react/outline';
+import { useCallback } from 'react';
+import { VoteRegistryVoterWeight, VoterWeight } from '@models/voteWeights';
+import { fmtTokenAmount } from '@utils/formatting';
+import Tooltip from '@components/Tooltip';
+
+type AccountToVoteFor = {
+  tokenRecord?: ProgramAccount<TokenOwnerRecord>;
+  voterWeight?: VoteRegistryVoterWeight | VoterWeight;
+  voteRecord?: ProgramAccount<VoteRecord>;
+  voterTokenRecord?: ProgramAccount<TokenOwnerRecord>;
+};
+
+type AccountsToVoteFor = AccountToVoteFor[];
+
+function countVotingPower(accountsToVoteFor: AccountsToVoteFor) {
+  return accountsToVoteFor.reduce(
+    (acc, account) =>
+      account.voterTokenRecord
+        ? acc.add(account.voterTokenRecord.account.governingTokenDepositAmount)
+        : acc,
+    new BN(0),
+  );
+}
 
 const TokenBalanceCard = ({ proposal }: { proposal?: Option<Proposal> }) => {
-  const { councilMint, mint, realm } = useRealm();
+  const { realm, councilMint, mint } = useRealm();
+
   const isDepositVisible = (
     depositMint: MintInfo | undefined,
     realmMint: PublicKey | undefined,
@@ -106,11 +137,65 @@ const TokenDeposit = ({
     governances,
     toManyCommunityOutstandingProposalsForUser,
     toManyCouncilOutstandingProposalsForUse,
+    tokenRecords,
   } = useRealm();
+
+  const { voteRecordsByVoter } = useWalletStore((s) => s.selectedProposal);
+
+  // Look for accounts where the user is the delegate
+  const getDelegatedAccounts = useCallback((): {
+    address: string;
+    nbToken: number;
+  }[] => {
+    if (!wallet?.publicKey) {
+      return [];
+    }
+
+    return Object.entries(tokenRecords)
+      .filter(([, value]) =>
+        value.account.governanceDelegate?.equals(wallet.publicKey!),
+      )
+      .map(([key, value]) => ({
+        address: key,
+        nbToken: value.account.governingTokenDepositAmount
+          .div(new BN(10 ** 6))
+          .toNumber(),
+      }));
+  }, [wallet, tokenRecords]);
+
+  // Show nothing if not connected
+  if (!wallet?.publicKey) {
+    return <></>;
+  }
+
   // Do not show deposits for mints with zero supply because nobody can deposit anyway
   if (!mint || mint.supply.isZero()) {
     return null;
   }
+
+  const delegatedAccounts = getDelegatedAccounts().map(
+    ({ address: delegatedAccountAddress }) => ({
+      tokenRecord: tokenRecords[delegatedAccountAddress],
+      voterWeight: new VoterWeight(ownTokenRecord, ownCouncilTokenRecord),
+      voteRecord: voteRecordsByVoter[delegatedAccountAddress],
+      voterTokenRecord:
+        tokenType === GoverningTokenType.Community
+          ? tokenRecords[delegatedAccountAddress]
+          : ownCouncilTokenRecord,
+    }),
+  );
+
+  const votingPowerOfDelegatedAccounts = countVotingPower(delegatedAccounts);
+  const uiVotingPowerOfDelegatedAccounts = fmtTokenAmount(
+    votingPowerOfDelegatedAccounts,
+    mint.decimals,
+  );
+
+  console.log(
+    'votingPowerOfDelegatedAccounts',
+    votingPowerOfDelegatedAccounts.toString(),
+    fmtTokenAmount(votingPowerOfDelegatedAccounts, mint.decimals).toString(),
+  );
 
   const depositTokenRecord =
     tokenType === GoverningTokenType.Community
@@ -329,7 +414,16 @@ const TokenDeposit = ({
       <div className="flex space-x-4 items-center">
         <div className="bg-bkg-1 px-4 py-2 rounded-md w-full">
           <p className="text-fgd-3 text-xs">{depositTokenName} Votes</p>
-          <p className="font-bold mb-0 text-fgd-1 text-xl">{availableTokens}</p>
+          <p className="font-bold mb-0 text-fgd-1 text-xl flex">
+            {availableTokens}
+            {uiVotingPowerOfDelegatedAccounts > 0 ? (
+              <Tooltip content="Voting power of delegated accounts">
+                <span className="text-primary-light ml-2">
+                  +{uiVotingPowerOfDelegatedAccounts.toString()}
+                </span>
+              </Tooltip>
+            ) : null}
+          </p>
         </div>
       </div>
 

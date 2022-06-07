@@ -112,19 +112,6 @@ function sortAccountsToVoteFor(
         return acc;
       }
 
-      /*
-      // Looking at voterWeight doesn't work
-      if (
-        account.voterTokenRecord &&
-        account.voterWeight &&
-        !account.voterWeight.hasMinAmountToVote(
-          account.voterTokenRecord.account.governingTokenMint,
-        )
-      ) {
-        acc.accountsWithoutVotingPower.push(account);
-        return acc;
-      }
-      */
       if (
         account.voterTokenRecord.account.governingTokenDepositAmount.eq(
           new BN(0),
