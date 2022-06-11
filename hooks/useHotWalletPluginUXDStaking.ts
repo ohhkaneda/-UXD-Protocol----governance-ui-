@@ -2,11 +2,16 @@ import { useCallback, useEffect, useState } from 'react';
 import { HotWalletAccount } from './useHotWallet';
 import uxdProtocolStakingConfiguration from '@tools/sdk/uxdProtocolStaking/configuration';
 import useWalletStore from 'stores/useWalletStore';
-import {
-  getOnchainStakingCampaign,
-  StakingCampaignState,
-} from '@uxdprotocol/uxd-staking-client';
 import { PublicKey } from '@solana/web3.js';
+import {
+  SingleSideStakingClient,
+  SolanaAugmentedProvider,
+  SolanaProvider,
+  StakingCampaign,
+  getTokenAccountUiBalance,
+} from '@uxdprotocol/uxd-staking-client';
+import { Wallet } from '@marinade.finance/marinade-ts-sdk';
+import { nativeAmountToFormattedUiAmount } from '@tools/sdk/units';
 
 const UsersCampaigns = {
   ['AWuSjBCEMVtk8fX2HAwtuMjoHLmLM72PJxi1dZdKHPFu']: [
@@ -34,13 +39,13 @@ const UsersCampaigns = {
   ],
 };
 
-export type StakingCampaignInfo = Omit<
-  StakingCampaignState,
-  'validStakingOptions' | 'getStakedVaultBalance'
-> & {
+export type StakingCampaignInfo = StakingCampaign & {
   name: string;
   pda: PublicKey;
-  stakedVaultBalance?: number;
+
+  // Token staked on staking accounts v1
+  uiStakedTokensV1: number;
+  uiStakedTokensV2: number;
 };
 
 const useHotWalletPluginUXDStaking = (hotWalletAccount: HotWalletAccount) => {
@@ -60,48 +65,54 @@ const useHotWalletPluginUXDStaking = (hotWalletAccount: HotWalletAccount) => {
         );
       }
 
+      const sssClient = SingleSideStakingClient.load({
+        provider: new SolanaAugmentedProvider(
+          SolanaProvider.init({
+            connection: connection.current,
+
+            // Wallet is not used in the underlying client
+            wallet: (null as unknown) as Wallet,
+          }),
+        ),
+        programId,
+      });
+
       const campaigns =
         UsersCampaigns[hotWalletAccount.publicKey.toBase58()] ?? [];
 
-      const stakingCampaignStates: StakingCampaignState[] = await Promise.all(
-        campaigns.map(({ pda }) =>
-          getOnchainStakingCampaign(
-            pda,
-            connection.current,
-            uxdProtocolStakingConfiguration.TXN_OPTS,
-          ),
-        ),
+      const stakingCampaigns: StakingCampaign[] = await Promise.all(
+        campaigns.map(({ pda }) => sssClient.getOnChainStakingCampaign(pda)),
       );
 
-      const stakedVaultBalances = await Promise.allSettled(
-        stakingCampaignStates.map((stakingCampaignState) =>
-          stakingCampaignState.getStakedVaultBalance(connection.current),
+      const uiStakedTokensStakingAccountsV1: PromiseSettledResult<number>[] = await Promise.allSettled(
+        stakingCampaigns.map(({ stakedVault }) =>
+          getTokenAccountUiBalance({
+            connection: connection.current,
+            tokenAccount: stakedVault,
+          }),
         ),
       );
 
       setStakingCampaignsInfo(
-        stakingCampaignStates.map(
-          (
-            {
-              validStakingOptions: _validStakingOptions,
-              getStakedVaultBalance: _getStakedVaultBalance,
-              ...other
-            },
-            index,
-          ) => {
-            const stakedVaultBalanceResult = stakedVaultBalances[index];
+        stakingCampaigns.map((stakingCampaign, index) => {
+          const uiStakedTokensV1 = uiStakedTokensStakingAccountsV1[index];
 
-            return {
-              ...other,
-              stakedVaultBalance:
-                stakedVaultBalanceResult.status === 'fulfilled'
-                  ? stakedVaultBalanceResult.value
-                  : undefined,
-              name: campaigns[index].name,
-              pda: campaigns[index].pda,
-            };
-          },
-        ),
+          return {
+            ...stakingCampaign,
+            uiStakedTokensV1:
+              uiStakedTokensV1.status === 'rejected'
+                ? 0
+                : uiStakedTokensV1.value,
+            uiStakedTokensV2: Number(
+              nativeAmountToFormattedUiAmount(
+                stakingCampaign.stakedAmount,
+                stakingCampaign.stakedMintDecimals,
+              ),
+            ),
+            name: campaigns[index].name,
+            pda: campaigns[index].pda,
+          };
+        }),
       );
     } catch (e) {
       console.log(e);

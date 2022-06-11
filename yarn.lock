@@ -3113,10 +3113,10 @@
     "@solana/web3.js" "1.35.1"
     camelcase "5.3.1"
 
-"@uxdprotocol/uxd-staking-client@2.0.4":
-  version "2.0.4"
-  resolved "https://npm.pkg.github.com/download/@uxdprotocol/uxd-staking-client/2.0.4/30cc36b95ec9d944f7a5e3d69e59ae799b041f8a1cba7627a3c0129cf741aa09"
-  integrity sha512-P2N5BIkW8j4l879PVxhAWadqdCPpLutCPZAoq4C5iZ1fWPEtb6PoIU9zLPnUgcrf3TBEygTDg9QUdUF1s54j1w==
+"@uxdprotocol/uxd-staking-client@2.0.7":
+  version "2.0.7"
+  resolved "https://npm.pkg.github.com/download/@uxdprotocol/uxd-staking-client/2.0.7/06c53c9947b9d383a1fa21c9fc11818e9467a77ca770537c124d182e44723385#8d630252c22843102dff8e8e6e0d7bd1052e2817"
+  integrity sha512-O6GZrS9NZpj6lkMI8dvYa8OhXwIQYFyHkEwRcagQ2OqRL38Y5VJE2k7s5+PiQHuFRmtBQu5z7BcNwNb1LoAvwg==
   dependencies:
     "@saberhq/anchor-contrib" "1.12.48"
     "@saberhq/solana-contrib" "1.12.48"
@@ -6182,7 +6182,7 @@ graceful-fs@^4.1.11, graceful-fs@^4.2.4:
 
 graceful-fs@^4.1.2, graceful-fs@^4.2.3, graceful-fs@^4.2.8:
   version "4.2.10"
-  resolved "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.10.tgz"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
   integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
 
 graceful-fs@^4.1.6, graceful-fs@^4.2.0:
@@ -8958,7 +8958,7 @@ npm-normalize-package-bin@^1.0.0, npm-normalize-package-bin@^1.0.1:
   resolved "https://registry.npmjs.org/npm-normalize-package-bin/-/npm-normalize-package-bin-1.0.1.tgz"
   integrity sha512-EPfafl6JL5/rU+ot6P3gRSCpPDW5VmIzX959Ob1+ySFUuuYHWHekXpwdUZcKP5C+DS4GEtdJluwBjnsNDl+fSA==
 
-npm-package-arg@^8.0.0, npm-package-arg@^8.0.1, npm-package-arg@^8.1.0, npm-package-arg@^8.1.2, npm-package-arg@^8.1.4, npm-package-arg@^8.1.5:
+npm-package-arg@^8.0.0, npm-package-arg@^8.0.1, npm-package-arg@^8.1.0, npm-package-arg@^8.1.1, npm-package-arg@^8.1.2, npm-package-arg@^8.1.5:
   version "8.1.5"
   resolved "https://registry.npmjs.org/npm-package-arg/-/npm-package-arg-8.1.5.tgz"
   integrity sha512-LhgZrg0n0VgvzVdSm1oiZworPbTxYHUJCgtsJW8mGvlDpxTM1vSJc3m5QZeUkhAHIzbz3VCHd/R4osi1L1Tg/Q==
@@ -9374,7 +9374,7 @@ p-try@^2.0.0:
   resolved "https://registry.npmjs.org/p-try/-/p-try-2.2.0.tgz"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
 
-pacote@^11.1.11, pacote@^11.2.6, pacote@^11.3.1, pacote@^11.3.4, pacote@^11.3.5:
+pacote@^11.1.11, pacote@^11.2.6, pacote@^11.3.0, pacote@^11.3.1, pacote@^11.3.5:
   version "11.3.5"
   resolved "https://registry.npmjs.org/pacote/-/pacote-11.3.5.tgz"
   integrity sha512-fT375Yczn4zi+6Hkk2TBe1x1sP8FgFsEIZ2/iWaXY2r/NkhDJfxbcn5paz1+RTFCyNf+dPnaoBDJoAxXSU8Bkg==

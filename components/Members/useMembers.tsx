@@ -75,7 +75,8 @@ export default function useMembers() {
         .filter((x) => x)
         .map((r) => {
           const publicKey = r!.owner;
-          const data = Buffer.from(r!.data);
+          // TRICK to make it compile
+          const data = Buffer.from(r!.data as any);
           const account = parseTokenAccountData(r!.owner, data);
           return { publicKey, account };
         });
