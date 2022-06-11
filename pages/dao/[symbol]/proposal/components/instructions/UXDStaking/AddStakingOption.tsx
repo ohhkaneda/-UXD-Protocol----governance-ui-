@@ -2,10 +2,9 @@ import React from 'react';
 import * as yup from 'yup';
 import { XCircleIcon } from '@heroicons/react/outline';
 import {
-  getOnchainStakingCampaign,
   SingleSideStakingClient,
-  StakingCampaign,
-  StakingCampaignState,
+  SolanaAugmentedProvider,
+  SolanaProvider,
 } from '@uxdprotocol/uxd-staking-client';
 import Input from '@components/inputs/Input';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
@@ -14,7 +13,7 @@ import { UXDStakingAddStakingOptionForm } from '@utils/uiTypes/proposalCreationT
 import uxdProtocolStakingConfiguration from '@tools/sdk/uxdProtocolStaking/configuration';
 import useWalletStore from 'stores/useWalletStore';
 import { PublicKey } from '@solana/web3.js';
-import { BN } from '@project-serum/anchor';
+import { BN, Wallet } from '@project-serum/anchor';
 
 const AddStakingOption = ({
   index,
@@ -77,40 +76,18 @@ const AddStakingOption = ({
 
       const stakingCampaignPda = new PublicKey(form.stakingCampaignPda!);
 
-      const stakingCampaignState: StakingCampaignState = await getOnchainStakingCampaign(
-        stakingCampaignPda,
-        connection.current,
-        uxdProtocolStakingConfiguration.TXN_OPTS,
-      );
-
-      const client: SingleSideStakingClient = new SingleSideStakingClient(
+      const sssClient = SingleSideStakingClient.load({
+        provider: new SolanaAugmentedProvider(
+          SolanaProvider.init({
+            connection: connection.current,
+            wallet: (wallet as unknown) as Wallet,
+          }),
+        ),
         programId,
-      );
-
-      const authority = governedAccount!.governance!.pubkey;
-
-      console.log('Add Staking Option', {
-        stakingCampaignPda: stakingCampaignPda.toString(),
-        authority: authority.toString(),
-        rewardMint: stakingCampaignState.rewardMint.toString(),
-        rewardMintDecimals: stakingCampaignState.rewardMintDecimals,
-        rewardVault: stakingCampaignState.rewardVault.toString(),
-        stakedMint: stakingCampaignState.stakedMint.toString(),
-        stakedMintDecimals: stakingCampaignState.stakedMintDecimals,
-        stakedVault: stakingCampaignState.stakedVault.toString(),
-        startTs: stakingCampaignState.startTs.toString(),
-        endTs: stakingCampaignState.endTs?.toString(),
-        stakingOptions: form.stakingOptions,
       });
 
-      const stakingCampaign = StakingCampaign.fromState(
-        new PublicKey(form.stakingCampaignPda!),
-        stakingCampaignState,
-      );
-
-      return client.createAddStakingOptionInstruction({
-        authority,
-        stakingCampaign,
+      return sssClient.createAddStakingOptionInstruction({
+        stakingCampaignPda,
         stakingOptionParams: form.stakingOptions.map(({ lockupSecs, apr }) => ({
           lockupSecs: new BN(lockupSecs!),
           apr: new BN(apr!),

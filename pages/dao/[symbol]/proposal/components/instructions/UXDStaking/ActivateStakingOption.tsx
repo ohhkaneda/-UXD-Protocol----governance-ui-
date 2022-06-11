@@ -1,9 +1,9 @@
 import React from 'react';
 import * as yup from 'yup';
 import {
-  getOnchainStakingCampaign,
   SingleSideStakingClient,
-  StakingCampaign,
+  SolanaAugmentedProvider,
+  SolanaProvider,
 } from '@uxdprotocol/uxd-staking-client';
 import Input from '@components/inputs/Input';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
@@ -13,6 +13,7 @@ import uxdProtocolStakingConfiguration from '@tools/sdk/uxdProtocolStaking/confi
 import useWalletStore from 'stores/useWalletStore';
 import { PublicKey } from '@solana/web3.js';
 import Switch from '@components/Switch';
+import { Wallet } from '@project-serum/anchor';
 
 const ActivateStakingOption = ({
   index,
@@ -59,49 +60,24 @@ const ActivateStakingOption = ({
         );
       }
 
+      if (!wallet || !wallet.publicKey) {
+        throw new Error('Wallet not connected');
+      }
+
       const stakingCampaignPda = new PublicKey(form.stakingCampaignPda!);
 
-      const stakingCampaignState = await getOnchainStakingCampaign(
-        stakingCampaignPda,
-        connection.current,
-        uxdProtocolStakingConfiguration.TXN_OPTS,
-      );
-
-      const client: SingleSideStakingClient = new SingleSideStakingClient(
-        programId,
-      );
-
-      const authority = governedAccount!.governance!.pubkey;
-
-      console.log('Activate/Deactivate Staking Option', {
-        stakingCampaignPda: stakingCampaignPda.toString(),
-        authority: authority.toString(),
-        rewardMint: stakingCampaignState.rewardMint.toString(),
-        rewardMintDecimals: stakingCampaignState.rewardMintDecimals,
-        rewardVault: stakingCampaignState.rewardVault.toString(),
-        stakedMint: stakingCampaignState.stakedMint.toString(),
-        stakedMintDecimals: stakingCampaignState.stakedMintDecimals,
-        stakedVault: stakingCampaignState.stakedVault.toString(),
-        startTs: stakingCampaignState.startTs.toString(),
-        endTs: stakingCampaignState.endTs?.toString(),
-        stakingOptions: stakingCampaignState.stakingOptions.map(
-          ({ active, identifier, lockupSecs, apr }) => ({
-            active,
-            identifier,
-            lockupSecs: lockupSecs.toString(),
-            apr: apr.toString(),
+      const sssClient = SingleSideStakingClient.load({
+        provider: new SolanaAugmentedProvider(
+          SolanaProvider.init({
+            connection: connection.current,
+            wallet: (wallet as unknown) as Wallet,
           }),
         ),
+        programId,
       });
 
-      const stakingCampaign = StakingCampaign.fromState(
+      return sssClient.createActivateStakingOptionInstruction({
         stakingCampaignPda,
-        stakingCampaignState,
-      );
-
-      return client.createActivateStakingOptionInstruction({
-        authority,
-        stakingCampaign,
         stakingOptionIdentifier: form.stakingOptionIdentifier!,
         activate: form.activate!,
         options: uxdProtocolStakingConfiguration.TXN_OPTS,

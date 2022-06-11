@@ -2,7 +2,8 @@ import React from 'react';
 import * as yup from 'yup';
 import {
   SingleSideStakingClient,
-  StakingCampaign,
+  SolanaAugmentedProvider,
+  SolanaProvider,
 } from '@uxdprotocol/uxd-staking-client';
 import Input from '@components/inputs/Input';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
@@ -11,8 +12,9 @@ import { UXDStakingInitializeStakingCampaignForm } from '@utils/uiTypes/proposal
 import uxdProtocolStakingConfiguration from '@tools/sdk/uxdProtocolStaking/configuration';
 import { getSplTokenInformationByUIName } from '@utils/splTokens';
 import SelectSplToken from '../../SelectSplToken';
-import { findATAAddrSync } from '@utils/ataTools';
 import useWalletStore from 'stores/useWalletStore';
+import { BN, Wallet } from '@project-serum/anchor';
+import useRealm from '@hooks/useRealm';
 
 const InitializeStakingCampaign = ({
   index,
@@ -22,6 +24,7 @@ const InitializeStakingCampaign = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   const wallet = useWalletStore((s) => s.current);
+  const { realmInfo } = useRealm();
 
   const nowInSec = Math.floor(Date.now() / 1000);
 
@@ -66,9 +69,19 @@ const InitializeStakingCampaign = ({
         );
       }
 
-      const client: SingleSideStakingClient = new SingleSideStakingClient(
+      if (!realmInfo) {
+        throw new Error('Realm info not loaded');
+      }
+
+      const sssClient = SingleSideStakingClient.load({
+        provider: new SolanaAugmentedProvider(
+          SolanaProvider.init({
+            connection: connection.current,
+            wallet: (wallet as unknown) as Wallet,
+          }),
+        ),
         programId,
-      );
+      });
 
       const rewardSplToken = getSplTokenInformationByUIName(
         form.rewardMintUIName!,
@@ -79,38 +92,16 @@ const InitializeStakingCampaign = ({
 
       const authority = governedAccount!.governance!.pubkey;
 
-      const [rewardVaultPda] = findATAAddrSync(authority, rewardSplToken.mint);
-      const [stakedVaultPda] = findATAAddrSync(authority, stakedSplToken.mint);
-
-      const stakingCampaign = StakingCampaign.setup(
-        rewardSplToken.mint,
-        rewardSplToken.decimals,
-        stakedSplToken.mint,
-        stakedSplToken.decimals,
-        programId,
-        Number(form.startTs!),
-        form.endTs ? form.endTs : undefined,
-      );
-
-      console.log('Initialize Staking Campaign', {
-        authority: authority.toString(),
-        campaignPDA: stakingCampaign.pda.toString(),
-        rewardSplTokenMint: rewardSplToken.mint.toString(),
-        rewardSplTokenDecimals: rewardSplToken.decimals,
-        rewardVaultPda: rewardVaultPda.toString(),
-        stakedSplTokenMint: stakedSplToken.mint.toString(),
-        stakedSplTokenDecimals: stakedSplToken.decimals,
-        stakedVaultPda: stakedVaultPda.toString(),
-        startTs: form.startTs,
-        endTs: form.endTs,
-        payer: wallet!.publicKey!.toBase58(),
-        uiRewardAmountToDeposit: form.uiRewardAmountToDeposit?.toString(),
-      });
-
-      return client.createInitializeStakingCampaignInstruction({
+      return sssClient.createInitializeStakingCampaignInstruction({
         authority,
-        stakingCampaign,
-        rewardDepositAmount: form.uiRewardAmountToDeposit!,
+        rewardMintDecimals: rewardSplToken.decimals,
+        rewardMint: rewardSplToken.mint,
+        stakedMint: stakedSplToken.mint,
+        governanceProgram: realmInfo.programId,
+        governanceRealm: realmInfo.realmId,
+        startTs: new BN(form.startTs!),
+        endTs: form.endTs ? new BN(form.endTs) : undefined,
+        uiRewardDepositAmount: new BN(form.uiRewardAmountToDeposit!),
         options: uxdProtocolStakingConfiguration.TXN_OPTS,
         payer: wallet!.publicKey!,
       });

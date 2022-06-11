@@ -1,5 +1,6 @@
 import { EndpointTypes } from '@models/types';
 import { ConfirmOptions, PublicKey } from '@solana/web3.js';
+import { APR_BASIS } from '@uxdprotocol/uxd-staking-client';
 
 class UXDProtocolStakingConfiguration {
   public readonly programId: {
@@ -24,7 +25,7 @@ class UXDProtocolStakingConfiguration {
   };
 
   // 10_000 = 100%, 5_000 = 50% ...
-  public readonly APR_BASIS = 10_000;
+  public readonly APR_BASIS = APR_BASIS;
 }
 
 export default new UXDProtocolStakingConfiguration();
