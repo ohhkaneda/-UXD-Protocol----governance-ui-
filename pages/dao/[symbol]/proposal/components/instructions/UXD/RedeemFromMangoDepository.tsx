@@ -6,11 +6,11 @@ import {
   getInsuranceMintSymbols,
 } from '@tools/sdk/uxdProtocol/uxdClient';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
-import { UXDMintWithMangoDepositoryForm } from '@utils/uiTypes/proposalCreationTypes';
+import { UXDRedeemFromMangoDepositoryForm } from '@utils/uiTypes/proposalCreationTypes';
 import SelectOptionList from '../../SelectOptionList';
-import createMintWithMangoDepositoryInstruction from '@tools/sdk/uxdProtocol/createMintFromMangoDepositoryInstruction';
 import { PublicKey } from '@solana/web3.js';
 import Input from '@components/inputs/Input';
+import createRedeemWithMangoDepositoryInstruction from '@tools/sdk/uxdProtocol/createRedeemFromMangoDepositoryInstruction';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -19,13 +19,11 @@ const schema = yup.object().shape({
     .required('Governance account is required'),
   collateralName: yup.string().required('Valid Collateral name is required'),
   insuranceName: yup.string().required('Valid Insurance name is required'),
-  uiCollateralAmount: yup
-    .number()
-    .required('Collateral Amount to Deposit is required'),
+  uiAmountRedeemable: yup.number().required('Amount to Redeem is required'),
   slippage: yup.number().required('Slippage is required'),
 });
 
-const MintWithMangoDepository = ({
+const RedeemFromMangoDepository = ({
   index,
   governedAccount,
 }: {
@@ -37,7 +35,7 @@ const MintWithMangoDepository = ({
     form,
     formErrors,
     handleSetForm,
-  } = useInstructionFormBuilder<UXDMintWithMangoDepositoryForm>({
+  } = useInstructionFormBuilder<UXDRedeemFromMangoDepositoryForm>({
     index,
     initialFormValues: {
       governedAccount,
@@ -45,13 +43,13 @@ const MintWithMangoDepository = ({
     schema,
     shouldSplitIntoSeparateTxs: true,
     buildInstruction: async function ({ form, wallet, governedAccountPubkey }) {
-      return createMintWithMangoDepositoryInstruction({
+      return createRedeemWithMangoDepositoryInstruction({
         connection,
         // form.governedAccount!.governance!.account.governedAccount,
         uxdProgramId: new PublicKey(
           'UXD8m9cvwk4RcSxnX2HZ9VudQCEeDH6fRnB4CAP57Dr',
         ),
-        uiCollateralAmount: form.uiCollateralAmount!,
+        uiAmountRedeemable: form.uiAmountRedeemable!,
         slippage: form.slippage!,
         authority: governedAccountPubkey,
         payer: wallet.publicKey!,
@@ -88,17 +86,17 @@ const MintWithMangoDepository = ({
       </Select>
 
       <Input
-        label="Collateral Amount to Deposit"
-        value={form.uiCollateralAmount}
+        label="Amount to Redeem"
+        value={form.uiAmountRedeemable}
         type="number"
         min={1}
         onChange={(evt) =>
           handleSetForm({
             value: evt.target.value,
-            propertyName: 'uiCollateralAmount',
+            propertyName: 'uiAmountRedeemable',
           })
         }
-        error={formErrors['uiCollateralAmount']}
+        error={formErrors['uiAmountRedeemable']}
       />
 
       <Input
@@ -118,4 +116,4 @@ const MintWithMangoDepository = ({
   );
 };
 
-export default MintWithMangoDepository;
+export default RedeemFromMangoDepository;

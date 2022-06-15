@@ -11,10 +11,10 @@ import {
   uxdClient,
 } from './uxdClient';
 
-const createMintWithMangoDepositoryInstruction = async ({
+const createRedeemFromMangoDepositoryInstruction = async ({
   connection,
   uxdProgramId,
-  uiCollateralAmount,
+  uiAmountRedeemable,
   slippage,
   authority,
   payer,
@@ -23,7 +23,7 @@ const createMintWithMangoDepositoryInstruction = async ({
 }: {
   connection: ConnectionContext;
   uxdProgramId: PublicKey;
-  uiCollateralAmount: number;
+  uiAmountRedeemable: number;
   slippage: number;
   authority: PublicKey;
   payer: PublicKey;
@@ -63,8 +63,8 @@ const createMintWithMangoDepositoryInstruction = async ({
 
   const client = uxdClient(uxdProgramId);
 
-  const instruction = client.createMintWithMangoDepositoryInstruction(
-    uiCollateralAmount,
+  const instruction = client.createRedeemFromMangoDepositoryInstruction(
+    uiAmountRedeemable,
     slippage,
     new Controller('UXD', UXD_DECIMALS, uxdProgramId),
     depository,
@@ -83,4 +83,4 @@ const createMintWithMangoDepositoryInstruction = async ({
   return instruction;
 };
 
-export default createMintWithMangoDepositoryInstruction;
+export default createRedeemFromMangoDepositoryInstruction;

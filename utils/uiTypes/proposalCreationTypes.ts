@@ -218,11 +218,19 @@ export interface RegisterMangoDepositoryForm {
   insuranceName?: string;
 }
 
-export interface UXDMintWithMangoDepository {
+export interface UXDMintWithMangoDepositoryForm {
   governedAccount?: GovernedMultiTypeAccount;
   collateralName?: string;
   insuranceName?: string;
   uiCollateralAmount?: number;
+  slippage?: number;
+}
+
+export interface UXDRedeemFromMangoDepositoryForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  collateralName?: string;
+  insuranceName?: string;
+  uiAmountRedeemable?: number;
   slippage?: number;
 }
 
@@ -512,6 +520,7 @@ export enum InstructionEnum {
   UXDStakingActivateStakingOption,
   UXDStakingRefillRewardVault,
   UXDMintWithMangoDepository,
+  UXDRedeemFromMangoDepository,
   NativeTransferTokens,
   NativeSyncNative,
   MapleFinanceLenderDepositForm,

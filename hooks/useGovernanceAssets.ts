@@ -116,7 +116,9 @@ export default function useGovernanceAssets() {
   ]);
 
   const canUseUxdInstructions =
-    symbol === 'UXP' &&
+    // FakeDAO
+    (symbol === 'UXP' ||
+      symbol === '9eoHFq35i7SMif7zCn53nVpQz5kwXyqNuuif2U7VGyqp') &&
     canUseGovernanceForInstruction([
       GovernanceAccountType.ProgramGovernanceV1,
       GovernanceAccountType.ProgramGovernanceV2,
@@ -427,6 +429,12 @@ export default function useGovernanceAssets() {
     },
     [InstructionEnum.UXDMintWithMangoDepository]: {
       name: 'Mint With Mango Depository',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.UXD,
+      tag: 'beta',
+    },
+    [InstructionEnum.UXDRedeemFromMangoDepository]: {
+      name: 'Redeem From Mango Depository',
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.UXD,
       tag: 'beta',
