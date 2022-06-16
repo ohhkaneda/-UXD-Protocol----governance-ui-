@@ -170,7 +170,7 @@ const VotePanel = () => {
   const hasVoteTimeExpired = useHasVoteTimeExpired(governance, proposal!);
 
   // Look for accounts where the user is the delegate
-  const getDelegatedAccounts = useCallback((): {
+  const getDelegatedAccounts = (): {
     address: string;
     nbToken: number;
   }[] => {
@@ -188,7 +188,7 @@ const VotePanel = () => {
           .div(new BN(10 ** 6))
           .toNumber(),
       }));
-  }, [wallet, tokenRecords]);
+  };
 
   const handleShowVoteModal = (vote: YesNoVote) => {
     setVote(vote);
@@ -196,13 +196,11 @@ const VotePanel = () => {
     setShowVoteModal(true);
   };
 
-  const handleCloseShowVoteModal = useCallback(() => {
-    setShowVoteModal(false);
-  }, []);
+  const handleCloseShowVoteModal = () => setShowVoteModal(false);
 
   // Show nothing if not connected
   if (!wallet?.publicKey) {
-    return <></>;
+    return null;
   }
 
   const delegatedAccounts = getDelegatedAccounts();
