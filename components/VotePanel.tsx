@@ -6,7 +6,7 @@ import {
   YesNoVote,
 } from '@solana/spl-governance';
 import { TransactionInstruction } from '@solana/web3.js';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import relinquishVotes from '../actions/relinquishVotes';
 import { useHasVoteTimeExpired } from '../hooks/useHasVoteTimeExpired';
 import useRealm from '../hooks/useRealm';
