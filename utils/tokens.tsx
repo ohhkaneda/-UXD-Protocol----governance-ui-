@@ -5,7 +5,6 @@ import {
   TransactionInstruction,
   Commitment,
   ParsedAccountData,
-  AccountInfo as SolanaWeb3AccountInfo,
 } from '@solana/web3.js';
 import {
   AccountInfo,
@@ -264,15 +263,11 @@ export async function getMultipleAccountInfoChunked(
   connection: Connection,
   keys: PublicKey[],
   commitment: Commitment | undefined = 'recent',
-): Promise<(SolanaWeb3AccountInfo<Buffer> | null)[]> {
+) {
   return (
     await Promise.all(
-      chunks(keys, 99).map(
-        (chunk) =>
-          (connection.getMultipleAccountsInfo(chunk, {
-            commitment,
-            encoding: 'base64',
-          }) as unknown) as Promise<SolanaWeb3AccountInfo<Buffer>>,
+      chunks(keys, 99).map((chunk) =>
+        connection.getMultipleAccountsInfo(chunk, commitment),
       ),
     )
   ).flat();
