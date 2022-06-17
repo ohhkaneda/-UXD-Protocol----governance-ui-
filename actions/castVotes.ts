@@ -16,6 +16,8 @@ import { RpcContext } from '@solana/spl-governance';
 import { Vote } from '@solana/spl-governance';
 import { withCastVote } from '@solana/spl-governance';
 import { sendTransaction } from '../utils/send';
+import { MintInfo } from '@solana/spl-token';
+import { fmtTokenAmount } from '@utils/formatting';
 
 export async function castVotes({
   rpcContext: { connection, wallet, programId, walletPubkey },
@@ -25,6 +27,9 @@ export async function castVotes({
   tokenOwnerRecordsToVoteWith,
   message,
   client,
+  mint,
+  yesVotesRequired,
+  noVotesRequired,
 }: {
   rpcContext: RpcContext;
   realm: ProgramAccount<Realm>;
@@ -33,6 +38,9 @@ export async function castVotes({
   vote: YesNoVote;
   message?: ChatMessageBody;
   client?: VsrClient;
+  yesVotesRequired: number;
+  noVotesRequired: number;
+  mint: MintInfo;
 }) {
   const signers: Keypair[] = [];
   const instructions: TransactionInstruction[] = [];
@@ -55,7 +63,21 @@ export async function castVotes({
     client,
   );
 
+  let relativeRequiredVote =
+    vote === YesNoVote.Yes ? yesVotesRequired : noVotesRequired;
+
   for (const tokenOwnerRecord of tokenOwnerRecordsToVoteWith) {
+    // we check that the votes will stop once the proposal passes.
+    if (relativeRequiredVote <= 0) {
+      console.log('There is enough votes, do not include the next vote');
+      continue;
+    }
+
+    relativeRequiredVote -= fmtTokenAmount(
+      tokenOwnerRecord.account.governingTokenDepositAmount,
+      mint.decimals,
+    );
+
     await withCastVote(
       instructions,
       programId,

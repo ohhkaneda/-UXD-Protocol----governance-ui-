@@ -28,11 +28,10 @@ import { GoverningTokenType } from '@solana/spl-governance';
 import { fmtMintAmount } from '@tools/sdk/units';
 import { getMintMetadata } from '../instructions/programs/splToken';
 import { withFinalizeVote } from '@solana/spl-governance';
-import { chunks } from '@utils/helpers';
+import { BN_ZERO, chunks } from '@utils/helpers';
 import { getProgramVersionForRealm } from '@models/registry/api';
 import { notify } from '@utils/notifications';
 import { ExclamationIcon } from '@heroicons/react/outline';
-import { useCallback } from 'react';
 import { VoteRegistryVoterWeight, VoterWeight } from '@models/voteWeights';
 import { fmtTokenAmount } from '@utils/formatting';
 import Tooltip from '@components/Tooltip';
@@ -52,7 +51,7 @@ function countVotingPower(accountsToVoteFor: AccountsToVoteFor) {
       account.voterTokenRecord
         ? acc.add(account.voterTokenRecord.account.governingTokenDepositAmount)
         : acc,
-    new BN(0),
+    BN_ZERO,
   );
 }
 
@@ -143,12 +142,16 @@ const TokenDeposit = ({
   const { voteRecordsByVoter } = useWalletStore((s) => s.selectedProposal);
 
   // Look for accounts where the user is the delegate
-  const getDelegatedAccounts = useCallback((): {
+  const getDelegatedAccounts = (): {
     address: string;
     nbToken: number;
   }[] => {
     if (!wallet?.publicKey) {
       return [];
+    }
+
+    if (!mint) {
+      throw new Error('Mint info not found');
     }
 
     return Object.entries(tokenRecords)
@@ -158,10 +161,10 @@ const TokenDeposit = ({
       .map(([key, value]) => ({
         address: key,
         nbToken: value.account.governingTokenDepositAmount
-          .div(new BN(10 ** 6))
+          .div(new BN(10).pow(new BN(mint.decimals)))
           .toNumber(),
       }));
-  }, [wallet, tokenRecords]);
+  };
 
   // Show nothing if not connected
   if (!wallet?.publicKey) {
@@ -369,11 +372,11 @@ const TokenDeposit = ({
   };
 
   const hasTokensInWallet =
-    depositTokenAccount && depositTokenAccount.account.amount.gt(new BN(0));
+    depositTokenAccount && depositTokenAccount.account.amount.gt(BN_ZERO);
 
   const hasTokensDeposited =
     depositTokenRecord &&
-    depositTokenRecord.account.governingTokenDepositAmount.gt(new BN(0));
+    depositTokenRecord.account.governingTokenDepositAmount.gt(BN_ZERO);
 
   const depositTooltipContent = !connected
     ? 'Connect your wallet to deposit'

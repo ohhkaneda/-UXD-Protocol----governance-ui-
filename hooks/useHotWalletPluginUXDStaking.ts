@@ -18,7 +18,7 @@ const UsersCampaigns = {
     // Fake Dao devnet SOL Treasury's governance
     {
       name: 'Campaign Name',
-      pda: new PublicKey('CrRH3o9TbxvRdNkkjcmG5qdG7XM397nKcRmxgkVniAtB'),
+      pda: new PublicKey('Hkzqzfy9VKd5SNeMZnN1Yq49MjrjUzoXxqevFEMxQZFx'),
     },
   ],
 

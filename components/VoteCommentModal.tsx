@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import {
   ChatMessageBody,
   ChatMessageBodyType,
+  GoverningTokenType,
   ProgramAccount,
   TokenOwnerRecord,
   YesNoVote,
@@ -20,6 +21,7 @@ import Input from './inputs/Input';
 import Tooltip from './Tooltip';
 import { getProgramVersionForRealm } from '@models/registry/api';
 import useVoteStakeRegistryClientStore from 'VoteStakeRegistry/stores/voteStakeRegistryClientStore';
+import useProposalVotes from '@hooks/useProposalVotes';
 
 const VoteCommentModal = ({
   onClose,
@@ -37,11 +39,15 @@ const VoteCommentModal = ({
   const [comment, setComment] = useState('');
   const wallet = useWalletStore((s) => s.current);
   const connection = useWalletStore((s) => s.connection);
-  const { proposal } = useWalletStore((s) => s.selectedProposal);
+  const { proposal, tokenType } = useWalletStore((s) => s.selectedProposal);
   const { fetchChatMessages } = useWalletStore((s) => s.actions);
   const { fetchVoteRecords } = useWalletStore((s) => s.actions);
-  const { realm, realmInfo } = useRealm();
+  const { realm, realmInfo, mint, councilMint } = useRealm();
   const { fetchRealm } = useWalletStore((s) => s.actions);
+
+  const { yesVotesRequired, noVotesRequired } = useProposalVotes(
+    proposal?.account,
+  );
 
   const submitVote = async (vote: YesNoVote) => {
     const programId = realmInfo?.programId;
@@ -65,18 +71,21 @@ const VoteCommentModal = ({
       : undefined;
 
     try {
+      const usedMint =
+        tokenType === GoverningTokenType.Community ? mint : councilMint;
+
+      if (!usedMint) {
+        throw new Error('Mint not found');
+      }
+
       await castVotes({
         rpcContext,
         realm: realm!,
         proposal: proposal!,
-
         tokenOwnerRecordsToVoteWith,
-
-        // VOTE WITH STAKING ACCOUNT
-        // Here gotta use the voterTokenRecord of the stakingAccount being the real owner of the tokens
-        // voterTokenRecord.pubkey,
-        // -----
-
+        yesVotesRequired,
+        noVotesRequired,
+        mint: usedMint,
         vote,
         message,
         client,

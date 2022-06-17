@@ -24,6 +24,8 @@ import { BN } from '@project-serum/anchor';
 import { castVotes } from 'actions/castVotes';
 import { notify } from '@utils/notifications';
 import useVoteStakeRegistryClientStore from 'VoteStakeRegistry/stores/voteStakeRegistryClientStore';
+import useProposalVotes from '@hooks/useProposalVotes';
+import { BN_ZERO } from '@utils/helpers';
 
 export type AccountToVoteFor = {
   tokenRecord?: ProgramAccount<TokenOwnerRecord>;
@@ -113,9 +115,7 @@ function sortAccountsToVoteFor(
       }
 
       if (
-        account.voterTokenRecord.account.governingTokenDepositAmount.eq(
-          new BN(0),
-        )
+        account.voterTokenRecord.account.governingTokenDepositAmount.eq(BN_ZERO)
       ) {
         acc.accountsWithoutVotingPower.push(account);
         return acc;
@@ -160,6 +160,8 @@ const VotePanel = () => {
     realm,
     ownVoterWeight,
     tokenRecords,
+    councilMint,
+    mint,
   } = useRealm();
 
   const client = useVoteStakeRegistryClientStore((s) => s.state.client);
@@ -168,6 +170,13 @@ const VotePanel = () => {
   const fetchVoteRecords = useWalletStore((s) => s.actions.fetchVoteRecords);
   const fetchRealm = useWalletStore((s) => s.actions.fetchRealm);
   const hasVoteTimeExpired = useHasVoteTimeExpired(governance, proposal!);
+
+  const { yesVotesRequired, noVotesRequired } = useProposalVotes(
+    proposal?.account,
+  );
+
+  const usedMint =
+    tokenType === GoverningTokenType.Community ? mint : councilMint;
 
   // Look for accounts where the user is the delegate
   const getDelegatedAccounts = (): {
@@ -178,6 +187,10 @@ const VotePanel = () => {
       return [];
     }
 
+    if (!usedMint) {
+      throw new Error('Information about the mint not found');
+    }
+
     return Object.entries(tokenRecords)
       .filter(([, value]) =>
         value.account.governanceDelegate?.equals(wallet.publicKey!),
@@ -185,7 +198,7 @@ const VotePanel = () => {
       .map(([key, value]) => ({
         address: key,
         nbToken: value.account.governingTokenDepositAmount
-          .div(new BN(10 ** 6))
+          .div(new BN(10).pow(new BN(usedMint.decimals)))
           .toNumber(),
       }));
   };
@@ -280,10 +293,17 @@ const VotePanel = () => {
     }
 
     try {
+      if (!usedMint) {
+        throw new Error('Mint not found');
+      }
+
       await castVotes({
         rpcContext,
         realm: realm!,
         proposal: proposal!,
+        yesVotesRequired,
+        noVotesRequired,
+        mint: usedMint,
 
         tokenOwnerRecordsToVoteWith: sortedAccounts.accountsReadyToVote.map(
           (account) => account.voterTokenRecord!,
