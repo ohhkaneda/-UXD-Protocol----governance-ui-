@@ -440,6 +440,12 @@ export interface MapleFinanceLenderDepositForm {
   poolName?: MapleFinancePoolName;
 }
 
+export interface NativeBurnSplTokensForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  uiAmount?: number;
+  source?: string;
+}
+
 export enum InstructionEnum {
   Transfer,
   ProgramUpgrade,
@@ -501,6 +507,7 @@ export enum InstructionEnum {
   UXDStakingRefillRewardVault,
   NativeTransferTokensForm,
   MapleFinanceLenderDepositForm,
+  NativeBurnSplTokens,
 }
 
 export enum PackageEnum {

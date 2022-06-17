@@ -58,6 +58,7 @@ import UXDStakingActivateStakingOption from './UXDStaking/ActivateStakingOption'
 import UXDStakingRefillRewardVault from './UXDStaking/RefillRewardVault';
 import TransferTokens from './Native/TransferTokens';
 import MapleFinanceLenderDeposit from './MapleFinance/LenderDeposit';
+import NativeBurnSplTokens from './Native/BurnSplTokens';
 
 const SelectedInstruction = ({
   itxType,
@@ -398,6 +399,10 @@ const SelectedInstruction = ({
       return <SoceanVest index={index} governedAccount={governedAccount} />;
     case InstructionEnum.NativeTransferTokensForm:
       return <TransferTokens index={index} governedAccount={governedAccount} />;
+    case InstructionEnum.NativeBurnSplTokens:
+      return (
+        <NativeBurnSplTokens index={index} governedAccount={governedAccount} />
+      );
     default:
       return null;
   }

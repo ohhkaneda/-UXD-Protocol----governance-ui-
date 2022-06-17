@@ -523,6 +523,12 @@ export default function useGovernanceAssets() {
       packageId: PackageEnum.Native,
       tag: 'beta',
     },
+    [InstructionEnum.NativeBurnSplTokens]: {
+      name: 'Burn SPL Tokens',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Native,
+      tag: 'beta',
+    },
   };
 
   const availableInstructions = Object.entries(instructions)
