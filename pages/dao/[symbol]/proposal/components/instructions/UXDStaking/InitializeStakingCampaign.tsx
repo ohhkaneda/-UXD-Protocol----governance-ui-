@@ -1,10 +1,5 @@
 import React from 'react';
 import * as yup from 'yup';
-import {
-  SingleSideStakingClient,
-  SolanaAugmentedProvider,
-  SolanaProvider,
-} from '@uxdprotocol/uxd-staking-client';
 import Input from '@components/inputs/Input';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
@@ -13,8 +8,8 @@ import uxdProtocolStakingConfiguration from '@tools/sdk/uxdProtocolStaking/confi
 import { getSplTokenInformationByUIName } from '@utils/splTokens';
 import SelectSplToken from '../../SelectSplToken';
 import useWalletStore from 'stores/useWalletStore';
-import { BN, Wallet } from '@project-serum/anchor';
 import useRealm from '@hooks/useRealm';
+import useSingleSideStakingClient from '@hooks/useSingleSideStakingClient';
 
 const InitializeStakingCampaign = ({
   index,
@@ -25,6 +20,7 @@ const InitializeStakingCampaign = ({
 }) => {
   const wallet = useWalletStore((s) => s.current);
   const { realmInfo } = useRealm();
+  const { client: sssClient } = useSingleSideStakingClient();
 
   const nowInSec = Math.floor(Date.now() / 1000);
 
@@ -73,15 +69,9 @@ const InitializeStakingCampaign = ({
         throw new Error('Realm info not loaded');
       }
 
-      const sssClient = SingleSideStakingClient.load({
-        provider: new SolanaAugmentedProvider(
-          SolanaProvider.init({
-            connection: connection.current,
-            wallet: (wallet as unknown) as Wallet,
-          }),
-        ),
-        programId,
-      });
+      if (!sssClient) {
+        throw new Error('Single side staking client not loaded');
+      }
 
       const rewardSplToken = getSplTokenInformationByUIName(
         form.rewardMintUIName!,
@@ -99,9 +89,9 @@ const InitializeStakingCampaign = ({
         stakedMint: stakedSplToken.mint,
         governanceProgram: realmInfo.programId,
         governanceRealm: realmInfo.realmId,
-        startTs: new BN(form.startTs!),
-        endTs: form.endTs ? new BN(form.endTs) : undefined,
-        uiRewardDepositAmount: new BN(form.uiRewardAmountToDeposit!),
+        startTs: form.startTs!,
+        endTs: form.endTs,
+        uiRewardDepositAmount: form.uiRewardAmountToDeposit!,
         options: uxdProtocolStakingConfiguration.TXN_OPTS,
         payer: wallet!.publicKey!,
       });

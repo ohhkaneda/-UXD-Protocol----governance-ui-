@@ -1,11 +1,6 @@
 import React from 'react';
 import * as yup from 'yup';
 import { XCircleIcon } from '@heroicons/react/outline';
-import {
-  SingleSideStakingClient,
-  SolanaAugmentedProvider,
-  SolanaProvider,
-} from '@uxdprotocol/uxd-staking-client';
 import Input from '@components/inputs/Input';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
@@ -13,7 +8,8 @@ import { UXDStakingAddStakingOptionForm } from '@utils/uiTypes/proposalCreationT
 import uxdProtocolStakingConfiguration from '@tools/sdk/uxdProtocolStaking/configuration';
 import useWalletStore from 'stores/useWalletStore';
 import { PublicKey } from '@solana/web3.js';
-import { BN, Wallet } from '@project-serum/anchor';
+import { BN } from '@project-serum/anchor';
+import useSingleSideStakingClient from '@hooks/useSingleSideStakingClient';
 
 const AddStakingOption = ({
   index,
@@ -23,6 +19,7 @@ const AddStakingOption = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   const wallet = useWalletStore((s) => s.current);
+  const { client: sssClient } = useSingleSideStakingClient();
 
   const {
     form,
@@ -74,17 +71,11 @@ const AddStakingOption = ({
         );
       }
 
-      const stakingCampaignPda = new PublicKey(form.stakingCampaignPda!);
+      if (!sssClient) {
+        throw new Error('Single side staking client not loaded');
+      }
 
-      const sssClient = SingleSideStakingClient.load({
-        provider: new SolanaAugmentedProvider(
-          SolanaProvider.init({
-            connection: connection.current,
-            wallet: (wallet as unknown) as Wallet,
-          }),
-        ),
-        programId,
-      });
+      const stakingCampaignPda = new PublicKey(form.stakingCampaignPda!);
 
       return sssClient.createAddStakingOptionInstruction({
         stakingCampaignPda,

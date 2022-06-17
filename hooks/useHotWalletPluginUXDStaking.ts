@@ -4,14 +4,11 @@ import uxdProtocolStakingConfiguration from '@tools/sdk/uxdProtocolStaking/confi
 import useWalletStore from 'stores/useWalletStore';
 import { PublicKey } from '@solana/web3.js';
 import {
-  SingleSideStakingClient,
-  SolanaAugmentedProvider,
-  SolanaProvider,
   StakingCampaign,
   getTokenAccountUiBalance,
 } from '@uxdprotocol/uxd-staking-client';
-import { Wallet } from '@marinade.finance/marinade-ts-sdk';
 import { nativeAmountToFormattedUiAmount } from '@tools/sdk/units';
+import useSingleSideStakingClient from './useSingleSideStakingClient';
 
 const UsersCampaigns = {
   ['AWuSjBCEMVtk8fX2HAwtuMjoHLmLM72PJxi1dZdKHPFu']: [
@@ -53,6 +50,7 @@ const useHotWalletPluginUXDStaking = (hotWalletAccount: HotWalletAccount) => {
     StakingCampaignInfo[]
   >();
   const connection = useWalletStore((s) => s.connection);
+  const { client: sssClient } = useSingleSideStakingClient();
 
   const loadUXDStakingCampaignInfo = useCallback(async () => {
     try {
@@ -65,17 +63,9 @@ const useHotWalletPluginUXDStaking = (hotWalletAccount: HotWalletAccount) => {
         );
       }
 
-      const sssClient = SingleSideStakingClient.load({
-        provider: new SolanaAugmentedProvider(
-          SolanaProvider.init({
-            connection: connection.current,
-
-            // Wallet is not used in the underlying client
-            wallet: (null as unknown) as Wallet,
-          }),
-        ),
-        programId,
-      });
+      if (!sssClient) {
+        throw new Error('Single side staking client not loaded');
+      }
 
       const campaigns =
         UsersCampaigns[hotWalletAccount.publicKey.toBase58()] ?? [];

@@ -1,10 +1,5 @@
 import React from 'react';
 import * as yup from 'yup';
-import {
-  SingleSideStakingClient,
-  SolanaAugmentedProvider,
-  SolanaProvider,
-} from '@uxdprotocol/uxd-staking-client';
 import Input from '@components/inputs/Input';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
@@ -12,8 +7,8 @@ import { UXDStakingMigrateStakingCampaignFromV1ToV2Form } from '@utils/uiTypes/p
 import uxdProtocolStakingConfiguration from '@tools/sdk/uxdProtocolStaking/configuration';
 import useWalletStore from 'stores/useWalletStore';
 import { PublicKey } from '@solana/web3.js';
-import { Wallet } from '@project-serum/anchor';
 import useRealm from '@hooks/useRealm';
+import useSingleSideStakingClient from '@hooks/useSingleSideStakingClient';
 
 const MigrateStakingCampaignFromV1ToV2 = ({
   index,
@@ -24,6 +19,7 @@ const MigrateStakingCampaignFromV1ToV2 = ({
 }) => {
   const wallet = useWalletStore((s) => s.current);
   const { realmInfo } = useRealm();
+  const { client: sssClient } = useSingleSideStakingClient();
 
   const {
     form,
@@ -60,17 +56,11 @@ const MigrateStakingCampaignFromV1ToV2 = ({
           throw new Error('Realm info not loaded');
         }
 
-        const stakingCampaignPda = new PublicKey(form.stakingCampaignPda!);
+        if (!sssClient) {
+          throw new Error('Single side staking client not loaded');
+        }
 
-        const sssClient = SingleSideStakingClient.load({
-          provider: new SolanaAugmentedProvider(
-            SolanaProvider.init({
-              connection: connection.current,
-              wallet: (wallet as unknown) as Wallet,
-            }),
-          ),
-          programId,
-        });
+        const stakingCampaignPda = new PublicKey(form.stakingCampaignPda!);
 
         return sssClient.createMigrateStakingCampaignFromV1ToV2Instruction({
           stakingCampaignPda,

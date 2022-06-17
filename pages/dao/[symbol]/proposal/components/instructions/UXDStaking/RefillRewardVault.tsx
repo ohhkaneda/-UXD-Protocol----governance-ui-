@@ -1,10 +1,5 @@
 import React from 'react';
 import * as yup from 'yup';
-import {
-  SingleSideStakingClient,
-  SolanaAugmentedProvider,
-  SolanaProvider,
-} from '@uxdprotocol/uxd-staking-client';
 import Input from '@components/inputs/Input';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
@@ -12,7 +7,7 @@ import { UXDStakingRefillRewardVaultForm } from '@utils/uiTypes/proposalCreation
 import uxdProtocolStakingConfiguration from '@tools/sdk/uxdProtocolStaking/configuration';
 import useWalletStore from 'stores/useWalletStore';
 import { PublicKey } from '@solana/web3.js';
-import { BN, Wallet } from '@project-serum/anchor';
+import useSingleSideStakingClient from '@hooks/useSingleSideStakingClient';
 
 const RefillRewardVault = ({
   index,
@@ -22,6 +17,7 @@ const RefillRewardVault = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   const wallet = useWalletStore((s) => s.current);
+  const { client: sssClient } = useSingleSideStakingClient();
 
   const {
     form,
@@ -57,21 +53,15 @@ const RefillRewardVault = ({
         );
       }
 
-      const stakingCampaignPda = new PublicKey(form.stakingCampaignPda!);
+      if (!sssClient) {
+        throw new Error('Single side staking client not loaded');
+      }
 
-      const sssClient = SingleSideStakingClient.load({
-        provider: new SolanaAugmentedProvider(
-          SolanaProvider.init({
-            connection: connection.current,
-            wallet: (wallet as unknown) as Wallet,
-          }),
-        ),
-        programId,
-      });
+      const stakingCampaignPda = new PublicKey(form.stakingCampaignPda!);
 
       return sssClient.createRefillRewardVaultInstruction({
         stakingCampaignPda,
-        uiRewardRefillAmount: new BN(form.uiRewardRefillAmount!),
+        uiRewardRefillAmount: form.uiRewardRefillAmount!,
         options: uxdProtocolStakingConfiguration.TXN_OPTS,
         payer: wallet!.publicKey!,
       });

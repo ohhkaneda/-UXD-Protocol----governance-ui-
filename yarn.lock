@@ -3117,10 +3117,10 @@
     "@solana/web3.js" "1.35.1"
     camelcase "5.3.1"
 
-"@uxdprotocol/uxd-staking-client@2.0.7":
-  version "2.0.7"
-  resolved "https://npm.pkg.github.com/download/@uxdprotocol/uxd-staking-client/2.0.7/06c53c9947b9d383a1fa21c9fc11818e9467a77ca770537c124d182e44723385#8d630252c22843102dff8e8e6e0d7bd1052e2817"
-  integrity sha512-O6GZrS9NZpj6lkMI8dvYa8OhXwIQYFyHkEwRcagQ2OqRL38Y5VJE2k7s5+PiQHuFRmtBQu5z7BcNwNb1LoAvwg==
+"@uxdprotocol/uxd-staking-client@2.0.9":
+  version "2.0.9"
+  resolved "https://npm.pkg.github.com/download/@uxdprotocol/uxd-staking-client/2.0.9/ca28851d57f136057cabef0838f8c1ba188fa843f98e5d891564ae3d04837e9e#22de0e1e199c68b71220a13421092dc4250bf8fa"
+  integrity sha512-QrSAwVlM7oJ9s2aVO/NxrFgfYg4r2Y0IIwjBJdhCcRiIZAZUwZUV8TNyZEf2fQXCKxyT7VvV13VZ8iH6im3wOg==
   dependencies:
     "@saberhq/anchor-contrib" "1.12.48"
     "@saberhq/solana-contrib" "1.12.48"

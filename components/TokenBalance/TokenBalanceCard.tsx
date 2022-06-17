@@ -160,9 +160,10 @@ const TokenDeposit = ({
       )
       .map(([key, value]) => ({
         address: key,
-        nbToken: value.account.governingTokenDepositAmount
-          .div(new BN(10).pow(new BN(mint.decimals)))
-          .toNumber(),
+        nbToken: fmtTokenAmount(
+          value.account.governingTokenDepositAmount,
+          mint.decimals,
+        ),
       }));
   };
 

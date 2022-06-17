@@ -20,12 +20,12 @@ import Button from './Button';
 import VoteCommentModal from './VoteCommentModal';
 import { getProgramVersionForRealm } from '@models/registry/api';
 import { VoteRegistryVoterWeight, VoterWeight } from '@models/voteWeights';
-import { BN } from '@project-serum/anchor';
 import { castVotes } from 'actions/castVotes';
 import { notify } from '@utils/notifications';
 import useVoteStakeRegistryClientStore from 'VoteStakeRegistry/stores/voteStakeRegistryClientStore';
 import useProposalVotes from '@hooks/useProposalVotes';
 import { BN_ZERO } from '@utils/helpers';
+import { fmtTokenAmount } from '@utils/formatting';
 
 export type AccountToVoteFor = {
   tokenRecord?: ProgramAccount<TokenOwnerRecord>;
@@ -197,9 +197,10 @@ const VotePanel = () => {
       )
       .map(([key, value]) => ({
         address: key,
-        nbToken: value.account.governingTokenDepositAmount
-          .div(new BN(10).pow(new BN(usedMint.decimals)))
-          .toNumber(),
+        nbToken: fmtTokenAmount(
+          value.account.governingTokenDepositAmount,
+          usedMint.decimals,
+        ),
       }));
   };
 
