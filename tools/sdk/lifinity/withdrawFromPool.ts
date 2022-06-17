@@ -4,6 +4,7 @@ import { Connection, PublicKey } from '@solana/web3.js';
 import { findATAAddrSync } from '@utils/ataTools';
 import { uiAmountToNativeBN } from '../units';
 import { buildLifinity, getPoolByLabel } from './lifinity';
+import { PoolNames } from './poolList';
 
 const withdrawFromPool = async ({
   connection,
@@ -16,7 +17,7 @@ const withdrawFromPool = async ({
 }: {
   connection: Connection;
   wallet: SignerWalletAdapter;
-  liquidityPool: string;
+  liquidityPool: PoolNames;
   userTransferAuthority: PublicKey;
   uiAmountTokenLP: number;
   uiAmountTokenA: number;

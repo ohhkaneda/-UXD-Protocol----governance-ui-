@@ -9,7 +9,7 @@ import { tryGetMint } from '@utils/tokens';
 import BigNumber from 'bignumber.js';
 
 export const LIFINITY_PROGRAM_INSTRUCTIONS = {
-  [AMM_PROGRAM_ADDR]: {
+  [AMM_PROGRAM_ADDR.toBase58()]: {
     32: {
       name: 'Lifinity - Deposit All Token Types',
       accounts: [
@@ -77,7 +77,7 @@ export const LIFINITY_PROGRAM_INSTRUCTIONS = {
           .shiftedBy(-tokenLPInfo.account.decimals)
           .toString();
 
-        const poolLabel = getPoolLabelByPoolMint(tokenLPAcc.toBase58());
+        const poolLabel = getPoolLabelByPoolMint(tokenLPAcc);
 
         return (
           <>

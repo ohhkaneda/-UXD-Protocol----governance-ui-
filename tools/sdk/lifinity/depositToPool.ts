@@ -1,6 +1,7 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 import { SignerWalletAdapter } from '@solana/wallet-adapter-base';
 import { depositAllTokenTypesItx } from './lifinity';
+import { PoolNames } from './poolList';
 
 const depositToPool = async ({
   connection,
@@ -13,7 +14,7 @@ const depositToPool = async ({
 }: {
   connection: Connection;
   authority: PublicKey;
-  liquidityPool: string;
+  liquidityPool: PoolNames;
   wallet: SignerWalletAdapter;
   uiAmountTokenA: number;
   uiAmountTokenB: number;
