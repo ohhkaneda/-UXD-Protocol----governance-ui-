@@ -3,7 +3,7 @@ import { SignerWalletAdapter } from '@solana/wallet-adapter-base';
 import { depositAllTokenTypesItx } from './lifinity';
 import { PoolNames } from './poolList';
 
-const depositToPool = async ({
+const depositToPool = ({
   connection,
   authority,
   liquidityPool,
@@ -21,7 +21,7 @@ const depositToPool = async ({
   uiAmountTokenLP: number;
   slippage: number;
 }) => {
-  const depositItx = await depositAllTokenTypesItx({
+  return depositAllTokenTypesItx({
     connection,
     liquidityPool,
     uiAmountTokenA,
@@ -30,8 +30,6 @@ const depositToPool = async ({
     userTransferAuthority: authority,
     wallet,
   });
-
-  return depositItx;
 };
 
 export default depositToPool;

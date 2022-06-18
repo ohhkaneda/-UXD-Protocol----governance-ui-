@@ -25,9 +25,34 @@ export type PoolNames =
   | 'ETH-USDC'
   | 'RAY-USDC'
   | 'USDT-USDC'
-  | 'UST-USDC';
+  | 'UST-USDC'
+  | 'UXD-SOL';
 
 export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
+  'UXD-SOL': {
+    amm: new PublicKey('GjnY1NbZafYu6VSK2ELh5NRZs7udGAUR2KoAB7pYxJak'),
+    poolMint: new PublicKey('E9e9UPZvzLCtPNWimJk8T7JDKX6hvHWGe2ZTY1848bQf'),
+    feeAccount: new PublicKey('ZRfAnqPSnyY4USGnoeJTNrriqPfudm2a9811vYHYniQ'),
+    configAccount: new PublicKey(
+      '3BUS8iaWzGjtCueoChEsu1N8Fh9QeQp8foJsU4tdKkJ7',
+    ),
+    pythAccount: new PublicKey('H6ARHf6YXhGYeQfUzQNGk6rDNnLBQKrenN712K4AQJEG'),
+    pythPcAccount: new PublicKey(
+      '6qyKHAbqFUGqukKDXK47f7ZFxfg3zsX3LYCaiTgwnCxk',
+    ),
+    poolCoinTokenAccount: new PublicKey(
+      '4byV1TrowZopVezaBLL5cMbAaU3TZ5BQdtitHFWDBfuE',
+    ),
+    poolCoinMint: new PublicKey('So11111111111111111111111111111111111111112'),
+    poolPcTokenAccount: new PublicKey(
+      '4JciXWsVimE9tqnmgQ8AjZqYZwiF6fx6zCxWf9PCrZ2n',
+    ),
+    poolPcMint: new PublicKey('7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT'),
+    poolCoinDecimal: 9,
+    poolPcDecimal: 6,
+    poolMintDecimal: 9,
+    pythBaseDecimal: 11,
+  },
   'UXD-USDC': {
     amm: new PublicKey('5BJUhcBnysAmCpaU6pABof7FUqxx7ZnCZXbctpP48o3C'),
     poolMint: new PublicKey('DM2Grhnear76DwNiRUSfeiFMt6jSj2op9GWinQDc7Yqh'),

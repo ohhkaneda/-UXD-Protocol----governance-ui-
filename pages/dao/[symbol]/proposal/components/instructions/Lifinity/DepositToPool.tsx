@@ -65,10 +65,11 @@ const DepositToPool = ({
         slippage: form.slippage,
         poolLabel: form.liquidityPool!,
       });
+
       return depositToPool({
         connection,
-        authority: governedAccountPubkey,
         wallet,
+        authority: governedAccountPubkey,
         liquidityPool: form.liquidityPool!,
         uiAmountTokenA: form.uiAmountTokenA!,
         uiAmountTokenB: depositAmountOut.amountOut,
@@ -88,6 +89,7 @@ const DepositToPool = ({
         slippage: form.slippage,
         poolLabel: form.liquidityPool,
       });
+
       handleSetForm({
         value: depositAmountOut.amountOut,
         propertyName: 'uiAmountTokenB',
@@ -113,6 +115,7 @@ const DepositToPool = ({
       >
         <SelectOptionList list={poolLabels} />
       </Select>
+
       {form.liquidityPool && (
         <>
           <Input
@@ -128,6 +131,7 @@ const DepositToPool = ({
             }
             error={formErrors['uiAmountTokenA']}
           />
+
           <Input
             label="Maximum Amount of Token B to deposit"
             value={form.uiAmountTokenB}
@@ -135,6 +139,7 @@ const DepositToPool = ({
             min={0}
             disabled={true}
           />
+
           <Select
             label="Slippage (%)"
             value={form.slippage}

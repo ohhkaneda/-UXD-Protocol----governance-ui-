@@ -79,7 +79,7 @@ const getWalletNftAccounts = async ({
       data: { updateAuthority },
     } = mplTokenMetadata.Metadata.from(
       // @ts-ignore
-      new mplCore.Account(mintAddress, mintAccInfo),
+      new mplCore.Account(mint, mintAccInfo),
     );
 
     if (
@@ -209,18 +209,36 @@ const getOutAmount = (
     return new BigNumber(0);
   }
 
+  console.log('getOutAmount', {
+    amount,
+    slippage,
+    coinBalance: coinBalance.toString(),
+    pcBalance: pcBalance.toString(),
+    price: price.toString(),
+    fromAmount: fromAmount.toString(),
+    percent: percent.toString(),
+  });
+
   if (
     fromCoinMint.equals(poolInfo.poolCoinMint) &&
     toCoinMint.equals(poolInfo.poolPcMint)
   ) {
+    console.log(
+      'getOutAmount RET 1',
+      fromAmount.multipliedBy(price).multipliedBy(percent).toString(),
+    );
     // outcoin is pc
     return fromAmount.multipliedBy(price).multipliedBy(percent);
   }
 
   if (
-    fromCoinMint === poolInfo.poolPcMint &&
-    toCoinMint === poolInfo.poolCoinMint
+    fromCoinMint.equals(poolInfo.poolPcMint) &&
+    toCoinMint.equals(poolInfo.poolCoinMint)
   ) {
+    console.log(
+      'getOutAmount RET 2',
+      fromAmount.dividedBy(percent).dividedBy(price).toString(),
+    );
     // outcoin is coin
     return fromAmount.dividedBy(percent).dividedBy(price);
   }
@@ -245,7 +263,7 @@ export const getDepositOut = async ({
   lpReceived: number;
 }> => {
   const pool = getPoolByLabel(poolLabel);
-  const amount = new BigNumber(uiAmountTokenA.toString());
+  const amount = new BigNumber(uiAmountTokenA);
 
   const {
     poolMint,
@@ -297,6 +315,11 @@ export const getDepositOut = async ({
   const amountOut =
     Math.floor(outAmount.toNumber() * Math.pow(10, poolPcDecimal)) /
     Math.pow(10, poolPcDecimal);
+
+  console.log('==> getDepositOut', {
+    lpReceived: lpReceived.toString(),
+    amountOut: amountOut.toString(),
+  });
 
   return {
     amountIn: uiAmountTokenA,
