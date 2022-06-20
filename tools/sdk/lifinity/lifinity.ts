@@ -86,6 +86,7 @@ export const getWalletNftAccounts = async ({
       new mplCore.Account(mint, mintAccInfo),
     );
 
+    // No idea why these check exists, took them from the lifinity-sdk
     if (
       updateAuthority !== 'BihU63mFnjLaBNPXxaDj8WUPBepZqqB4T2RHBJ99f2xo' &&
       updateAuthority !== 'H5q7Z2FJ5KaWmtGquGqoYJYrM73BEpoabzas5y12s38T'
