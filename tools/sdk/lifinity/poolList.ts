@@ -39,9 +39,6 @@ export type PoolNames =
   | 'SOL-UXD';
 
 export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
-  // Pool Coin === Token A
-  // Pool Pc === Token B
-
   'SOL-UXD': {
     amm: new PublicKey('GjnY1NbZafYu6VSK2ELh5NRZs7udGAUR2KoAB7pYxJak'),
     feeAccount: new PublicKey('ZRfAnqPSnyY4USGnoeJTNrriqPfudm2a9811vYHYniQ'),
@@ -53,12 +50,10 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       '6qyKHAbqFUGqukKDXK47f7ZFxfg3zsX3LYCaiTgwnCxk',
     ),
     pythBaseDecimal: 11,
-
     lpToken: {
       mint: new PublicKey('E9e9UPZvzLCtPNWimJk8T7JDKX6hvHWGe2ZTY1848bQf'),
       decimals: 9,
     },
-
     tokenA: {
       tokenAccount: new PublicKey(
         '4byV1TrowZopVezaBLL5cMbAaU3TZ5BQdtitHFWDBfuE',
@@ -66,7 +61,6 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       mint: new PublicKey('So11111111111111111111111111111111111111112'),
       decimals: 9,
     },
-
     tokenB: {
       tokenAccount: new PublicKey(
         '4JciXWsVimE9tqnmgQ8AjZqYZwiF6fx6zCxWf9PCrZ2n',
@@ -86,12 +80,10 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       '3vxLXJqLqF3JG5TCbYycbKWRBbCJQLxQmBGCkyqEEefL',
     ),
     pythBaseDecimal: 8,
-
     lpToken: {
       mint: new PublicKey('DM2Grhnear76DwNiRUSfeiFMt6jSj2op9GWinQDc7Yqh'),
       decimals: 6,
     },
-
     tokenA: {
       tokenAccount: new PublicKey(
         '5BUkh9e3JF9yUvSw6P3HHqkdMuujRG942hYNSkAEghFs',
@@ -99,7 +91,6 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       mint: SPL_TOKENS.UXD.mint,
       decimals: SPL_TOKENS.UXD.decimals,
     },
-
     tokenB: {
       tokenAccount: new PublicKey(
         'BbwCGgAHEUfu7PUEz8hR877aK2snseqorfLbvtcVbjhj',
@@ -119,12 +110,10 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       'H6ARHf6YXhGYeQfUzQNGk6rDNnLBQKrenN712K4AQJEG',
     ),
     pythBaseDecimal: 11,
-
     lpToken: {
       mint: new PublicKey('3WzrkFYq4SayCrhBw8BgsPiTVKTDjyV6wRqP7HL9Eyyw'),
       decimals: 9,
     },
-
     tokenA: {
       tokenAccount: new PublicKey(
         '2uySTNgvGT2kwqpfgLiSgeBLR3wQyye1i1A2iQWoPiFr',
@@ -132,7 +121,6 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       mint: new PublicKey('So11111111111111111111111111111111111111112'),
       decimals: 9,
     },
-
     tokenB: {
       tokenAccount: new PublicKey(
         '32SjGNjesiCZgmZb4YxAGgjnym6jAvTWbqihR4CvvXkZ',
@@ -152,12 +140,10 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       '3vxLXJqLqF3JG5TCbYycbKWRBbCJQLxQmBGCkyqEEefL',
     ),
     pythBaseDecimal: 11,
-
     lpToken: {
       mint: new PublicKey('BRchiwrv9yCr4jAi6xF4epQdtNtmJH93rrerpHpMhK1Z'),
       decimals: 9,
     },
-
     tokenA: {
       tokenAccount: new PublicKey(
         '5pH2DBMZg7y5bN4J3oLKRETGXyVYPJpeaCH6AkdAcxqp',
@@ -165,7 +151,6 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       mint: new PublicKey('So11111111111111111111111111111111111111112'),
       decimals: 9,
     },
-
     tokenB: {
       tokenAccount: new PublicKey(
         '7Cct2MJUwruQef5vQrP2bxYCNyVajJ3SiC1GYUmwmjUm',
@@ -185,12 +170,10 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       'GVXRSBjFk6e6J3NbVPXohDJetcTjaeeuykUpbQF8UoMU',
     ),
     pythBaseDecimal: 8,
-
     lpToken: {
       mint: new PublicKey('BzuTSoWFHrnRQvn4sr5ErPQyMaRB9g2rsbKCruGtcvMa'),
       decimals: 9,
     },
-
     tokenA: {
       tokenAccount: new PublicKey(
         'FAFShq3gZYXWtk5EkeKPKcwSkz2rjfMDuD1i7KiYwjVM',
@@ -198,7 +181,6 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       mint: new PublicKey('9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E'),
       decimals: 6,
     },
-
     tokenB: {
       tokenAccount: new PublicKey(
         '3ReY1xscSAEV9Qg1NshkU4KRWQs33nu5JMg8AnoU7duG',
@@ -218,12 +200,10 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       'JBu1AL4obBcCMqKBBxhpWCNUt136ijcuMZLFvTP7iWdB',
     ),
     pythBaseDecimal: 10,
-
     lpToken: {
       mint: new PublicKey('8FxRyaE8X6ENLmNbaBvgS6vMsN1GJ8J7CmKy8K8uN6wM'),
       decimals: 9,
     },
-
     tokenA: {
       tokenAccount: new PublicKey(
         'BRFwAToCofwzP29jVGzb6VZ4AGpw867AE5VsXfMsmEGk',
@@ -231,7 +211,6 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       mint: new PublicKey('7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs'),
       decimals: 8,
     },
-
     tokenB: {
       tokenAccount: new PublicKey(
         'FDCjDSbFCVRVBsWkJWfgZ9x3Dizm1MJjtzYw3R2fxXRv',
@@ -251,12 +230,10 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       'AnLf8tVYCM816gmBjiy8n53eXKKEDydT5piYjjQDPgTB',
     ),
     pythBaseDecimal: 8,
-
     lpToken: {
       mint: new PublicKey('HUpvKUafPCMwhua6QtHXk1V8D6LZYyQmUKYPFZgRiiiX'),
       decimals: 6,
     },
-
     tokenA: {
       tokenAccount: new PublicKey(
         'BhG9r4CkTBRtpLtxA8Hd72vCkikqyVhiq8pFunZNERV8',
@@ -264,7 +241,6 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       mint: new PublicKey('4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R'),
       decimals: 6,
     },
-
     tokenB: {
       tokenAccount: new PublicKey(
         '8HAVXU7bdS2SEkkrqFBdWPFxFTrWxtu4GTjP46BDzdTc',
@@ -284,12 +260,10 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       '3vxLXJqLqF3JG5TCbYycbKWRBbCJQLxQmBGCkyqEEefL',
     ),
     pythBaseDecimal: 8,
-
     lpToken: {
       mint: new PublicKey('9d5GhGFbbX5LGYyXxPDMvsREgF69cFTGv6jxqtKkE58j'),
       decimals: 6,
     },
-
     tokenA: {
       tokenAccount: new PublicKey(
         'Hn9BgYCSxTyCPnKpjnjHVzqQG4szceDaCpQedjW4Ug3c',
@@ -297,7 +271,6 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       mint: SPL_TOKENS.USDT.mint,
       decimals: SPL_TOKENS.USDT.decimals,
     },
-
     tokenB: {
       tokenAccount: new PublicKey(
         '74ZXM4EgYcovVijnCuceXJrGCNu3KJPniRSvBpZzDig',
@@ -317,12 +290,10 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       'GVXRSBjFk6e6J3NbVPXohDJetcTjaeeuykUpbQF8UoMU',
     ),
     pythBaseDecimal: 8,
-
     lpToken: {
       mint: new PublicKey('GgXkVjtMrPbc6AvUwjApcnLsR63SeD1BPB7nSSjzH5CX'),
       decimals: 6,
     },
-
     tokenA: {
       tokenAccount: new PublicKey(
         '6Qqdyy6RtbTA75aZHVxuBBS37u24uZyeptCBErGhQhHL',
@@ -330,7 +301,6 @@ export const PoolList: { [poolLabel in PoolNames]: IPoolInfo } = {
       mint: new PublicKey('9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i'),
       decimals: 6,
     },
-
     tokenB: {
       tokenAccount: new PublicKey(
         '9cbaGjEJBz7CuvwLsMdPZXMFovQJ91pDDqZSuWsPRMVY',

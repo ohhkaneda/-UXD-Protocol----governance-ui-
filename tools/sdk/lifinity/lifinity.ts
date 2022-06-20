@@ -260,9 +260,6 @@ export const calculateDepositAmounts = async ({
     tokenB: { decimals: decimalsTokenB, tokenAccount: tokenAccountTokenB },
   } = poolInfo;
 
-  // Pool Coin === Token A
-  // Pool Pc === Token B
-
   const [
     rawLiquidityPoolTokenSupply,
     rawBalanceTokenA,
