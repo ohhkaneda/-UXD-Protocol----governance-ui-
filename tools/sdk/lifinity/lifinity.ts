@@ -157,9 +157,9 @@ export const calculateMinimumWithdrawAmounts = async ({
     connection.getTokenAccountBalance(tokenAccountTokenB),
   ]);
 
-  const lpAmount = new BigNumber(uiLpTokenAmount).decimalPlaces(
-    lpTokenDecimals,
-  );
+  const lpAmount = new BigNumber(uiLpTokenAmount)
+    .shiftedBy(lpTokenDecimals)
+    .decimalPlaces(lpTokenDecimals);
 
   const minimumAmountTokenA = calculateMinimumTokenWithdrawAmountFromLP({
     tokenBalance: new BigNumber(balanceTokenA),
@@ -178,15 +178,15 @@ export const calculateMinimumWithdrawAmounts = async ({
   return {
     minimumAmountTokenA,
     minimumAmountTokenB,
-    lpTokenAmount: new BigNumber(uiLpTokenAmount).decimalPlaces(
-      lpTokenDecimals,
-    ),
+    lpTokenAmount: new BigNumber(uiLpTokenAmount)
+      .shiftedBy(lpTokenDecimals)
+      .decimalPlaces(lpTokenDecimals),
     minimumWithdrawnUiAmountTokenA: minimumAmountTokenA
-      .dividedBy(new BigNumber(10).pow(decimalsTokenA))
+      .shiftedBy(-decimalsTokenA)
       .toNumber(),
 
     minimumWithdrawnUiAmountTokenB: minimumAmountTokenB
-      .dividedBy(new BigNumber(10).pow(decimalsTokenB))
+      .shiftedBy(-decimalsTokenB)
       .toNumber(),
 
     uiLpTokenAmount,
@@ -204,7 +204,7 @@ const calculateMinimumTokenWithdrawAmountFromLP = ({
   lpSupply: string;
   slippage: number | string;
 }) => {
-  const percent = new BigNumber(+slippage + 100).div(new BigNumber(100));
+  const percent = (+slippage + 100) / 100;
 
   // Example
 
@@ -300,14 +300,12 @@ export const calculateDepositAmounts = async ({
   // The user should deposit a maximum of 10.2 Token B along with Token B and will receive 50 LP Tokens
 
   const maximumAmountTokenA = new BigNumber(uiAmountTokenA)
-    .multipliedBy(new BigNumber(10).pow(decimalsTokenA))
+    .shiftedBy(decimalsTokenA)
     .decimalPlaces(decimalsTokenA);
 
   const tokenAPrice = uiBalanceTokenB / uiBalanceTokenA;
 
-  const percent = new BigNumber(100)
-    .plus(new BigNumber(slippage))
-    .dividedBy(new BigNumber(100));
+  const percent = (100 + slippage) / 100;
 
   const maximumUiAmountTokenB = new BigNumber(uiAmountTokenA)
     .multipliedBy(tokenAPrice)
@@ -319,12 +317,10 @@ export const calculateDepositAmounts = async ({
     .multipliedBy(lpTokenSupply);
 
   const maximumAmountTokenB = new BigNumber(maximumUiAmountTokenB)
-    .multipliedBy(new BigNumber(10).pow(decimalsTokenB))
+    .shiftedBy(decimalsTokenB)
     .decimalPlaces(decimalsTokenB);
 
-  const uiAmountLpToken = amountLpToken
-    .dividedBy(new BigNumber(10).pow(decimalsLpToken))
-    .toNumber();
+  const uiAmountLpToken = amountLpToken.shiftedBy(-decimalsLpToken).toNumber();
 
   return {
     maximumUiAmountTokenA: uiAmountTokenA,
