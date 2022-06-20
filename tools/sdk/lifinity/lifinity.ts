@@ -14,6 +14,11 @@ export const AMM_PROGRAM_ADDR = new PublicKey(
   'EewxydAPCCVuNEyrVN68PuSYdQ7wKn27V9Gjeoi8dy3S',
 );
 
+export const InstructionsCodes = {
+  DepositAllTokenTypes: 32,
+  WithdrawAllTokenTypes: 189,
+};
+
 export const buildLifinity = ({
   connection,
   wallet,
