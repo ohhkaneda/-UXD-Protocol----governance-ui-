@@ -21,12 +21,12 @@ export type DeltafiTypes = AnchorTypes<
 type Accounts = DeltafiTypes['Accounts'];
 type Defined = DeltafiTypes['Defined'];
 
-type LiquidityProviderData = Accounts['liquidityProvider'];
-type DeltafiUserData = Accounts['deltafiUser'];
-type FarmInfoData = Accounts['farmInfo'];
-type FarmUserData = Accounts['farmUser'];
-type MarketConfigData = Accounts['marketConfig'];
-type SwapInfoData = Accounts['swapInfo'];
+type LiquidityProviderData = Accounts['LiquidityProvider'];
+type DeltafiUserData = Accounts['DeltafiUser'];
+type FarmInfoData = Accounts['FarmInfo'];
+type FarmUserData = Accounts['FarmUser'];
+type MarketConfigData = Accounts['MarketConfig'];
+type SwapInfoData = Accounts['SwapInfo'];
 
 export type SwapType = Defined['SwapType'];
 
