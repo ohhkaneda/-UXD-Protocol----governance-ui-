@@ -12,16 +12,16 @@ const withdrawFromPool = async ({
   poolName,
   userTransferAuthority,
   lpTokenAmount,
-  minimumWithdrawnAmountTokenA,
-  minimumWithdrawnAmountTokenB,
+  minimumAmountTokenA,
+  minimumAmountTokenB,
 }: {
   connection: Connection;
   wallet: SignerWalletAdapter;
   poolName: PoolNames;
   userTransferAuthority: PublicKey;
   lpTokenAmount: BigNumber;
-  minimumWithdrawnAmountTokenA: BigNumber;
-  minimumWithdrawnAmountTokenB: BigNumber;
+  minimumAmountTokenA: BigNumber;
+  minimumAmountTokenB: BigNumber;
 }) => {
   const program = buildLifinity({ connection, wallet });
 
@@ -44,8 +44,8 @@ const withdrawFromPool = async ({
 
   return program.instruction.withdrawAllTokenTypes(
     lpTokenAmount,
-    minimumWithdrawnAmountTokenA,
-    minimumWithdrawnAmountTokenB,
+    minimumAmountTokenA,
+    minimumAmountTokenB,
     {
       accounts: {
         amm,

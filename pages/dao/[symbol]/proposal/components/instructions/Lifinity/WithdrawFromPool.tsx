@@ -63,8 +63,8 @@ const WithdrawFromPool = ({
       governedAccountPubkey,
     }) {
       const {
-        minimumWithdrawnAmountTokenA,
-        minimumWithdrawnAmountTokenB,
+        minimumAmountTokenA,
+        minimumAmountTokenB,
         lpTokenAmount,
       } = await calculateMinimumWithdrawAmounts({
         connection: connection,
@@ -79,8 +79,8 @@ const WithdrawFromPool = ({
         poolName: form.poolName!,
         userTransferAuthority: governedAccountPubkey,
         lpTokenAmount,
-        minimumWithdrawnAmountTokenA,
-        minimumWithdrawnAmountTokenB,
+        minimumAmountTokenA,
+        minimumAmountTokenB,
       });
     },
   });

@@ -130,8 +130,8 @@ export const calculateMinimumWithdrawAmounts = async ({
   uiLpTokenAmount: number;
   slippage: number;
 }): Promise<{
-  minimumWithdrawnAmountTokenA: BigNumber;
-  minimumWithdrawnAmountTokenB: BigNumber;
+  minimumAmountTokenA: BigNumber;
+  minimumAmountTokenB: BigNumber;
   lpTokenAmount: BigNumber;
   minimumWithdrawnUiAmountTokenA: number;
   minimumWithdrawnUiAmountTokenB: number;
@@ -161,36 +161,34 @@ export const calculateMinimumWithdrawAmounts = async ({
     lpTokenDecimals,
   );
 
-  const minimumWithdrawnAmountTokenA = calculateMinimumTokenWithdrawAmountFromLP(
-    {
-      tokenBalance: new BigNumber(balanceTokenA),
-      lpSupply: lpAccount.value.amount,
-      lpAmount,
-      slippage,
-    },
-  );
+  const minimumAmountTokenA = calculateMinimumTokenWithdrawAmountFromLP({
+    tokenBalance: new BigNumber(balanceTokenA),
+    lpSupply: lpAccount.value.amount,
+    lpAmount,
+    slippage,
+  });
 
-  const minimumWithdrawnAmountTokenB = calculateMinimumTokenWithdrawAmountFromLP(
-    {
-      tokenBalance: new BigNumber(balanceTokenB),
-      lpSupply: lpAccount.value.amount,
-      lpAmount,
-      slippage,
-    },
-  );
+  const minimumAmountTokenB = calculateMinimumTokenWithdrawAmountFromLP({
+    tokenBalance: new BigNumber(balanceTokenB),
+    lpSupply: lpAccount.value.amount,
+    lpAmount,
+    slippage,
+  });
 
   return {
-    minimumWithdrawnAmountTokenA,
-    minimumWithdrawnAmountTokenB,
+    minimumAmountTokenA,
+    minimumAmountTokenB,
     lpTokenAmount: new BigNumber(uiLpTokenAmount).decimalPlaces(
       lpTokenDecimals,
     ),
-    minimumWithdrawnUiAmountTokenA: minimumWithdrawnAmountTokenA
+    minimumWithdrawnUiAmountTokenA: minimumAmountTokenA
       .dividedBy(new BigNumber(10).pow(decimalsTokenA))
       .toNumber(),
-    minimumWithdrawnUiAmountTokenB: minimumWithdrawnAmountTokenB
+
+    minimumWithdrawnUiAmountTokenB: minimumAmountTokenB
       .dividedBy(new BigNumber(10).pow(decimalsTokenB))
       .toNumber(),
+
     uiLpTokenAmount,
   };
 };
@@ -304,6 +302,7 @@ export const calculateDepositAmounts = async ({
   const maximumAmountTokenA = new BigNumber(uiAmountTokenA)
     .multipliedBy(new BigNumber(10).pow(decimalsTokenA))
     .decimalPlaces(decimalsTokenA);
+
   const tokenAPrice = uiBalanceTokenB / uiBalanceTokenA;
 
   const percent = new BigNumber(100)
@@ -314,6 +313,7 @@ export const calculateDepositAmounts = async ({
     .multipliedBy(tokenAPrice)
     .multipliedBy(percent)
     .toNumber();
+
   const amountLpToken = maximumAmountTokenA
     .dividedBy(balanceTokenA)
     .multipliedBy(lpTokenSupply);
@@ -321,40 +321,10 @@ export const calculateDepositAmounts = async ({
   const maximumAmountTokenB = new BigNumber(maximumUiAmountTokenB)
     .multipliedBy(new BigNumber(10).pow(decimalsTokenB))
     .decimalPlaces(decimalsTokenB);
+
   const uiAmountLpToken = amountLpToken
     .dividedBy(new BigNumber(10).pow(decimalsLpToken))
     .toNumber();
-
-  console.log('INFOS', {
-    decimalsTokenA,
-    tokenAPrice: tokenAPrice.toString(),
-    balanceTokenA: balanceTokenA.toString(),
-    uiBalanceTokenA: uiBalanceTokenA.toString(),
-    uiBalanceTokenB: uiBalanceTokenB.toString(),
-    percent: percent.toString(),
-    slippage,
-    uiAmountTokenA: uiAmountTokenA.toString(),
-    maximumAmountTokenA: maximumAmountTokenA.toString(),
-    maximumAmountTokenB: maximumAmountTokenB.toString(),
-    maximumUiAmountTokenB: maximumUiAmountTokenB.toString(),
-    uiAmountLpToken: uiAmountLpToken.toString(),
-    amountLpToken: amountLpToken.toString(),
-  });
-
-  /*
-  // Bruh
-  const lpReceived =
-    new BigNumber(
-      Math.floor(
-        ((amount.toNumber() * Math.pow(10, poolCoinDecimal)) /
-          coinBalance.toNumber()) *
-        lpSupply.toNumber(),
-      ) / Math.pow(10, poolMintDecimal)).dividedBy(10 ** poolMintDecimal);
-
-  const amountOut =
-    Math.floor(outAmount.toNumber() * Math.pow(10, poolPcDecimal)) /
-    Math.pow(10, poolPcDecimal);
-      */
 
   return {
     maximumUiAmountTokenA: uiAmountTokenA,

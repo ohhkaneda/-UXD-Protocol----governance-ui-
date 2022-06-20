@@ -34,11 +34,8 @@ const depositToPool = async ({
   const {
     amm,
     configAccount,
-
     lpToken: { mint: mintLpToken },
-
     tokenA: { mint: mintTokenA, tokenAccount: tokenAccountTokenA },
-
     tokenB: { mint: mintTokenB, tokenAccount: tokenAccountTokenB },
   } = getPoolInfoByName(poolName);
 
@@ -61,19 +58,6 @@ const depositToPool = async ({
   }
 
   const { lifinityNftAccount, lifinityNftMetaAccount } = nftAccounts;
-
-  console.log('VALUES BEFORE LAST CALL', {
-    amountLpToken: amountLpToken.toString(),
-    maximumAmountTokenA: maximumAmountTokenA.toString(),
-    maximumAmountTokenB: maximumAmountTokenB.toString(),
-    amountLpTokenFINAL: new BN(Math.floor(amountLpToken.toNumber())).toString(),
-    maximumAmountTokenAFINAL: new BN(
-      Math.ceil(maximumAmountTokenA.toNumber()),
-    ).toString(),
-    maximumAmountTokenBFINAL: new BN(
-      Math.ceil(maximumAmountTokenB.toNumber()),
-    ).toString(),
-  });
 
   return program.instruction.depositAllTokenTypes(
     new BN(Math.floor(amountLpToken.toNumber())),
