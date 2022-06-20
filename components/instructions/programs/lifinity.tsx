@@ -3,7 +3,7 @@ import { nu64, struct, u8 } from 'buffer-layout';
 import { AccountMetaData } from '@solana/spl-governance';
 import {
   AMM_PROGRAM_ADDR,
-  getPoolLabelByPoolMint,
+  getPoolNameByPoolTokenMint,
 } from '@tools/sdk/lifinity/lifinity';
 import { tryGetMint } from '@utils/tokens';
 import BigNumber from 'bignumber.js';
@@ -77,7 +77,7 @@ export const LIFINITY_PROGRAM_INSTRUCTIONS = {
           .shiftedBy(-tokenLPInfo.account.decimals)
           .toString();
 
-        const poolLabel = getPoolLabelByPoolMint(tokenLPAcc);
+        const poolLabel = getPoolNameByPoolTokenMint(tokenLPAcc);
 
         return (
           <>

@@ -124,7 +124,7 @@ export interface EmptyInstructionForm {
 
 export interface LifinityDepositToPoolForm {
   governedAccount?: GovernedMultiTypeAccount;
-  liquidityPool?: LifinityPoolNames;
+  poolName?: LifinityPoolNames;
   uiAmountTokenA?: number;
   uiAmountTokenB?: number;
   amountTokenLP?: number;
@@ -133,7 +133,7 @@ export interface LifinityDepositToPoolForm {
 
 export interface LifinityWithdrawFromPoolForm {
   governedAccount?: GovernedMultiTypeAccount;
-  liquidityPool?: LifinityPoolNames;
+  poolName?: LifinityPoolNames;
   uiAmountTokenLP?: number;
   slippage: number;
 }
