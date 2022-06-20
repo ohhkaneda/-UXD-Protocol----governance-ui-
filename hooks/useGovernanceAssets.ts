@@ -529,14 +529,20 @@ export default function useGovernanceAssets() {
       packageId: PackageEnum.Native,
       tag: 'beta',
     },
+    [InstructionEnum.DeltafiCreateLiquidityProvider]: {
+      name: 'Create Liquidity Provider',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Deltafi,
+      tag: 'beta',
+    },
     [InstructionEnum.DeltafiPoolDeposit]: {
       name: 'Deposit Tokens on Pool',
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.Deltafi,
       tag: 'beta',
     },
-    [InstructionEnum.DeltafiCreateLiquidityProvider]: {
-      name: 'Create Liquidity Provider',
+    [InstructionEnum.DeltafiPoolWithdraw]: {
+      name: 'Withdraw Tokens from Pool',
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.Deltafi,
       tag: 'beta',

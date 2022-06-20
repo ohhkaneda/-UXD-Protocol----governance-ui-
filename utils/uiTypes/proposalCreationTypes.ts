@@ -449,6 +449,13 @@ export interface DeltafiPoolDepositForm {
   uiQuoteAmount?: number;
 }
 
+export interface DeltafiPoolWithdrawForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  poolName?: DeltafiPoolName;
+  uiBaseAmount?: number;
+  uiQuoteAmount?: number;
+}
+
 export interface DeltafiCreateLiquidityProviderForm {
   governedAccount?: GovernedMultiTypeAccount;
   poolName?: DeltafiPoolName;
@@ -517,6 +524,7 @@ export enum InstructionEnum {
   MapleFinanceLenderDepositForm,
   DeltafiPoolDeposit,
   DeltafiCreateLiquidityProvider,
+  DeltafiPoolWithdraw,
 }
 
 export enum PackageEnum {

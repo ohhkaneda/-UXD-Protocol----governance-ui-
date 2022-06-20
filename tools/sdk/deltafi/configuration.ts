@@ -58,6 +58,14 @@ export class DeltafiDexV2 {
     'GNExJhNUhc9LN2DauuQAUJnXoy6DJ6zey3t9kT9A2PF3',
   );
 
+  public static readonly instructionsCode = {
+    CreateLiquidityProviderV2: 173,
+    DepositToStableSwap: 54,
+    depositToNormalSwap: 0, // ??
+    WithdrawFromStableSwap: 136,
+    withdrawFromNormalSwap: 0, // ??
+  };
+
   public loadProgram(provider: SolanaAugmentedProvider): DeltafiProgram {
     return newProgram<DeltafiProgram>(
       deltafiDexV2,

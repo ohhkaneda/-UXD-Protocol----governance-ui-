@@ -6,7 +6,7 @@ import deltafiConfiguration, {
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { DeltafiCreateLiquidityProviderForm } from '@utils/uiTypes/proposalCreationTypes';
 import SelectDeltafiPool, { PoolName } from '@components/SelectDeltafiPool';
-import createLiquidityProvider from '@tools/sdk/deltafi/instructions/createLiquidityProvider';
+import createLiquidityProviderV2 from '@tools/sdk/deltafi/instructions/createLiquidityProviderV2';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -58,10 +58,11 @@ const DeltafiCreateLiquidityProvider = ({
         throw new Error('Pool info is required');
       }
 
-      return createLiquidityProvider({
+      return createLiquidityProviderV2({
         deltafiProgram,
         authority: governedAccountPubkey,
         poolInfo,
+        payer: wallet.publicKey!,
       });
     },
   });
