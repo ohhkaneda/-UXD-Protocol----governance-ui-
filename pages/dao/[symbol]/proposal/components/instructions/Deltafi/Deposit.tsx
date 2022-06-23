@@ -24,6 +24,14 @@ const schema = yup.object().shape({
     .number()
     .typeError('Quote Amount has to be a number')
     .required('Quote Amount is required'),
+  uiMinBaseShare: yup
+    .number()
+    .typeError('Min Base Share has to be a number')
+    .required('Min Base Share is required'),
+  uiMinQuoteShare: yup
+    .number()
+    .typeError('Min Quote Share has to be a number')
+    .required('Min Quote Share is required'),
 });
 
 const DeltafiPoolDeposit = ({
@@ -85,6 +93,8 @@ const DeltafiPoolDeposit = ({
         poolInfo,
         baseAmount: uiAmountToNativeBN(form.uiBaseAmount!, baseDecimals),
         quoteAmount: uiAmountToNativeBN(form.uiQuoteAmount!, quoteDecimals),
+        minBaseShare: uiAmountToNativeBN(form.uiMinBaseShare!, baseDecimals),
+        minQuoteShare: uiAmountToNativeBN(form.uiMinQuoteShare!, quoteDecimals),
       });
     },
   });
@@ -129,6 +139,34 @@ const DeltafiPoolDeposit = ({
           });
         }}
         error={formErrors['uiQuoteAmount']}
+      />
+
+      <Input
+        min={0}
+        label="Min Base Share"
+        value={form.uiMinBaseShare}
+        type="number"
+        onChange={(evt) => {
+          handleSetForm({
+            value: evt.target.value,
+            propertyName: 'uiMinBaseShare',
+          });
+        }}
+        error={formErrors['uiMinBaseShare']}
+      />
+
+      <Input
+        min={0}
+        label="Min Quote Share"
+        value={form.uiMinQuoteShare}
+        type="number"
+        onChange={(evt) => {
+          handleSetForm({
+            value: evt.target.value,
+            propertyName: 'uiMinQuoteShare',
+          });
+        }}
+        error={formErrors['uiMinQuoteShare']}
       />
     </>
   );

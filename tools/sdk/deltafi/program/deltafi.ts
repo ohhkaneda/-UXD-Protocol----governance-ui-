@@ -21,7 +21,7 @@ export type DeltafiTypes = AnchorTypes<
 type Accounts = DeltafiTypes['Accounts'];
 type Defined = DeltafiTypes['Defined'];
 
-type LiquidityProviderData = Accounts['LiquidityProvider'];
+export type LiquidityProviderData = Accounts['LiquidityProvider'];
 type DeltafiUserData = Accounts['DeltafiUser'];
 type FarmInfoData = Accounts['FarmInfo'];
 type FarmUserData = Accounts['FarmUser'];

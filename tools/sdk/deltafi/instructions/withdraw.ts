@@ -9,14 +9,18 @@ export default async function withdraw({
   deltafiProgram,
   authority,
   poolInfo,
-  baseAmount,
-  quoteAmount,
+  baseShare,
+  quoteShare,
+  minBaseAmount,
+  minQuoteAmount,
 }: {
   deltafiProgram: DeltafiProgram;
   authority: PublicKey;
   poolInfo: PoolInfo;
-  baseAmount: BN;
-  quoteAmount: BN;
+  minBaseAmount: BN;
+  minQuoteAmount: BN;
+  baseShare: BN;
+  quoteShare: BN;
 }) {
   const [userTokenBase] = findATAAddrSync(authority, poolInfo.mintBase);
   const [userTokenQuote] = findATAAddrSync(authority, poolInfo.mintQuote);
@@ -67,15 +71,11 @@ export default async function withdraw({
   };
 
   if (swapTypeCast.stableSwap) {
-    // Slippage configuration
-    const minBaseShare = new BN(0);
-    const minQuoteShare = new BN(0);
-
     return deltafiProgram.instruction.withdrawFromStableSwap(
-      baseAmount,
-      quoteAmount,
-      minBaseShare,
-      minQuoteShare,
+      baseShare,
+      quoteShare,
+      minBaseAmount,
+      minQuoteAmount,
       {
         accounts: withdrawAccounts,
       },
@@ -83,15 +83,11 @@ export default async function withdraw({
   }
 
   if (swapTypeCast.normalSwap) {
-    // Slippage configuration
-    const minBaseShare = new BN(0);
-    const minQuoteShare = new BN(0);
-
     return deltafiProgram.instruction.withdrawFromNormalSwap(
-      baseAmount,
-      quoteAmount,
-      minBaseShare,
-      minQuoteShare,
+      baseShare,
+      quoteShare,
+      minBaseAmount,
+      minQuoteAmount,
       {
         accounts: withdrawAccounts,
       },

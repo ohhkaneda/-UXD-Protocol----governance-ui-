@@ -2,9 +2,9 @@ import { struct, u8, nu64 } from 'buffer-layout';
 import { AccountMetaData } from '@solana/spl-governance';
 import { Connection } from '@solana/web3.js';
 import { DeltafiDexV2 } from '@tools/sdk/deltafi/configuration';
-import { tryGetMint } from '@utils/tokens';
-import { fmtTokenAmount } from '@utils/formatting';
+import { tryGetTokenMint } from '@utils/tokens';
 import { BN } from '@blockworks-foundation/mango-client';
+import { nativeAmountToFormattedUiAmount } from '@tools/sdk/units';
 
 export const DELTAFI_PROGRAM_INSTRUCTIONS = {
   [DeltafiDexV2.DeltafiProgramId.toBase58()]: {
@@ -102,30 +102,40 @@ export const DELTAFI_PROGRAM_INSTRUCTIONS = {
         const tokenQuote = accounts[5].pubkey;
 
         const [baseMint, quoteMint] = await Promise.all([
-          tryGetMint(connection, tokenBase),
-          tryGetMint(connection, tokenQuote),
+          tryGetTokenMint(connection, tokenBase),
+          tryGetTokenMint(connection, tokenQuote),
         ]);
 
         if (!baseMint || !quoteMint) {
           throw new Error('Mint not found');
         }
 
-        const uiMinBaseAmount = fmtTokenAmount(
+        const uiBaseShare = nativeAmountToFormattedUiAmount(
+          new BN(baseShare),
+          baseMint.account.decimals,
+        );
+
+        const uiQuoteShare = nativeAmountToFormattedUiAmount(
+          new BN(quoteShare),
+          quoteMint.account.decimals,
+        );
+
+        const uiMinBaseAmount = nativeAmountToFormattedUiAmount(
           new BN(minBaseAmount),
           baseMint.account.decimals,
         );
 
-        const uiMinQuoteAmount = fmtTokenAmount(
+        const uiMinQuoteAmount = nativeAmountToFormattedUiAmount(
           new BN(minQuoteAmount),
           quoteMint.account.decimals,
         );
 
         return (
           <>
-            <p>{`Base Share: ${baseShare.toLocaleString()}`}</p>
-            <p>{`Quote Share: ${quoteShare.toLocaleString()}`}</p>
-            <p>{`UI Mint Base Amount: ${uiMinBaseAmount.toLocaleString()}`}</p>
-            <p>{`UI Mint Quote Amount: ${uiMinQuoteAmount.toLocaleString()}`}</p>
+            <p>{`UI Base Share: ${uiBaseShare.toLocaleString()}`}</p>
+            <p>{`UI Quote Share: ${uiQuoteShare.toLocaleString()}`}</p>
+            <p>{`UI Min Base Amount: ${uiMinBaseAmount.toLocaleString()}`}</p>
+            <p>{`UI Min Quote Amount: ${uiMinQuoteAmount.toLocaleString()}`}</p>
           </>
         );
       },
@@ -178,30 +188,51 @@ export const DELTAFI_PROGRAM_INSTRUCTIONS = {
         const tokenQuote = accounts[5].pubkey;
 
         const [baseMint, quoteMint] = await Promise.all([
-          tryGetMint(connection, tokenBase),
-          tryGetMint(connection, tokenQuote),
+          tryGetTokenMint(connection, tokenBase),
+          tryGetTokenMint(connection, tokenQuote),
         ]);
 
         if (!baseMint || !quoteMint) {
           throw new Error('Mint not found');
         }
 
-        const uiBaseAmount = fmtTokenAmount(
+        console.log('BLABLA', {
+          baseAmount,
+          quoteAmount,
+          minBaseShare,
+          minQuoteShare,
+          tokenBase: tokenBase.toBase58(),
+          tokenQuote: tokenQuote.toBase58(),
+          baseDecimals: baseMint.account.decimals,
+          quoteDecimals: quoteMint.account.decimals,
+        });
+
+        const uiBaseAmount = nativeAmountToFormattedUiAmount(
           new BN(baseAmount),
           baseMint.account.decimals,
         );
 
-        const uiQuoteAmount = fmtTokenAmount(
+        const uiQuoteAmount = nativeAmountToFormattedUiAmount(
           new BN(quoteAmount),
+          quoteMint.account.decimals,
+        );
+
+        const uiMinBaseShare = nativeAmountToFormattedUiAmount(
+          new BN(minBaseShare),
+          baseMint.account.decimals,
+        );
+
+        const uiMinQuoteShare = nativeAmountToFormattedUiAmount(
+          new BN(minQuoteShare),
           quoteMint.account.decimals,
         );
 
         return (
           <>
-            <p>{`Mi Base Share: ${minBaseShare.toLocaleString()}`}</p>
-            <p>{`Min Quote Share: ${minQuoteShare.toLocaleString()}`}</p>
             <p>{`UI Base Amount: ${uiBaseAmount.toLocaleString()}`}</p>
             <p>{`UI Quote Amount: ${uiQuoteAmount.toLocaleString()}`}</p>
+            <p>{`UI Min Base Share: ${uiMinBaseShare.toLocaleString()}`}</p>
+            <p>{`UI Min Quote Share: ${uiMinQuoteShare.toLocaleString()}`}</p>
           </>
         );
       },

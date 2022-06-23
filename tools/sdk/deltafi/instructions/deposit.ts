@@ -11,12 +11,16 @@ export default async function deposit({
   poolInfo,
   baseAmount,
   quoteAmount,
+  minBaseShare,
+  minQuoteShare,
 }: {
   deltafiProgram: DeltafiProgram;
   authority: PublicKey;
   poolInfo: PoolInfo;
   baseAmount: BN;
   quoteAmount: BN;
+  minBaseShare: BN;
+  minQuoteShare: BN;
 }) {
   const [userTokenBase] = findATAAddrSync(authority, poolInfo.mintBase);
   const [userTokenQuote] = findATAAddrSync(authority, poolInfo.mintQuote);
@@ -57,10 +61,6 @@ export default async function deposit({
   };
 
   if (swapTypeCast.stableSwap) {
-    // Slippage configuration
-    const minBaseShare = new BN(0);
-    const minQuoteShare = new BN(0);
-
     return deltafiProgram.instruction.depositToStableSwap(
       baseAmount,
       quoteAmount,
@@ -73,10 +73,6 @@ export default async function deposit({
   }
 
   if (swapTypeCast.normalSwap) {
-    // Slippage configuration
-    const minBaseShare = new BN(0);
-    const minQuoteShare = new BN(0);
-
     return deltafiProgram.instruction.depositToNormalSwap(
       baseAmount,
       quoteAmount,

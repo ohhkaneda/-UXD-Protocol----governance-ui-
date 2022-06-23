@@ -447,13 +447,17 @@ export interface DeltafiPoolDepositForm {
   poolName?: DeltafiPoolName;
   uiBaseAmount?: number;
   uiQuoteAmount?: number;
+  uiMinBaseShare?: number;
+  uiMinQuoteShare?: number;
 }
 
 export interface DeltafiPoolWithdrawForm {
   governedAccount?: GovernedMultiTypeAccount;
   poolName?: DeltafiPoolName;
-  uiBaseAmount?: number;
-  uiQuoteAmount?: number;
+  uiBaseShare?: number;
+  uiQuoteShare?: number;
+  uiMinBaseAmount?: number;
+  uiMinQuoteAmount?: number;
 }
 
 export interface DeltafiCreateLiquidityProviderForm {
