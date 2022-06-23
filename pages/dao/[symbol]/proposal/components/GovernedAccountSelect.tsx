@@ -411,7 +411,7 @@ export default function GovernedAccountSelect<
 
       <div className="flex flex-col bg-bkg-1 w-full max-w-lg border border-fgd-3 default-transition rounded-md h-auto">
         <ImageTextSelection
-          className="pl-4 pr-4 border-b border-fgd-3 w-full"
+          className="pl-4 pr-4 w-full"
           selected={selectedGovernanceAccountConfigurationId}
           imageTextElements={availableGovernanceTypes}
           onClick={setSelectedGovernanceAccountConfigurationId}
