@@ -409,7 +409,7 @@ export default function GovernedAccountSelect<
     <div className="flex flex-col">
       <span className="mb-2">{label}</span>
 
-      <div className="flex flex-col bg-bkg-1 w-full max-w-lg h-auto border border-fgd-3 default-transition rounded-md h-12">
+      <div className="flex flex-col bg-bkg-1 w-full max-w-lg border border-fgd-3 default-transition rounded-md h-auto">
         <ImageTextSelection
           className="pl-4 pr-4 border-b border-fgd-3 w-full"
           selected={selectedGovernanceAccountConfigurationId}
