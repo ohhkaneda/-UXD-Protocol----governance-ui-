@@ -14,14 +14,21 @@ import {
   uxdClient,
 } from './uxdClient';
 
-const createRegisterMangoDepositoryInstruction = async (
-  connection: ConnectionContext,
-  uxdProgramId: PublicKey,
-  authority: PublicKey,
-  payer: PublicKey,
-  depositoryMintName: string,
-  insuranceMintName: string,
-): Promise<TransactionInstruction> => {
+const createRegisterMangoDepositoryInstruction = async ({
+  connection,
+  uxdProgramId,
+  authority,
+  payer,
+  depositoryMintName,
+  insuranceMintName,
+}: {
+  connection: ConnectionContext;
+  uxdProgramId: PublicKey;
+  authority: PublicKey;
+  payer: PublicKey;
+  depositoryMintName: string;
+  insuranceMintName: string;
+}): Promise<TransactionInstruction> => {
   const mango = await initializeMango(connection.current, connection.cluster);
 
   const depositoryMint = getDepositoryMintKey(

@@ -1,9 +1,9 @@
 import { Cluster } from '@blockworks-foundation/mango-client';
 import { EndpointTypes } from '@models/types';
+import { utils } from '@project-serum/anchor';
 import { Connection, PublicKey } from '@solana/web3.js';
 import {
   createAndInitializeMango,
-  findAddrSync,
   MangoDepository,
   UXDClient,
 } from '@uxd-protocol/uxd-client';
@@ -109,7 +109,10 @@ export const initializeMango = async (
 };
 
 export const getControllerPda = (uxdProgramId: PublicKey): PublicKey => {
-  return findAddrSync([Buffer.from('CONTROLLER')], uxdProgramId)[0];
+  return utils.publicKey.findProgramAddressSync(
+    [Buffer.from('CONTROLLER')],
+    uxdProgramId,
+  )[0];
 };
 
 // We do not need the decimals and names for both depository and insurance

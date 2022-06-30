@@ -35,11 +35,11 @@ const SetMangoDepositoriesRedeemableSoftCap = ({
     },
     schema,
     buildInstruction: async function ({ form, governedAccountPubkey }) {
-      return createSetMangoDepositoriesRedeemableSoftCapInstruction(
-        form.governedAccount!.governance!.account.governedAccount,
-        form.softCap,
-        governedAccountPubkey,
-      );
+      return createSetMangoDepositoriesRedeemableSoftCapInstruction({
+        uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
+        softCapUiAmount: form.softCap,
+        authority: governedAccountPubkey,
+      });
     },
   });
 

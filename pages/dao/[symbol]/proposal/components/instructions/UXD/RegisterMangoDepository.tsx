@@ -38,14 +38,14 @@ const RegisterMangoDepository = ({
     },
     schema,
     buildInstruction: async function ({ form, wallet, governedAccountPubkey }) {
-      return createRegisterMangoDepositoryInstruction(
+      return createRegisterMangoDepositoryInstruction({
         connection,
-        form.governedAccount!.governance!.account.governedAccount,
-        governedAccountPubkey,
-        wallet.publicKey!,
-        form.collateralName!,
-        form.insuranceName!,
-      );
+        uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
+        authority: governedAccountPubkey,
+        payer: wallet.publicKey!,
+        depositoryMintName: form.collateralName!,
+        insuranceMintName: form.insuranceName!,
+      });
     },
   });
 

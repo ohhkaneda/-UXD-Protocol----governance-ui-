@@ -36,11 +36,11 @@ const SetRedeemGlobalSupplyCap = ({
     },
     schema,
     buildInstruction: async function ({ form, governedAccountPubkey }) {
-      return createSetRedeemableGlobalSupplyCapInstruction(
-        form.governedAccount!.governance!.account.governedAccount,
-        form.supplyCap,
-        governedAccountPubkey,
-      );
+      return createSetRedeemableGlobalSupplyCapInstruction({
+        uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
+        supplyCapUiAmount: form.supplyCap,
+        authority: governedAccountPubkey,
+      });
     },
   });
 

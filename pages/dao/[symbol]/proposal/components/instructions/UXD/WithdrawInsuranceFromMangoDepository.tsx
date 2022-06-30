@@ -44,14 +44,14 @@ const WithdrawInsuranceFromMangoDepository = ({
     },
     schema,
     buildInstruction: async function ({ form, governedAccountPubkey }) {
-      return createWithdrawInsuranceFromMangoDepositoryInstruction(
+      return createWithdrawInsuranceFromMangoDepositoryInstruction({
         connection,
-        form.governedAccount!.governance!.account.governedAccount,
-        governedAccountPubkey,
-        form.collateralName!,
-        form.insuranceName!,
-        form.insuranceWithdrawnAmount,
-      );
+        uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
+        authority: governedAccountPubkey,
+        depositoryMintName: form.collateralName!,
+        insuranceMintName: form.insuranceName!,
+        insuranceWithdrawnAmount: form.insuranceWithdrawnAmount,
+      });
     },
   });
 
