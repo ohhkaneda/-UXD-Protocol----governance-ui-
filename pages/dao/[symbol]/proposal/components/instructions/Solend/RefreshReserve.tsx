@@ -23,24 +23,20 @@ const RefreshReserve = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    connection,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<RefreshReserveForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({ form }) {
-      return refreshReserve({
-        lendingMarketName: form.lendingMarketName!,
-        tokenName: form.tokenName!,
-      });
-    },
-  });
+  const { form, connection, formErrors, handleSetForm } =
+    useInstructionFormBuilder<RefreshReserveForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({ form }) {
+        return refreshReserve({
+          lendingMarketName: form.lendingMarketName!,
+          tokenName: form.tokenName!,
+        });
+      },
+    });
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {

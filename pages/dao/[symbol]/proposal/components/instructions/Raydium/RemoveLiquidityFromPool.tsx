@@ -39,31 +39,27 @@ const RaydiumRemoveLiquidityFromPool = ({
     decimals: number;
   } | null>(null);
 
-  const {
-    form,
-    connection,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<RemoveLiquidityRaydiumForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      liquidityPool: '',
-      amountIn: 0,
-    },
-    schema,
-    buildInstruction: async function ({ form, governedAccountPubkey }) {
-      if (!lpMintInfo) {
-        throw new Error('missing parameter Liquidity Pool Mint Info');
-      }
+  const { form, connection, formErrors, handleSetForm } =
+    useInstructionFormBuilder<RemoveLiquidityRaydiumForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        liquidityPool: '',
+        amountIn: 0,
+      },
+      schema,
+      buildInstruction: async function ({ form, governedAccountPubkey }) {
+        if (!lpMintInfo) {
+          throw new Error('missing parameter Liquidity Pool Mint Info');
+        }
 
-      return createRemoveLiquidityInstruction(
-        governedAccountPubkey,
-        jsonInfo2PoolKeys(liquidityPoolKeysList[form.liquidityPool]),
-        uiAmountToNativeBN(form.amountIn, lpMintInfo.decimals),
-      );
-    },
-  });
+        return createRemoveLiquidityInstruction(
+          governedAccountPubkey,
+          jsonInfo2PoolKeys(liquidityPoolKeysList[form.liquidityPool]),
+          uiAmountToNativeBN(form.amountIn, lpMintInfo.decimals),
+        );
+      },
+    });
 
   useEffect(() => {
     async function fetchLpMintInfo() {

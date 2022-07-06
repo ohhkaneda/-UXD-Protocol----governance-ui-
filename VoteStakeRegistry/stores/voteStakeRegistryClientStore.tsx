@@ -1,12 +1,11 @@
 import create, { State } from 'zustand';
 import { VsrClient } from '@blockworks-foundation/voter-stake-registry-client';
 import { getRegistrarPDA, Registrar } from 'VoteStakeRegistry/sdk/accounts';
-import { Provider } from '@project-serum/anchor';
-import { Wallet } from '@project-serum/sol-wallet-adapter';
 import { tryGetRegistrar } from 'VoteStakeRegistry/sdk/api';
 import { SignerWalletAdapter } from '@solana/wallet-adapter-base';
 import { ConnectionContext } from '@utils/connection';
 import { ProgramAccount, Realm } from '@solana/spl-governance';
+import { AnchorProvider, Wallet } from '@project-serum/anchor';
 
 interface useVoteStakeRegistryClientStore extends State {
   state: {
@@ -34,14 +33,14 @@ const useVoteStakeRegistryClientStore = create<useVoteStakeRegistryClientStore>(
       ...defaultState,
     },
     handleSetClient: async (wallet, connection) => {
-      const options = Provider.defaultOptions();
-      const provider = new Provider(
+      const options = AnchorProvider.defaultOptions();
+      const provider = new AnchorProvider(
         connection.current,
-        (wallet as unknown) as Wallet,
+        wallet as unknown as Wallet,
         options,
       );
       const vsrClient = await VsrClient.connect(
-        provider,
+        provider as any,
         connection.cluster === 'devnet',
       );
       set((s) => {

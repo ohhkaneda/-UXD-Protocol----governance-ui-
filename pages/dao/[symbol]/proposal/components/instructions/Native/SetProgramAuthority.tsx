@@ -15,39 +15,36 @@ const SetProgramAuthority = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<SetProgramAuthorityForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema: yup.object().shape({
-      governedAccount: yup
-        .object()
-        .nullable()
-        .required('Program governed account is required'),
-      destinationAuthority: yup
-        .string()
-        .required('new authority address is required'),
-    }),
+  const { form, formErrors, handleSetForm } =
+    useInstructionFormBuilder<SetProgramAuthorityForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema: yup.object().shape({
+        governedAccount: yup
+          .object()
+          .nullable()
+          .required('Program governed account is required'),
+        destinationAuthority: yup
+          .string()
+          .required('new authority address is required'),
+      }),
 
-    buildInstruction: async function () {
-      if (!governedAccount?.governance?.account) {
-        throw new Error('Governance must be a Program Account Governance');
-      }
-      if (!form.destinationAuthority) {
-        throw new Error('missing form input: destination authority');
-      }
-      return createSetProgramAuthorityInstruction(
-        form.governedAccount!.governance!.account.governedAccount,
-        form.governedAccount!.governance!.pubkey,
-        new PublicKey(form.destinationAuthority),
-      );
-    },
-  });
+      buildInstruction: async function () {
+        if (!governedAccount?.governance?.account) {
+          throw new Error('Governance must be a Program Account Governance');
+        }
+        if (!form.destinationAuthority) {
+          throw new Error('missing form input: destination authority');
+        }
+        return createSetProgramAuthorityInstruction(
+          form.governedAccount!.governance!.account.governedAccount,
+          form.governedAccount!.governance!.pubkey,
+          new PublicKey(form.destinationAuthority),
+        );
+      },
+    });
 
   return (
     <Input

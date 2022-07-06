@@ -5,11 +5,8 @@ import { useCallback, useEffect, useState } from 'react';
 import useGovernanceAssets from './useGovernanceAssets';
 
 export default function useGovernedMultiTypeAccounts() {
-  const {
-    getMintWithGovernances,
-    governancesArray,
-    governedTokenAccounts,
-  } = useGovernanceAssets();
+  const { getMintWithGovernances, governancesArray, governedTokenAccounts } =
+    useGovernanceAssets();
 
   const [governedMultiTypeAccounts, setGovernedMultiTypeAccounts] = useState<
     GovernedMultiTypeAccount[]
@@ -64,31 +61,37 @@ export default function useGovernedMultiTypeAccounts() {
     };
   }, [getGovernedMultiTypeAccounts]);
 
-  const getGovernedAccountPublicKey = useCallback((
-    governedAccount: GovernedMultiTypeAccount | undefined,
+  const getGovernedAccountPublicKey = useCallback(
+    (
+      governedAccount: GovernedMultiTypeAccount | undefined,
 
-    // can force the fact to use the owner for SOL Token Governance
-    forceToUseSolTokenGovernanceOwner?: boolean,
-  ): PublicKey | undefined => {
-    if (!governedAccount || !governedAccount.governance) {
-      return;
-    }
-
-    const accountType = governedAccount.governance.account.accountType;
-
-    if (
-      accountType === GovernanceAccountType.TokenGovernanceV1 ||
-      accountType === GovernanceAccountType.TokenGovernanceV2
-    ) {
-      const programGovernedAccount = governedAccount as GovernedTokenAccount;
-
-      if (programGovernedAccount.isSol && !forceToUseSolTokenGovernanceOwner) {
-        return programGovernedAccount.transferAddress ?? undefined;
+      // can force the fact to use the owner for SOL Token Governance
+      forceToUseSolTokenGovernanceOwner?: boolean,
+    ): PublicKey | undefined => {
+      if (!governedAccount || !governedAccount.governance) {
+        return;
       }
-    }
 
-    return governedAccount.governance.pubkey;
-  }, []);
+      const accountType = governedAccount.governance.account.accountType;
+
+      if (
+        accountType === GovernanceAccountType.TokenGovernanceV1 ||
+        accountType === GovernanceAccountType.TokenGovernanceV2
+      ) {
+        const programGovernedAccount = governedAccount as GovernedTokenAccount;
+
+        if (
+          programGovernedAccount.isSol &&
+          !forceToUseSolTokenGovernanceOwner
+        ) {
+          return programGovernedAccount.transferAddress ?? undefined;
+        }
+      }
+
+      return governedAccount.governance.pubkey;
+    },
+    [],
+  );
 
   return {
     governedMultiTypeAccounts,

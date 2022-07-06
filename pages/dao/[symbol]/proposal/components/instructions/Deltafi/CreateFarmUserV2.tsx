@@ -32,50 +32,48 @@ const DeltafiCreateFarmUserV2 = ({
 
   const [poolInfo, setPoolInfo] = useState<PoolInfo | null>(null);
 
-  const {
-    form,
-    handleSetForm,
-  } = useInstructionFormBuilder<DeltafiCreateFarmUserForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({
-      wallet,
-      cluster,
-      governedAccountPubkey,
-      form,
-    }) {
-      if (cluster !== 'mainnet') {
-        throw new Error('Other cluster than mainnet are not supported yet.');
-      }
+  const { form, handleSetForm } =
+    useInstructionFormBuilder<DeltafiCreateFarmUserForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
+        wallet,
+        cluster,
+        governedAccountPubkey,
+        form,
+      }) {
+        if (cluster !== 'mainnet') {
+          throw new Error('Other cluster than mainnet are not supported yet.');
+        }
 
-      if (!deltafiProgram) {
-        throw new Error('Deltafi program not loaded yet');
-      }
+        if (!deltafiProgram) {
+          throw new Error('Deltafi program not loaded yet');
+        }
 
-      const poolInfo = deltafiConfiguration.getPoolInfoByPoolName(
-        form.poolName!,
-      );
+        const poolInfo = deltafiConfiguration.getPoolInfoByPoolName(
+          form.poolName!,
+        );
 
-      if (!poolInfo) {
-        throw new Error(`Cannot find pool info with name ${form.poolName!}`);
-      }
+        if (!poolInfo) {
+          throw new Error(`Cannot find pool info with name ${form.poolName!}`);
+        }
 
-      if (!poolInfo.farmInfo) {
-        throw new Error('Selected pool does not have a farm');
-      }
+        if (!poolInfo.farmInfo) {
+          throw new Error('Selected pool does not have a farm');
+        }
 
-      return createFarmUserV2({
-        deltafiProgram,
-        authority: governedAccountPubkey,
-        poolInfo,
-        farmInfo: poolInfo.farmInfo,
-        payer: wallet.publicKey!,
-      });
-    },
-  });
+        return createFarmUserV2({
+          deltafiProgram,
+          authority: governedAccountPubkey,
+          poolInfo,
+          farmInfo: poolInfo.farmInfo,
+          payer: wallet.publicKey!,
+        });
+      },
+    });
 
   return (
     <>

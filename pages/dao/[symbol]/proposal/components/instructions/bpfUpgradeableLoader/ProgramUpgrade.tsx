@@ -20,84 +20,85 @@ const ProgramUpgrade = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   const connection = useWalletStore((s) => s.connection);
-  const {
-    form,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<ProgramUpgradeForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema: yup.object().shape({
-      bufferAddress: yup
-        .string()
-        .test('bufferTest', 'Invalid buffer', async function (val: string) {
-          if (val) {
-            try {
-              await validateBuffer(
-                connection,
-                val,
-                form.governedAccount?.governance?.pubkey,
-              );
-              return true;
-            } catch (e) {
-              return this.createError({
-                message: `${e}`,
-              });
-            }
-          } else {
-            return this.createError({
-              message: `Buffer address is required`,
-            });
-          }
-        }),
-      governedAccount: yup
-        .object()
-        .nullable()
-        .required('Program governed account is required'),
-
-      bufferSpillAddress: yup
-        .string()
-        .test(
-          'bufferSpillAddressTest',
-          'Invalid buffer spill address',
-          async function (val: string) {
+  const { form, formErrors, handleSetForm } =
+    useInstructionFormBuilder<ProgramUpgradeForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema: yup.object().shape({
+        bufferAddress: yup
+          .string()
+          .test('bufferTest', 'Invalid buffer', async function (val: string) {
             if (val) {
               try {
-                await validateAccount(connection, val);
+                await validateBuffer(
+                  connection,
+                  val,
+                  form.governedAccount?.governance?.pubkey,
+                );
                 return true;
-              } catch (ex) {
+              } catch (e) {
                 return this.createError({
-                  message: `${ex}`,
+                  message: `${e}`,
                 });
               }
-              return true;
             } else {
               return this.createError({
-                message: `Buffer spill address is required`,
+                message: `Buffer address is required`,
               });
             }
-          },
-        ),
-    }),
-    buildInstruction: async function ({ form, wallet, governedAccountPubkey }) {
-      if (!governedAccount?.governance?.account) {
-        throw new Error('Governance must be a Program Account Governance');
-      }
+          }),
+        governedAccount: yup
+          .object()
+          .nullable()
+          .required('Program governed account is required'),
 
-      const bufferSpillAddress = form.bufferSpillAddress
-        ? new PublicKey(form.bufferSpillAddress)
-        : wallet.publicKey!;
-
-      return createUpgradeInstruction(
-        form.governedAccount!.governance!.account.governedAccount,
-        new PublicKey(form.bufferAddress!),
+        bufferSpillAddress: yup
+          .string()
+          .test(
+            'bufferSpillAddressTest',
+            'Invalid buffer spill address',
+            async function (val: string) {
+              if (val) {
+                try {
+                  await validateAccount(connection, val);
+                  return true;
+                } catch (ex) {
+                  return this.createError({
+                    message: `${ex}`,
+                  });
+                }
+                return true;
+              } else {
+                return this.createError({
+                  message: `Buffer spill address is required`,
+                });
+              }
+            },
+          ),
+      }),
+      buildInstruction: async function ({
+        form,
+        wallet,
         governedAccountPubkey,
-        bufferSpillAddress,
-      );
-    },
-  });
+      }) {
+        if (!governedAccount?.governance?.account) {
+          throw new Error('Governance must be a Program Account Governance');
+        }
+
+        const bufferSpillAddress = form.bufferSpillAddress
+          ? new PublicKey(form.bufferSpillAddress)
+          : wallet.publicKey!;
+
+        return createUpgradeInstruction(
+          form.governedAccount!.governance!.account.governedAccount,
+          new PublicKey(form.bufferAddress!),
+          governedAccountPubkey,
+          bufferSpillAddress,
+        );
+      },
+    });
 
   return (
     <>

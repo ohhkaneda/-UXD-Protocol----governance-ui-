@@ -57,7 +57,8 @@ export async function getTransferInstruction({
   const isValid = await validateInstruction({ schema, form, setFormErrors });
   let serializedInstruction = '';
   const prerequisiteInstructions: TransactionInstruction[] = [];
-  const governedTokenAccount = form.governedTokenAccount as GovernedTokenAccount;
+  const governedTokenAccount =
+    form.governedTokenAccount as GovernedTokenAccount;
   if (
     isValid &&
     programId &&
@@ -133,7 +134,8 @@ export async function getSolTransferInstruction({
   const isValid = await validateInstruction({ schema, form, setFormErrors });
   let serializedInstruction = '';
   const prerequisiteInstructions: TransactionInstruction[] = [];
-  const governedTokenAccount = form.governedTokenAccount as GovernedTokenAccount;
+  const governedTokenAccount =
+    form.governedTokenAccount as GovernedTokenAccount;
   if (
     isValid &&
     programId &&

@@ -44,9 +44,8 @@ export type StakingCampaignInfo = Omit<
 };
 
 const useHotWalletPluginUXDStaking = (hotWalletAccount: HotWalletAccount) => {
-  const [stakingCampaignsInfo, setStakingCampaignsInfo] = useState<
-    StakingCampaignInfo[]
-  >();
+  const [stakingCampaignsInfo, setStakingCampaignsInfo] =
+    useState<StakingCampaignInfo[]>();
   const connection = useWalletStore((s) => s.connection);
 
   const loadUXDStakingCampaignInfo = useCallback(async () => {

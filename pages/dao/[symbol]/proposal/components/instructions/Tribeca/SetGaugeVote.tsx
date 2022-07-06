@@ -32,42 +32,37 @@ const SetGaugeVote = ({
 }) => {
   const connection = useWalletStore((s) => s.connection);
 
-  const [
-    tribecaConfiguration,
-    setTribecaConfiguration,
-  ] = useState<ATribecaConfiguration | null>(null);
+  const [tribecaConfiguration, setTribecaConfiguration] =
+    useState<ATribecaConfiguration | null>(null);
 
   const { gauges, programs } = useTribecaGauge(tribecaConfiguration);
 
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-  } = useInstructionFormBuilder<TribecaGaugeSetVoteForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({ form, governedAccountPubkey }) {
-      if (
-        !programs ||
-        !gauges ||
-        !gauges[form.gaugeName!] ||
-        !tribecaConfiguration
-      ) {
-        throw new Error('Error initializing Tribeca configuration');
-      }
+  const { form, handleSetForm, formErrors } =
+    useInstructionFormBuilder<TribecaGaugeSetVoteForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({ form, governedAccountPubkey }) {
+        if (
+          !programs ||
+          !gauges ||
+          !gauges[form.gaugeName!] ||
+          !tribecaConfiguration
+        ) {
+          throw new Error('Error initializing Tribeca configuration');
+        }
 
-      return gaugeSetVoteInstruction({
-        tribecaConfiguration,
-        weight: form.weight!,
-        programs,
-        gauge: gauges[form.gaugeName!].mint,
-        authority: governedAccountPubkey,
-      });
-    },
-  });
+        return gaugeSetVoteInstruction({
+          tribecaConfiguration,
+          weight: form.weight!,
+          programs,
+          gauge: gauges[form.gaugeName!].mint,
+          authority: governedAccountPubkey,
+        });
+      },
+    });
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {

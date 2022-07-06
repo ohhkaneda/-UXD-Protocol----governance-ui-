@@ -29,12 +29,8 @@ const RedeemAllTokensFromMintProxy = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   const connection = useWalletStore((s) => s.connection);
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-  } = useInstructionFormBuilder<SaberPeripheryRedeemAllTokensFromMintProxyForm>(
-    {
+  const { form, handleSetForm, formErrors } =
+    useInstructionFormBuilder<SaberPeripheryRedeemAllTokensFromMintProxyForm>({
       index,
       initialFormValues: {
         governedAccount,
@@ -57,8 +53,7 @@ const RedeemAllTokensFromMintProxy = ({
           mintName: form.mintName!,
         });
       },
-    },
-  );
+    });
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {

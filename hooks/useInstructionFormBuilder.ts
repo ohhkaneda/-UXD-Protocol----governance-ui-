@@ -18,7 +18,7 @@ export type SerializedInstruction = string;
 function useInstructionFormBuilder<
   T extends {
     governedAccount?: GovernedMultiTypeAccount;
-  }
+  },
 >({
   index,
   initialFormValues,
@@ -29,11 +29,9 @@ function useInstructionFormBuilder<
 }: {
   index: number;
   initialFormValues: T;
-  schema: yup.ObjectSchema<
-    {
-      [key in keyof T]: yup.AnySchema;
-    }
-  >;
+  schema: yup.ObjectSchema<{
+    [key in keyof T]: yup.AnySchema;
+  }>;
   buildInstruction?: ({
     form,
     connection,

@@ -1,6 +1,6 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 import { BN } from '@project-serum/anchor';
-import { Wallet } from '@project-serum/sol-wallet-adapter';
+import Wallet from '@project-serum/sol-wallet-adapter';
 import { findATAAddrSync } from '@utils/ataTools';
 import { buildVoltSDK } from '../friktion';
 

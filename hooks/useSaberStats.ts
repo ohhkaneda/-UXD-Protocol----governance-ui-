@@ -45,12 +45,8 @@ const useSaberStats = (hotWalletAccount: HotWalletAccount) => {
     if (!connection.current || !hotWalletAccount) return;
 
     try {
-      const {
-        mint,
-        rewarder,
-        mintName,
-        rewardsTokenMintName,
-      } = QuarryMineConfiguration.mintSpecificAddresses[SABER_UXD_USDC_LP];
+      const { mint, rewarder, mintName, rewardsTokenMintName } =
+        QuarryMineConfiguration.mintSpecificAddresses[SABER_UXD_USDC_LP];
 
       const [quarry] = await findQuarryAddress(rewarder, mint);
       const [miner] = await findMinerAddress(
@@ -68,9 +64,9 @@ const useSaberStats = (hotWalletAccount: HotWalletAccount) => {
         ),
       });
 
-      const sonarData = await fetch(
-        'https://api-uxd.sonar.watch/uxd',
-      ).then((res) => res.json());
+      const sonarData = await fetch('https://api-uxd.sonar.watch/uxd').then(
+        (res) => res.json(),
+      );
       const saberAccountSonarData = sonarData.find(
         ({ platform, owner }) =>
           platform === 'quarry' &&

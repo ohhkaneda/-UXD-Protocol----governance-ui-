@@ -79,10 +79,8 @@ export default function useGovernanceUnderlyingTokenAccounts(
 ) {
   const connection = useWalletStore((state) => state.connection);
 
-  const [
-    ownedTokenAccountsInfo,
-    setOwnedTokenAccountsInfo,
-  ] = useState<OwnedTokenAccountsInfo | null>(null);
+  const [ownedTokenAccountsInfo, setOwnedTokenAccountsInfo] =
+    useState<OwnedTokenAccountsInfo | null>(null);
 
   const getOwnedTokenAccountsFn = useCallback(async () => {
     if (!connection || !governancePk) return null;
@@ -124,9 +122,8 @@ export default function useGovernanceUnderlyingTokenAccounts(
     // Merge mint info with ownedTokenAccountsInfo
     return Object.entries(ownedTokenAccountsInfo).reduce(
       (accounts, [pubkeyString, account]) => {
-        const { decimals: mintDecimals, name: mintName } = mintsInfo[
-          account.mint.toString()
-        ];
+        const { decimals: mintDecimals, name: mintName } =
+          mintsInfo[account.mint.toString()];
 
         const [ata] = findATAAddrSync(governancePk, account.mint);
 

@@ -187,7 +187,8 @@ export const validateBuffer = async (
 };
 
 export const getTokenTransferSchema = ({ form, connection }) => {
-  const governedTokenAccount = form.governedTokenAccount as GovernedTokenAccount;
+  const governedTokenAccount =
+    form.governedTokenAccount as GovernedTokenAccount;
   return yup.object().shape({
     governedTokenAccount: yup.object().required('Source account is required'),
     amount: yup

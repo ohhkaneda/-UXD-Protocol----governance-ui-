@@ -49,7 +49,7 @@ export type PackageType = Package & {
 };
 
 export default function useGovernanceAssets() {
-  const { ownVoterWeight, realm, symbol, governances } = useRealm();
+  const { ownVoterWeight, realm, governances } = useRealm();
   const connection = useWalletStore((s) => s.connection.current);
   const governedTokenAccounts = useGovernanceAssetsStore(
     (s) => s.governedTokenAccounts,
@@ -115,12 +115,10 @@ export default function useGovernanceAssets() {
     GovernanceAccountType.MintGovernanceV2,
   ]);
 
-  const canUseUxdInstructions =
-    symbol === 'UXP' &&
-    canUseGovernanceForInstruction([
-      GovernanceAccountType.ProgramGovernanceV1,
-      GovernanceAccountType.ProgramGovernanceV2,
-    ]);
+  const canUseUxdInstructions = canUseGovernanceForInstruction([
+    GovernanceAccountType.ProgramGovernanceV1,
+    GovernanceAccountType.ProgramGovernanceV2,
+  ]);
 
   const canUseAnyInstruction =
     realm &&
@@ -379,11 +377,12 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.Solend,
     },
-    [InstructionEnum.SolendWithdrawObligationCollateralAndRedeemReserveLiquidity]: {
-      name: 'Withdraw Funds',
-      isVisible: canUseAnyInstruction,
-      packageId: PackageEnum.Solend,
-    },
+    [InstructionEnum.SolendWithdrawObligationCollateralAndRedeemReserveLiquidity]:
+      {
+        name: 'Withdraw Funds',
+        isVisible: canUseAnyInstruction,
+        packageId: PackageEnum.Solend,
+      },
     [InstructionEnum.SaberPoolsDeposit]: {
       name: 'Pool Deposit',
       isVisible: canUseAnyInstruction,
@@ -428,6 +427,36 @@ export default function useGovernanceAssets() {
       name: 'Withdraw Insurance From Mango Depository',
       isVisible: canUseUxdInstructions,
       packageId: PackageEnum.UXD,
+    },
+    [InstructionEnum.UXDDisableDepositoryMinting]: {
+      name: 'Disable/Enable Mango Depository Minting',
+      isVisible: canUseUxdInstructions,
+      packageId: PackageEnum.UXD,
+      tag: 'beta',
+    },
+    [InstructionEnum.UXDQuoteMintWithMangoDepository]: {
+      name: 'Quote Mint With Mango Depository',
+      isVisible: canUseUxdInstructions,
+      packageId: PackageEnum.UXD,
+      tag: 'beta',
+    },
+    [InstructionEnum.UXDQuoteRedeemWithMangoDepository]: {
+      name: 'Quote Redeem With Mango Depository',
+      isVisible: canUseUxdInstructions,
+      packageId: PackageEnum.UXD,
+      tag: 'beta',
+    },
+    [InstructionEnum.UXDSetMangoDepositoryQuoteMintAndRedeemFee]: {
+      name: 'Set Mango Depository Quote Mint And Redeem Fee',
+      isVisible: canUseUxdInstructions,
+      packageId: PackageEnum.UXD,
+      tag: 'beta',
+    },
+    [InstructionEnum.UXDSetMangoDepositoryQuoteMintAndRedeemSoftCap]: {
+      name: 'Set Mango Depository Quote Mint and Redeem Soft Cap',
+      isVisible: canUseUxdInstructions,
+      packageId: PackageEnum.UXD,
+      tag: 'beta',
     },
     [InstructionEnum.RaydiumAddLiquidity]: {
       name: 'Add To Liquidity Pool',

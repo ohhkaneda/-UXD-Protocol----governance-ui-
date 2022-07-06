@@ -2430,8 +2430,7 @@ export const UgaugeJSON: UgaugeIDL = {
     {
       code: 305,
       name: 'CannotVoteGaugeDisabled',
-      msg:
-        'Cannot vote since gauge is disabled; all you may do is set weight to 0.',
+      msg: 'Cannot vote since gauge is disabled; all you may do is set weight to 0.',
     },
     {
       code: 306,
@@ -2441,8 +2440,7 @@ export const UgaugeJSON: UgaugeIDL = {
     {
       code: 307,
       name: 'CannotCommitGaugeDisabled',
-      msg:
-        'Cannot commit votes since gauge is disabled; all you may do is set weight to 0.',
+      msg: 'Cannot commit votes since gauge is disabled; all you may do is set weight to 0.',
     },
     {
       code: 308,
@@ -2452,8 +2450,7 @@ export const UgaugeJSON: UgaugeIDL = {
     {
       code: 309,
       name: 'WeightSeqnoChanged',
-      msg:
-        'Gauge voter voting weights have been modified since you started committing your votes. Please withdraw your votes and try again.',
+      msg: 'Gauge voter voting weights have been modified since you started committing your votes. Please withdraw your votes and try again.',
     },
     {
       code: 310,
@@ -2463,8 +2460,7 @@ export const UgaugeJSON: UgaugeIDL = {
     {
       code: 311,
       name: 'AllocatedPowerMustBeZero',
-      msg:
-        'You must have zero allocated power in order to reset the epoch gauge.',
+      msg: 'You must have zero allocated power in order to reset the epoch gauge.',
     },
   ],
 };

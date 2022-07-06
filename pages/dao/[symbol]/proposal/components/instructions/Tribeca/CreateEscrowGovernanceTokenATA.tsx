@@ -27,45 +27,42 @@ const CreateEscrowGovernanceATA = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    connection,
-    form,
-    handleSetForm,
-  } = useInstructionFormBuilder<TribecaCreateEscrowGovernanceTokenATAForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      tribecaConfiguration: null,
-    },
-    schema,
-    buildInstruction: async function ({
-      form,
-      connection,
-      wallet,
-      governedAccountPubkey,
-    }) {
-      const programs = getTribecaPrograms({
+  const { connection, form, handleSetForm } =
+    useInstructionFormBuilder<TribecaCreateEscrowGovernanceTokenATAForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        tribecaConfiguration: null,
+      },
+      schema,
+      buildInstruction: async function ({
+        form,
         connection,
         wallet,
-        config: form.tribecaConfiguration!,
-      });
-      const lockerData = await getTribecaLocker({
-        config: form.tribecaConfiguration!,
-        programs,
-      });
-      // FIXME: does not pass this check without refreshing the form
-      if (!lockerData) {
-        throw new Error('Error initializing Tribeca configuration');
-      }
+        governedAccountPubkey,
+      }) {
+        const programs = getTribecaPrograms({
+          connection,
+          wallet,
+          config: form.tribecaConfiguration!,
+        });
+        const lockerData = await getTribecaLocker({
+          config: form.tribecaConfiguration!,
+          programs,
+        });
+        // FIXME: does not pass this check without refreshing the form
+        if (!lockerData) {
+          throw new Error('Error initializing Tribeca configuration');
+        }
 
-      return createEscrowATAInstruction({
-        tribecaConfiguration: form.tribecaConfiguration!,
-        lockerData,
-        payer: wallet.publicKey!,
-        authority: governedAccountPubkey,
-      });
-    },
-  });
+        return createEscrowATAInstruction({
+          tribecaConfiguration: form.tribecaConfiguration!,
+          lockerData,
+          payer: wallet.publicKey!,
+          authority: governedAccountPubkey,
+        });
+      },
+    });
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {

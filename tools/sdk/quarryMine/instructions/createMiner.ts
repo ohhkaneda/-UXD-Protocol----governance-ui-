@@ -24,9 +24,8 @@ export async function createMinerInstruction({
   payer: PublicKey;
   mintName: SupportedMintName;
 }): Promise<TransactionInstruction> {
-  const { mint, rewarder } = QuarryMineConfiguration.mintSpecificAddresses[
-    mintName
-  ];
+  const { mint, rewarder } =
+    QuarryMineConfiguration.mintSpecificAddresses[mintName];
 
   const [quarry] = await findQuarryAddress(rewarder, mint);
   const [miner, bump] = await findMinerAddress(quarry, authority);

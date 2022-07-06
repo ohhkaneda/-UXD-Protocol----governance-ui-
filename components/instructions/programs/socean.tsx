@@ -167,11 +167,8 @@ export const SOCEAN_PROGRAM_INSTRUCTIONS = {
           nu64('slippageTolerance'),
         ]);
 
-        const {
-          purchaseAmount,
-          expectedPayment,
-          slippageTolerance,
-        } = dataLayout.decode(Buffer.from(data)) as any;
+        const { purchaseAmount, expectedPayment, slippageTolerance } =
+          dataLayout.decode(Buffer.from(data)) as any;
 
         const [sourceMintInfo, bondedMintInfo] = await Promise.all([
           tryGetTokenMint(connection, paymentSource),

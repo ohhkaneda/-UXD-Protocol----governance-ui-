@@ -10,7 +10,7 @@ import {
   TransactionSignature,
   Keypair,
 } from '@solana/web3.js';
-import { SignerWalletAdapter } from '@project-serum/sol-wallet-adapter';
+import Wallet from '@project-serum/sol-wallet-adapter';
 
 // TODO: sendTransactions() was imported from Oyster as is and needs to be reviewed and updated
 // In particular common primitives should be unified with send.tsx and also ensure the same resiliency mechanism
@@ -20,7 +20,7 @@ const sleep = (ttl: number) =>
   new Promise((resolve) => setTimeout(() => resolve(true), ttl));
 
 export type WalletSigner = Pick<
-  SignerWalletAdapter,
+  Wallet,
   'publicKey' | 'signTransaction' | 'signAllTransactions'
 >;
 
@@ -138,11 +138,9 @@ export async function simulateTransaction(
   transaction: Transaction,
   commitment: Commitment,
 ): Promise<RpcResponseAndContext<SimulatedTransactionResponse>> {
-  // @ts-ignore
-  transaction.recentBlockhash = await connection._recentBlockhash(
-    // @ts-ignore
-    connection._disableBlockhashCaching,
-  );
+  transaction.recentBlockhash = (
+    await connection.getLatestBlockhash()
+  ).blockhash;
 
   const signData = transaction.serializeMessage();
   // @ts-ignore

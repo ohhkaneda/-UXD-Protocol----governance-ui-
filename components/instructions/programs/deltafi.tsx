@@ -184,12 +184,8 @@ export const DELTAFI_PROGRAM_INSTRUCTIONS = {
           nu64('minQuoteAmount'),
         ]);
 
-        const {
-          baseShare,
-          quoteShare,
-          minBaseAmount,
-          minQuoteAmount,
-        } = dataLayout.decode(Buffer.from(data)) as any;
+        const { baseShare, quoteShare, minBaseAmount, minQuoteAmount } =
+          dataLayout.decode(Buffer.from(data)) as any;
 
         const tokenBase = accounts[4].pubkey;
         const tokenQuote = accounts[5].pubkey;
@@ -264,12 +260,8 @@ export const DELTAFI_PROGRAM_INSTRUCTIONS = {
           nu64('minQuoteShare'),
         ]);
 
-        const {
-          baseAmount,
-          quoteAmount,
-          minBaseShare,
-          minQuoteShare,
-        } = dataLayout.decode(Buffer.from(data)) as any;
+        const { baseAmount, quoteAmount, minBaseShare, minQuoteShare } =
+          dataLayout.decode(Buffer.from(data)) as any;
 
         const tokenBase = accounts[4].pubkey;
         const tokenQuote = accounts[5].pubkey;

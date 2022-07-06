@@ -27,51 +27,49 @@ const Vest = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-  } = useInstructionFormBuilder<SoceanVestForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({
-      connection,
-      cluster,
-      wallet,
-      form,
-      governedAccountPubkey,
-    }) {
-      const programs = soceanConfig.getSoceanPrograms({
+  const { form, handleSetForm, formErrors } =
+    useInstructionFormBuilder<SoceanVestForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
         connection,
         cluster,
         wallet,
-      });
+        form,
+        governedAccountPubkey,
+      }) {
+        const programs = soceanConfig.getSoceanPrograms({
+          connection,
+          cluster,
+          wallet,
+        });
 
-      const mintInfo = await tryGetTokenMint(
-        connection,
-        new PublicKey(form.userBondedAccount!),
-      );
-      if (!mintInfo) throw new Error('Cannot load userBondedAccount mint info');
+        const mintInfo = await tryGetTokenMint(
+          connection,
+          new PublicKey(form.userBondedAccount!),
+        );
+        if (!mintInfo)
+          throw new Error('Cannot load userBondedAccount mint info');
 
-      return vest({
-        cluster,
-        payer: wallet.publicKey!,
-        program: programs.Bonding,
-        authority: governedAccountPubkey,
-        bondPool: new PublicKey(form.bondPool!),
-        bondedMint: new PublicKey(form.bondedMint!),
-        userBondedAccount: new PublicKey(form.userBondedAccount!),
-        amount: new BN(
-          new BigNumber(form.uiAmount!.toString())
-            .shiftedBy(mintInfo.account.decimals)
-            .toString(),
-        ),
-      });
-    },
-  });
+        return vest({
+          cluster,
+          payer: wallet.publicKey!,
+          program: programs.Bonding,
+          authority: governedAccountPubkey,
+          bondPool: new PublicKey(form.bondPool!),
+          bondedMint: new PublicKey(form.bondedMint!),
+          userBondedAccount: new PublicKey(form.userBondedAccount!),
+          amount: new BN(
+            new BigNumber(form.uiAmount!.toString())
+              .shiftedBy(mintInfo.account.decimals)
+              .toString(),
+          ),
+        });
+      },
+    });
 
   return (
     <>

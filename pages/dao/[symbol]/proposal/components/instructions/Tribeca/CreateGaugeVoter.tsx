@@ -24,40 +24,37 @@ const CreateGaugeVoter = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    connection,
-    form,
-    handleSetForm,
-  } = useInstructionFormBuilder<TribecaCreateGaugeVoterForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      tribecaConfiguration: null,
-    },
-    schema,
-    buildInstruction: async function ({
-      wallet,
-      connection,
-      form,
-      governedAccountPubkey,
-    }) {
-      const programs = getTribecaPrograms({
+  const { connection, form, handleSetForm } =
+    useInstructionFormBuilder<TribecaCreateGaugeVoterForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        tribecaConfiguration: null,
+      },
+      schema,
+      buildInstruction: async function ({
         wallet,
         connection,
-        config: form.tribecaConfiguration!,
-      });
-      if (!programs) {
-        throw new Error('Error initializing Tribeca configuration');
-      }
+        form,
+        governedAccountPubkey,
+      }) {
+        const programs = getTribecaPrograms({
+          wallet,
+          connection,
+          config: form.tribecaConfiguration!,
+        });
+        if (!programs) {
+          throw new Error('Error initializing Tribeca configuration');
+        }
 
-      return createGaugeVoterInstruction({
-        tribecaConfiguration: form.tribecaConfiguration!,
-        programs,
-        payer: wallet.publicKey!,
-        authority: governedAccountPubkey,
-      });
-    },
-  });
+        return createGaugeVoterInstruction({
+          tribecaConfiguration: form.tribecaConfiguration!,
+          programs,
+          payer: wallet.publicKey!,
+          authority: governedAccountPubkey,
+        });
+      },
+    });
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {

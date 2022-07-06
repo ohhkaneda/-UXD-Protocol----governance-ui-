@@ -2,7 +2,7 @@
 import * as yup from 'yup';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import createSetRedeemableGlobalSupplyCapInstruction from '@tools/sdk/uxdProtocol/createSetRedeemableGlobalSupplyCapInstruction';
-import { SetRedeemableGlobalSupplyCapForm } from '@utils/uiTypes/proposalCreationTypes';
+import { UXDSetRedeemableGlobalSupplyCapForm } from '@utils/uiTypes/proposalCreationTypes';
 import Input from '@components/inputs/Input';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 
@@ -24,25 +24,23 @@ const SetRedeemGlobalSupplyCap = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<SetRedeemableGlobalSupplyCapForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      supplyCap: 0,
-    },
-    schema,
-    buildInstruction: async function ({ form, governedAccountPubkey }) {
-      return createSetRedeemableGlobalSupplyCapInstruction({
-        uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
-        supplyCapUiAmount: form.supplyCap,
-        authority: governedAccountPubkey,
-      });
-    },
-  });
+  const { form, formErrors, handleSetForm } =
+    useInstructionFormBuilder<UXDSetRedeemableGlobalSupplyCapForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        supplyCap: 0,
+      },
+      schema,
+      buildInstruction: async function ({ form, governedAccountPubkey }) {
+        return createSetRedeemableGlobalSupplyCapInstruction({
+          uxdProgramId:
+            form.governedAccount!.governance!.account.governedAccount,
+          supplyCapUiAmount: form.supplyCap,
+          authority: governedAccountPubkey,
+        });
+      },
+    });
 
   return (
     <Input

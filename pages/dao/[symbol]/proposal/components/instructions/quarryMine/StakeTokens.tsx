@@ -33,42 +33,37 @@ const StakeTokens = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-    governedAccountPubkey,
-    connection,
-  } = useInstructionFormBuilder<QuarryMineStakeTokensForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({
-      form,
-      governedAccountPubkey,
-      connection,
-      wallet,
-    }) {
-      const sourceAccount = new PublicKey(form.sourceAccount!);
-      const mintInfo = await tryGetTokenMint(connection, sourceAccount);
-      if (!mintInfo)
-        throw new Error(
-          `could not find mint info for token ${form.sourceAccount}`,
-        );
-      return stakeTokensInstruction({
-        augmentedProvider: augmentedProvider(connection, wallet),
-        authority: governedAccountPubkey,
-        sourceAccount,
-        amount: uiAmountToNativeBN(
-          form.uiAmount!.toString(),
-          mintInfo.account.decimals,
-        ),
-        mintName: form.mintName!,
-      });
-    },
-  });
+  const { form, handleSetForm, formErrors, governedAccountPubkey, connection } =
+    useInstructionFormBuilder<QuarryMineStakeTokensForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
+        form,
+        governedAccountPubkey,
+        connection,
+        wallet,
+      }) {
+        const sourceAccount = new PublicKey(form.sourceAccount!);
+        const mintInfo = await tryGetTokenMint(connection, sourceAccount);
+        if (!mintInfo)
+          throw new Error(
+            `could not find mint info for token ${form.sourceAccount}`,
+          );
+        return stakeTokensInstruction({
+          augmentedProvider: augmentedProvider(connection, wallet),
+          authority: governedAccountPubkey,
+          sourceAccount,
+          amount: uiAmountToNativeBN(
+            form.uiAmount!.toString(),
+            mintInfo.account.decimals,
+          ),
+          mintName: form.mintName!,
+        });
+      },
+    });
 
   const { ownedTokenAccountsInfo } = useGovernanceUnderlyingTokenAccounts(
     governedAccountPubkey ?? undefined,

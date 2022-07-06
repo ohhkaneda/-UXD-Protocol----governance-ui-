@@ -29,10 +29,8 @@ export async function lockInstruction({
 }): Promise<TransactionInstruction> {
   const [escrow] = await tribecaConfiguration.findEscrowAddress(authority);
 
-  const {
-    tokens: escrowTokens,
-    owner: escrowOwner,
-  } = await programs.LockedVoter.account.escrow.fetch(escrow);
+  const { tokens: escrowTokens, owner: escrowOwner } =
+    await programs.LockedVoter.account.escrow.fetch(escrow);
 
   const sourceTokens = await getATAAddress({
     mint: tribecaConfiguration.token.mint,

@@ -5,10 +5,8 @@ import useVoteStakeRegistryClientStore from 'VoteStakeRegistry/stores/voteStakeR
 
 export function useVoteRegistry() {
   const { realm } = useRealm();
-  const {
-    handleSetRegistrar,
-    handleSetClient,
-  } = useVoteStakeRegistryClientStore();
+  const { handleSetRegistrar, handleSetClient } =
+    useVoteStakeRegistryClientStore();
   const wallet = useWalletStore((s) => s.current);
   const connection = useWalletStore((s) => s.connection);
   const client = useVoteStakeRegistryClientStore((s) => s.state.client);

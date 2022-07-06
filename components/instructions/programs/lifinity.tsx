@@ -57,11 +57,8 @@ export const LIFINITY_PROGRAM_INSTRUCTIONS = {
           throw new Error('could not load token infos');
         }
 
-        const {
-          maximumTokenAAmount,
-          maximumTokenBAmount,
-          poolTokenAmount,
-        } = dataLayout.decode(Buffer.from(data)) as any;
+        const { maximumTokenAAmount, maximumTokenBAmount, poolTokenAmount } =
+          dataLayout.decode(Buffer.from(data)) as any;
 
         const uiAmountTokenA = nativeAmountToFormattedUiAmount(
           maximumTokenAAmount,
@@ -132,11 +129,8 @@ export const LIFINITY_PROGRAM_INSTRUCTIONS = {
           throw new Error('could not load token infos');
         }
 
-        const {
-          minimumTokenAAmount,
-          minimumTokenBAmount,
-          poolTokenAmount,
-        } = dataLayout.decode(Buffer.from(data)) as any;
+        const { minimumTokenAAmount, minimumTokenBAmount, poolTokenAmount } =
+          dataLayout.decode(Buffer.from(data)) as any;
 
         const uiAmountTokenA = nativeAmountToFormattedUiAmount(
           minimumTokenAAmount,

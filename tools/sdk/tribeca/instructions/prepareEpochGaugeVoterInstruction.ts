@@ -18,22 +18,18 @@ export async function prepareEpochGaugeVoterInstruction({
   payer: PublicKey;
   tribecaConfiguration: ATribecaConfiguration;
 }): Promise<TransactionInstruction> {
-  const {
-    currentRewardsEpoch,
-    locker,
-  } = await tribecaConfiguration.fetchGaugemeister(programs.Gauge);
+  const { currentRewardsEpoch, locker } =
+    await tribecaConfiguration.fetchGaugemeister(programs.Gauge);
 
   const [escrow] = await tribecaConfiguration.findEscrowAddress(authority);
 
   const [gaugeVoter] = await tribecaConfiguration.findGaugeVoterAddress(escrow);
 
-  const [
-    epochGaugeVoter,
-    bump,
-  ] = await tribecaConfiguration.findEpochGaugeVoterAddress(
-    gaugeVoter,
-    currentRewardsEpoch + 1,
-  );
+  const [epochGaugeVoter, bump] =
+    await tribecaConfiguration.findEpochGaugeVoterAddress(
+      gaugeVoter,
+      currentRewardsEpoch + 1,
+    );
 
   console.log('Prepare Epoch Gauge', {
     currentRewardsEpoch,

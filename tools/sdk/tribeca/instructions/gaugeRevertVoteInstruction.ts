@@ -36,12 +36,11 @@ export async function gaugeRevertVoteInstruction({
     votingEpoch,
   );
 
-  const [
-    epochGaugeVoter,
-  ] = await tribecaConfiguration.findEpochGaugeVoterAddress(
-    gaugeVoter,
-    votingEpoch,
-  );
+  const [epochGaugeVoter] =
+    await tribecaConfiguration.findEpochGaugeVoterAddress(
+      gaugeVoter,
+      votingEpoch,
+    );
 
   const [epochGaugeVote] = await tribecaConfiguration.findEpochGaugeVoteAddress(
     gaugeVote,

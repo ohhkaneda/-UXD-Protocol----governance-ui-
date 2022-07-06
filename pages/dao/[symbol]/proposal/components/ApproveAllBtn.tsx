@@ -53,9 +53,8 @@ const ApproveAllBtn = () => {
     const governanceAuthority = wallet.publicKey!;
     const payer = wallet.publicKey!;
 
-    const {
-      blockhash: recentBlockhash,
-    } = await connection.getRecentBlockhash();
+    const { blockhash: recentBlockhash } =
+      await connection.getRecentBlockhash();
 
     const transactions = await Promise.all(
       votingProposals.map(async (proposal) => {

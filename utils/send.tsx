@@ -72,7 +72,7 @@ export async function signTransaction({
   transaction.recentBlockhash = (
     await connection.getRecentBlockhash('max')
   ).blockhash;
-  transaction.setSigners(wallet.publicKey, ...signers.map((s) => s.publicKey));
+  transaction.setSigners(wallet.publicKey!, ...signers.map((s) => s.publicKey));
   if (signers.length > 0) {
     transaction.partialSign(...signers);
   }
@@ -95,7 +95,7 @@ export async function signTransactions({
   transactionsAndSigners.forEach(({ transaction, signers = [] }) => {
     transaction.recentBlockhash = blockhash;
     transaction.setSigners(
-      wallet.publicKey,
+      wallet.publicKey!,
       ...signers.map((s) => s.publicKey),
     );
     if (signers?.length > 0) {
@@ -303,11 +303,9 @@ export async function simulateTransaction(
   transaction: Transaction,
   commitment: Commitment,
 ): Promise<RpcResponseAndContext<SimulatedTransactionResponse>> {
-  // @ts-ignore
-  transaction.recentBlockhash = await connection._recentBlockhash(
-    // @ts-ignore
-    connection._disableBlockhashCaching,
-  );
+  transaction.recentBlockhash = (
+    await connection.getLatestBlockhash()
+  ).blockhash;
 
   console.log('simulating transaction', transaction);
 

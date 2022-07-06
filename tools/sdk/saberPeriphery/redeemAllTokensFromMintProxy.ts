@@ -15,10 +15,8 @@ export async function redeemAllTokensFromMintProxyInstruction({
   authority: PublicKey;
   mintName: SupportedMintName;
 }): Promise<TransactionInstruction> {
-  const {
-    rewardsTokenMint,
-    redemptionTokenMint,
-  } = SaberPeripheryConfiguration.mintSpecificAddresses[mintName];
+  const { rewardsTokenMint, redemptionTokenMint } =
+    SaberPeripheryConfiguration.mintSpecificAddresses[mintName];
 
   const [rewardsTokenAccount] = findATAAddrSync(authority, rewardsTokenMint);
   const [redemptionDestination] = findATAAddrSync(

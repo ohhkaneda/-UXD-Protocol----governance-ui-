@@ -24,38 +24,35 @@ const CloseAuction = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-  } = useInstructionFormBuilder<SoceanCloseAuctionForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({
-      connection,
-      wallet,
-      cluster,
-      form,
-      governedAccountPubkey,
-    }) {
-      const programs = soceanConfig.getSoceanPrograms({
+  const { form, handleSetForm, formErrors } =
+    useInstructionFormBuilder<SoceanCloseAuctionForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
         connection,
         wallet,
         cluster,
-      });
-      return closeAuction({
-        cluster: cluster,
-        program: programs.DescendingAuction,
-        auction: new PublicKey(form.auction!),
-        authority: governedAccountPubkey,
-        bondedMint: new PublicKey(form.bondedMint!),
-        destinationAccount: new PublicKey(form.destinationAccount!),
-      });
-    },
-  });
+        form,
+        governedAccountPubkey,
+      }) {
+        const programs = soceanConfig.getSoceanPrograms({
+          connection,
+          wallet,
+          cluster,
+        });
+        return closeAuction({
+          cluster: cluster,
+          program: programs.DescendingAuction,
+          auction: new PublicKey(form.auction!),
+          authority: governedAccountPubkey,
+          bondedMint: new PublicKey(form.bondedMint!),
+          destinationAccount: new PublicKey(form.destinationAccount!),
+        });
+      },
+    });
 
   return (
     <>

@@ -25,40 +25,37 @@ const CancelVest = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-  } = useInstructionFormBuilder<SoceanCancelVestForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({
-      connection,
-      wallet,
-      cluster,
-      governedAccountPubkey,
-      form,
-    }) {
-      const programs = soceanConfiguration.getSoceanPrograms({
+  const { form, handleSetForm, formErrors } =
+    useInstructionFormBuilder<SoceanCancelVestForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
         connection,
         wallet,
         cluster,
-      });
-      return cancelVest({
-        cluster: cluster,
-        program: programs.Bonding,
-        refundRentTo: wallet.publicKey!,
-        authority: governedAccountPubkey,
-        bondPool: new PublicKey(form.bondPool!),
-        bondedMint: new PublicKey(form.bondedMint!),
-        userBondedAccount: new PublicKey(form.userBondedAccount!),
-        userTargetAccount: new PublicKey(form.userTargetAccount!),
-      });
-    },
-  });
+        governedAccountPubkey,
+        form,
+      }) {
+        const programs = soceanConfiguration.getSoceanPrograms({
+          connection,
+          wallet,
+          cluster,
+        });
+        return cancelVest({
+          cluster: cluster,
+          program: programs.Bonding,
+          refundRentTo: wallet.publicKey!,
+          authority: governedAccountPubkey,
+          bondPool: new PublicKey(form.bondPool!),
+          bondedMint: new PublicKey(form.bondedMint!),
+          userBondedAccount: new PublicKey(form.userBondedAccount!),
+          userTargetAccount: new PublicKey(form.userTargetAccount!),
+        });
+      },
+    });
 
   return (
     <>

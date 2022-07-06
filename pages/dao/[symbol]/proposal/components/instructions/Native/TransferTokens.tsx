@@ -34,10 +34,8 @@ const TransferTokens = ({
   ] = useState<boolean>(true);
 
   // Use the following variable only if the destination account is an governance owned account
-  const {
-    governedMultiTypeAccounts,
-    getGovernedAccountPublicKey,
-  } = useGovernedMultiTypeAccounts();
+  const { governedMultiTypeAccounts, getGovernedAccountPublicKey } =
+    useGovernedMultiTypeAccounts();
 
   const [destinationGovernedAccount, setDestinationGovernedAccount] = useState<
     GovernedMultiTypeAccount | undefined
@@ -140,47 +138,42 @@ const TransferTokens = ({
       .required('Amount is required'),
   });
 
-  const {
-    connection,
-    form,
-    handleSetForm,
-    formErrors,
-    governedAccountPubkey,
-  } = useInstructionFormBuilder<NativeTransferTokensForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({ governedAccountPubkey, form }) {
-      const source = new PublicKey(form.source!);
-      const destination = new PublicKey(form.destination!);
+  const { connection, form, handleSetForm, formErrors, governedAccountPubkey } =
+    useInstructionFormBuilder<NativeTransferTokensForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({ governedAccountPubkey, form }) {
+        const source = new PublicKey(form.source!);
+        const destination = new PublicKey(form.destination!);
 
-      const mint = await tryGetTokenMint(connection.current, source);
+        const mint = await tryGetTokenMint(connection.current, source);
 
-      if (!mint) {
-        throw new Error(
-          `Cannot load mint information about source account ${source.toBase58()}`,
+        if (!mint) {
+          throw new Error(
+            `Cannot load mint information about source account ${source.toBase58()}`,
+          );
+        }
+
+        // Tricks, in spl-token code, amount is used as > amount: new u64(amount).toBuffer()
+        // We provide a string
+        const amount = uiAmountToNativeBN(
+          form.uiAmount!,
+          mint.account.decimals,
+        ).toString();
+
+        return Token.createTransferInstruction(
+          TOKEN_PROGRAM_ID,
+          source,
+          destination,
+          governedAccountPubkey,
+          [],
+          amount,
         );
-      }
-
-      // Tricks, in spl-token code, amount is used as > amount: new u64(amount).toBuffer()
-      // We provide a string
-      const amount = uiAmountToNativeBN(
-        form.uiAmount!,
-        mint.account.decimals,
-      ).toString();
-
-      return Token.createTransferInstruction(
-        TOKEN_PROGRAM_ID,
-        source,
-        destination,
-        governedAccountPubkey,
-        [],
-        amount,
-      );
-    },
-  });
+      },
+    });
 
   // Governance underlying accounts that can be selected as source
   const { ownedTokenAccountsInfo } = useGovernanceUnderlyingTokenAccounts(

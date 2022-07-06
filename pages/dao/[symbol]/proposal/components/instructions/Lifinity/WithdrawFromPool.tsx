@@ -42,48 +42,40 @@ const WithdrawFromPool = ({
     uiAmountTokenA: 0,
     uiAmountTokenB: 0,
   });
-  const {
-    form,
-    formErrors,
-    handleSetForm,
-    connection,
-    governedAccountPubkey,
-  } = useInstructionFormBuilder<LifinityWithdrawFromPoolForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      uiAmountTokenLP: 0,
-      slippage: 0.5,
-    },
-    schema,
-    buildInstruction: async function ({
-      connection,
-      form,
-      wallet,
-      governedAccountPubkey,
-    }) {
-      const {
-        minimumAmountTokenA,
-        minimumAmountTokenB,
-        lpTokenAmount,
-      } = await calculateMinimumWithdrawAmounts({
-        connection: connection,
-        poolName: form.poolName!,
-        uiLpTokenAmount: form.uiAmountTokenLP!,
-        slippage: form.slippage,
-      });
-
-      return withdrawFromPool({
+  const { form, formErrors, handleSetForm, connection, governedAccountPubkey } =
+    useInstructionFormBuilder<LifinityWithdrawFromPoolForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        uiAmountTokenLP: 0,
+        slippage: 0.5,
+      },
+      schema,
+      buildInstruction: async function ({
         connection,
+        form,
         wallet,
-        poolName: form.poolName!,
-        userTransferAuthority: governedAccountPubkey,
-        lpTokenAmount,
-        minimumAmountTokenA,
-        minimumAmountTokenB,
-      });
-    },
-  });
+        governedAccountPubkey,
+      }) {
+        const { minimumAmountTokenA, minimumAmountTokenB, lpTokenAmount } =
+          await calculateMinimumWithdrawAmounts({
+            connection: connection,
+            poolName: form.poolName!,
+            uiLpTokenAmount: form.uiAmountTokenLP!,
+            slippage: form.slippage,
+          });
+
+        return withdrawFromPool({
+          connection,
+          wallet,
+          poolName: form.poolName!,
+          userTransferAuthority: governedAccountPubkey,
+          lpTokenAmount,
+          minimumAmountTokenA,
+          minimumAmountTokenB,
+        });
+      },
+    });
 
   useEffect(() => {
     async function fetchLpMintInfo() {
@@ -111,15 +103,13 @@ const WithdrawFromPool = ({
   useEffect(() => {
     debounce.debounceFcn(async () => {
       if (!form.uiAmountTokenLP || !form.poolName) return;
-      const {
-        minimumWithdrawnUiAmountTokenA,
-        minimumWithdrawnUiAmountTokenB,
-      } = await calculateMinimumWithdrawAmounts({
-        connection: connection.current,
-        poolName: form.poolName,
-        uiLpTokenAmount: form.uiAmountTokenLP!,
-        slippage: form.slippage,
-      });
+      const { minimumWithdrawnUiAmountTokenA, minimumWithdrawnUiAmountTokenB } =
+        await calculateMinimumWithdrawAmounts({
+          connection: connection.current,
+          poolName: form.poolName,
+          uiLpTokenAmount: form.uiAmountTokenLP!,
+          slippage: form.slippage,
+        });
 
       setTokenAmounts({
         uiAmountTokenA: minimumWithdrawnUiAmountTokenA,

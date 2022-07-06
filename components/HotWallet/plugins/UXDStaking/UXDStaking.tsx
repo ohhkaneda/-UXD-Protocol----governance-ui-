@@ -8,9 +8,8 @@ const HotWalletPluginUXDStaking = ({
 }: {
   hotWalletAccount: HotWalletAccount;
 }) => {
-  const { stakingCampaignsInfo } = useHotWalletPluginUXDStaking(
-    hotWalletAccount,
-  );
+  const { stakingCampaignsInfo } =
+    useHotWalletPluginUXDStaking(hotWalletAccount);
 
   if (!stakingCampaignsInfo) {
     return <></>;

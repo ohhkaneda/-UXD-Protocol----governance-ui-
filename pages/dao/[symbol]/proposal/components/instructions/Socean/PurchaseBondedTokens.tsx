@@ -42,53 +42,50 @@ const PurchaseBondedTokens = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-  } = useInstructionFormBuilder<SoceanPurchaseBondedTokensForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({ form, connection, cluster, wallet }) {
-      const programs = soceanConfig.getSoceanPrograms({
-        connection,
-        cluster,
-        wallet,
-      });
+  const { form, handleSetForm, formErrors } =
+    useInstructionFormBuilder<SoceanPurchaseBondedTokensForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({ form, connection, cluster, wallet }) {
+        const programs = soceanConfig.getSoceanPrograms({
+          connection,
+          cluster,
+          wallet,
+        });
 
-      const [paymentMintInfo, saleMintInfo] = await Promise.all([
-        tryGetTokenMint(connection, new PublicKey(form.paymentSource!)),
-        tryGetTokenMint(connection, new PublicKey(form.saleDestination!)),
-      ]);
-      if (!paymentMintInfo)
-        throw new Error('Cannot load paymentSource mint info');
-      if (!saleMintInfo)
-        throw new Error('Cannot load saleDestination mint info');
+        const [paymentMintInfo, saleMintInfo] = await Promise.all([
+          tryGetTokenMint(connection, new PublicKey(form.paymentSource!)),
+          tryGetTokenMint(connection, new PublicKey(form.saleDestination!)),
+        ]);
+        if (!paymentMintInfo)
+          throw new Error('Cannot load paymentSource mint info');
+        if (!saleMintInfo)
+          throw new Error('Cannot load saleDestination mint info');
 
-      return purchase({
-        cluster,
-        program: programs.DescendingAuction,
-        auction: new PublicKey(form.auction!),
-        bondedMint: new PublicKey(form.bondedMint!),
-        paymentDestination: new PublicKey(form.paymentDestination!),
-        buyer: new PublicKey(form.buyer!),
-        paymentSource: new PublicKey(form.paymentSource!),
-        saleDestination: new PublicKey(form.saleDestination!),
-        purchaseAmount: uiAmountToNativeBN(
-          form.uiPurchaseAmount!.toString(),
-          saleMintInfo.account.decimals,
-        ),
-        expectedPayment: uiAmountToNativeBN(
-          form.uiExpectedPayment!.toString(),
-          paymentMintInfo.account.decimals,
-        ),
-        slippageTolerance: new BN(form.slippageTolerance!),
-      });
-    },
-  });
+        return purchase({
+          cluster,
+          program: programs.DescendingAuction,
+          auction: new PublicKey(form.auction!),
+          bondedMint: new PublicKey(form.bondedMint!),
+          paymentDestination: new PublicKey(form.paymentDestination!),
+          buyer: new PublicKey(form.buyer!),
+          paymentSource: new PublicKey(form.paymentSource!),
+          saleDestination: new PublicKey(form.saleDestination!),
+          purchaseAmount: uiAmountToNativeBN(
+            form.uiPurchaseAmount!.toString(),
+            saleMintInfo.account.decimals,
+          ),
+          expectedPayment: uiAmountToNativeBN(
+            form.uiExpectedPayment!.toString(),
+            paymentMintInfo.account.decimals,
+          ),
+          slippageTolerance: new BN(form.slippageTolerance!),
+        });
+      },
+    });
 
   return (
     <>

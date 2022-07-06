@@ -7,7 +7,7 @@ import {
   getInsuranceMintSymbols,
 } from '@tools/sdk/uxdProtocol/uxdClient';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
-import { RegisterMangoDepositoryForm } from '@utils/uiTypes/proposalCreationTypes';
+import { UXDRegisterMangoDepositoryForm } from '@utils/uiTypes/proposalCreationTypes';
 import SelectOptionList from '../../SelectOptionList';
 
 const schema = yup.object().shape({
@@ -26,28 +26,29 @@ const RegisterMangoDepository = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    connection,
-    form,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<RegisterMangoDepositoryForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({ form, wallet, governedAccountPubkey }) {
-      return createRegisterMangoDepositoryInstruction({
-        connection,
-        uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
-        authority: governedAccountPubkey,
-        payer: wallet.publicKey!,
-        depositoryMintName: form.collateralName!,
-        insuranceMintName: form.insuranceName!,
-      });
-    },
-  });
+  const { connection, form, formErrors, handleSetForm } =
+    useInstructionFormBuilder<UXDRegisterMangoDepositoryForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
+        form,
+        wallet,
+        governedAccountPubkey,
+      }) {
+        return createRegisterMangoDepositoryInstruction({
+          connection,
+          uxdProgramId:
+            form.governedAccount!.governance!.account.governedAccount,
+          authority: governedAccountPubkey,
+          payer: wallet.publicKey!,
+          depositoryMintName: form.collateralName!,
+          insuranceMintName: form.insuranceName!,
+        });
+      },
+    });
 
   return (
     <>

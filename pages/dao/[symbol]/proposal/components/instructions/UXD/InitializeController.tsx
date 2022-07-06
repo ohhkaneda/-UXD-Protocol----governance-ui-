@@ -3,7 +3,7 @@ import Input from '@components/inputs/Input';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import createInitializeControllerInstruction from '@tools/sdk/uxdProtocol/createInitializeControllerInstruction';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
-import { InitializeControllerForm } from '@utils/uiTypes/proposalCreationTypes';
+import { UXDInitializeControllerForm } from '@utils/uiTypes/proposalCreationTypes';
 
 const schema = yup.object().shape({
   mintDecimals: yup
@@ -24,25 +24,27 @@ const InitializeController = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<InitializeControllerForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      mintDecimals: 0,
-    },
-    schema,
-    buildInstruction: async function ({ form, wallet, governedAccountPubkey }) {
-      return createInitializeControllerInstruction({
-        uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
-        authority: governedAccountPubkey,
-        payer: wallet.publicKey!,
-      });
-    },
-  });
+  const { form, formErrors, handleSetForm } =
+    useInstructionFormBuilder<UXDInitializeControllerForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        mintDecimals: 0,
+      },
+      schema,
+      buildInstruction: async function ({
+        form,
+        wallet,
+        governedAccountPubkey,
+      }) {
+        return createInitializeControllerInstruction({
+          uxdProgramId:
+            form.governedAccount!.governance!.account.governedAccount,
+          authority: governedAccountPubkey,
+          payer: wallet.publicKey!,
+        });
+      },
+    });
 
   return (
     <>

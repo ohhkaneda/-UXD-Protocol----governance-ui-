@@ -29,12 +29,8 @@ const MyProposalsBn = () => {
   );
   const { realm, programId } = useWalletStore((s) => s.selectedRealm);
   const { fetchRealm } = useWalletStore((s) => s.actions);
-  const {
-    proposals,
-    ownTokenRecord,
-    ownCouncilTokenRecord,
-    realmInfo,
-  } = useRealm();
+  const { proposals, ownTokenRecord, ownCouncilTokenRecord, realmInfo } =
+    useRealm();
   const myProposals = useMemo(
     () =>
       connected
@@ -93,9 +89,8 @@ const MyProposalsBn = () => {
     if (!wallet || !programId || !realm) return;
     setIsLoading(true);
     try {
-      const {
-        blockhash: recentBlockhash,
-      } = await connection.getRecentBlockhash();
+      const { blockhash: recentBlockhash } =
+        await connection.getRecentBlockhash();
 
       const transactions = await Promise.all(
         proposalsArray.map(async (proposal) => {

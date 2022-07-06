@@ -26,101 +26,100 @@ const AddStakingOption = ({
 }) => {
   const wallet = useWalletStore((s) => s.current);
 
-  const {
-    form,
-    connection,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<UXDStakingAddStakingOptionForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      stakingOptions: [
-        // One element at start
-        {},
-      ],
-    },
-    schema: yup.object().shape({
-      governedAccount: yup
-        .object()
-        .nullable()
-        .required('Governed account is required'),
-      stakingCampaignPda: yup
-        .string()
-        .required('Staking Campaign Pda is required'),
-      stakingOptions: yup.array(
-        yup.object().shape({
-          lockupSecs: yup
-            .number()
-            .moreThan(0, 'Lockup Secs should be more than 0')
-            .required('Lockup Secs is required'),
-          apr: yup
-            .number()
-            .moreThan(0, 'Apr should be more than 0')
-            .lessThan(
-              uxdProtocolStakingConfiguration.APR_BASIS + 1,
-              `Apr should be less or equal than ${uxdProtocolStakingConfiguration.APR_BASIS}`,
-            )
-            .required('Apr is required'),
-        }),
-      ),
-    }),
+  const { form, connection, formErrors, handleSetForm } =
+    useInstructionFormBuilder<UXDStakingAddStakingOptionForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        stakingOptions: [
+          // One element at start
+          {},
+        ],
+      },
+      schema: yup.object().shape({
+        governedAccount: yup
+          .object()
+          .nullable()
+          .required('Governed account is required'),
+        stakingCampaignPda: yup
+          .string()
+          .required('Staking Campaign Pda is required'),
+        stakingOptions: yup.array(
+          yup.object().shape({
+            lockupSecs: yup
+              .number()
+              .moreThan(0, 'Lockup Secs should be more than 0')
+              .required('Lockup Secs is required'),
+            apr: yup
+              .number()
+              .moreThan(0, 'Apr should be more than 0')
+              .lessThan(
+                uxdProtocolStakingConfiguration.APR_BASIS + 1,
+                `Apr should be less or equal than ${uxdProtocolStakingConfiguration.APR_BASIS}`,
+              )
+              .required('Apr is required'),
+          }),
+        ),
+      }),
 
-    buildInstruction: async function () {
-      const programId =
-        uxdProtocolStakingConfiguration.programId[connection.cluster];
+      buildInstruction: async function () {
+        const programId =
+          uxdProtocolStakingConfiguration.programId[connection.cluster];
 
-      if (!programId) {
-        throw new Error(
-          `Unsupported cluster ${connection.cluster} for UXD Protocol Staking`,
+        if (!programId) {
+          throw new Error(
+            `Unsupported cluster ${connection.cluster} for UXD Protocol Staking`,
+          );
+        }
+
+        const stakingCampaignPda = new PublicKey(form.stakingCampaignPda!);
+
+        const stakingCampaignState: StakingCampaignState =
+          await getOnchainStakingCampaign(
+            stakingCampaignPda,
+            connection.current,
+            uxdProtocolStakingConfiguration.TXN_OPTS,
+          );
+
+        const client: SingleSideStakingClient = new SingleSideStakingClient(
+          programId,
         );
-      }
 
-      const stakingCampaignPda = new PublicKey(form.stakingCampaignPda!);
+        const authority = governedAccount!.governance!.pubkey;
 
-      const stakingCampaignState: StakingCampaignState = await getOnchainStakingCampaign(
-        stakingCampaignPda,
-        connection.current,
-        uxdProtocolStakingConfiguration.TXN_OPTS,
-      );
+        console.log('Add Staking Option', {
+          stakingCampaignPda: stakingCampaignPda.toString(),
+          authority: authority.toString(),
+          rewardMint: stakingCampaignState.rewardMint.toString(),
+          rewardMintDecimals: stakingCampaignState.rewardMintDecimals,
+          rewardVault: stakingCampaignState.rewardVault.toString(),
+          stakedMint: stakingCampaignState.stakedMint.toString(),
+          stakedMintDecimals: stakingCampaignState.stakedMintDecimals,
+          stakedVault: stakingCampaignState.stakedVault.toString(),
+          startTs: stakingCampaignState.startTs.toString(),
+          endTs: stakingCampaignState.endTs?.toString(),
+          stakingOptions: form.stakingOptions,
+        });
 
-      const client: SingleSideStakingClient = new SingleSideStakingClient(
-        programId,
-      );
+        const stakingCampaign = StakingCampaign.fromState(
+          new PublicKey(form.stakingCampaignPda!),
+          stakingCampaignState,
+        );
 
-      const authority = governedAccount!.governance!.pubkey;
-
-      console.log('Add Staking Option', {
-        stakingCampaignPda: stakingCampaignPda.toString(),
-        authority: authority.toString(),
-        rewardMint: stakingCampaignState.rewardMint.toString(),
-        rewardMintDecimals: stakingCampaignState.rewardMintDecimals,
-        rewardVault: stakingCampaignState.rewardVault.toString(),
-        stakedMint: stakingCampaignState.stakedMint.toString(),
-        stakedMintDecimals: stakingCampaignState.stakedMintDecimals,
-        stakedVault: stakingCampaignState.stakedVault.toString(),
-        startTs: stakingCampaignState.startTs.toString(),
-        endTs: stakingCampaignState.endTs?.toString(),
-        stakingOptions: form.stakingOptions,
-      });
-
-      const stakingCampaign = StakingCampaign.fromState(
-        new PublicKey(form.stakingCampaignPda!),
-        stakingCampaignState,
-      );
-
-      return client.createAddStakingOptionInstruction({
-        authority,
-        stakingCampaign,
-        stakingOptionParams: form.stakingOptions.map(({ lockupSecs, apr }) => ({
-          lockupSecs: new BN(lockupSecs!),
-          apr: new BN(apr!),
-        })),
-        options: uxdProtocolStakingConfiguration.TXN_OPTS,
-        payer: wallet!.publicKey!,
-      });
-    },
-  });
+        return client.createAddStakingOptionInstruction({
+          authority,
+          stakingCampaign,
+          stakingOptionParams: form.stakingOptions.map(
+            ({ lockupSecs, apr }) => ({
+              lockupSecs: new BN(lockupSecs!),
+              apr: new BN(apr!),
+            }),
+          ),
+          options: uxdProtocolStakingConfiguration.TXN_OPTS,
+          payer: wallet!.publicKey!,
+        });
+      },
+    });
 
   const handleSetStakingOption = ({
     index,

@@ -714,8 +714,7 @@ export const LifinityAmmIDL: Idl = {
     {
       code: 6024,
       name: 'IncorrectTokenProgramId',
-      msg:
-        'The provided token program does not match the token program expected by the swap',
+      msg: 'The provided token program does not match the token program expected by the swap',
     },
     {
       code: 6025,

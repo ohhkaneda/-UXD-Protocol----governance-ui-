@@ -1620,8 +1620,7 @@ export const UgovernJSON: UgovernIDL = {
     {
       code: 302,
       name: 'VotingDelayNotMet',
-      msg:
-        'The proposal cannot be activated since it has not yet passed the voting delay.',
+      msg: 'The proposal cannot be activated since it has not yet passed the voting delay.',
     },
     {
       code: 303,

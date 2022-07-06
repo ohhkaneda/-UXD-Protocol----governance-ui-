@@ -28,31 +28,33 @@ const NewEscrow = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   const connection = useWalletStore((s) => s.connection);
-  const {
-    form,
-    handleSetForm,
-  } = useInstructionFormBuilder<TribecaNewEscrowForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      tribecaConfiguration: null,
-    },
-    schema,
-    buildInstruction: async function ({ wallet, form, governedAccountPubkey }) {
-      const programs = getTribecaPrograms({
-        connection: connection.current,
+  const { form, handleSetForm } =
+    useInstructionFormBuilder<TribecaNewEscrowForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        tribecaConfiguration: null,
+      },
+      schema,
+      buildInstruction: async function ({
         wallet,
-        config: form.tribecaConfiguration!,
-      });
+        form,
+        governedAccountPubkey,
+      }) {
+        const programs = getTribecaPrograms({
+          connection: connection.current,
+          wallet,
+          config: form.tribecaConfiguration!,
+        });
 
-      return newEscrowInstruction({
-        tribecaConfiguration: form.tribecaConfiguration!,
-        programs,
-        payer: wallet.publicKey!,
-        authority: governedAccountPubkey,
-      });
-    },
-  });
+        return newEscrowInstruction({
+          tribecaConfiguration: form.tribecaConfiguration!,
+          programs,
+          payer: wallet.publicKey!,
+          authority: governedAccountPubkey,
+        });
+      },
+    });
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {

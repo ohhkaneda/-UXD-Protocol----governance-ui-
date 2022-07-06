@@ -27,10 +27,8 @@ const useHotWalletPluginTokenAccounts = (
   hotWalletAccount: HotWalletAccount,
 ) => {
   const connection = useWalletStore((store) => store.connection);
-  const [
-    tokenAccounts,
-    setTokenAccounts,
-  ] = useState<HotWalletTokenAccounts | null>(null);
+  const [tokenAccounts, setTokenAccounts] =
+    useState<HotWalletTokenAccounts | null>(null);
 
   const loadTokenAccounts = useCallback(async () => {
     if (!connection.current) return;

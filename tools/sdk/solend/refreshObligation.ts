@@ -12,12 +12,8 @@ export async function refreshObligation({
   obligationOwner: PublicKey;
   lendingMarketName: SupportedLendingMarketName;
 }): Promise<TransactionInstruction> {
-  const {
-    seed,
-    supportedTokens,
-  } = SolendConfiguration.getSupportedLendingMarketInformation(
-    lendingMarketName,
-  );
+  const { seed, supportedTokens } =
+    SolendConfiguration.getSupportedLendingMarketInformation(lendingMarketName);
 
   const obligationAddress = await deriveObligationAddressFromWalletAndSeed(
     obligationOwner,

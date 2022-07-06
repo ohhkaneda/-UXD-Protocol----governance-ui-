@@ -22,12 +22,11 @@ export async function resetEpochGaugeVoterInstruction({
 
   const votingEpoch = currentRewardsEpoch + 1;
 
-  const [
-    epochGaugeVoter,
-  ] = await tribecaConfiguration.findEpochGaugeVoterAddress(
-    gaugeVoter,
-    votingEpoch,
-  );
+  const [epochGaugeVoter] =
+    await tribecaConfiguration.findEpochGaugeVoterAddress(
+      gaugeVoter,
+      votingEpoch,
+    );
 
   console.log('Reset Epoch Gauge Voter', {
     gaugemeister: tribecaConfiguration.gaugemeister.toString(),

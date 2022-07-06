@@ -41,36 +41,33 @@ const WithdrawOne = ({
   const connection = useWalletStore((s) => s.connection);
   const [pool, setPool] = useState<Pool | null>(null);
 
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-  } = useInstructionFormBuilder<SaberPoolsWithdrawOneForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({ form, governedAccountPubkey }) {
-      if (!pool) throw new Error('Saber pool not found');
-      return withdrawOne({
-        authority: governedAccountPubkey,
-        pool,
-        destinationAccount: new PublicKey(form.destinationAccount!),
-        baseTokenName: form.baseTokenName!,
-        poolTokenAmount: uiAmountToNativeBN(
-          form.uiMinimumTokenAmount!.toString(),
-          pool.poolToken.decimals,
-        ),
-        minimumTokenAmount: uiAmountToNativeBN(
-          form.uiMinimumTokenAmount!.toString(),
-          form.baseTokenName === pool.tokenAccountA.name
-            ? pool.tokenAccountA.decimals
-            : pool.tokenAccountB.decimals,
-        ),
-      });
-    },
-  });
+  const { form, handleSetForm, formErrors } =
+    useInstructionFormBuilder<SaberPoolsWithdrawOneForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({ form, governedAccountPubkey }) {
+        if (!pool) throw new Error('Saber pool not found');
+        return withdrawOne({
+          authority: governedAccountPubkey,
+          pool,
+          destinationAccount: new PublicKey(form.destinationAccount!),
+          baseTokenName: form.baseTokenName!,
+          poolTokenAmount: uiAmountToNativeBN(
+            form.uiMinimumTokenAmount!.toString(),
+            pool.poolToken.decimals,
+          ),
+          minimumTokenAmount: uiAmountToNativeBN(
+            form.uiMinimumTokenAmount!.toString(),
+            form.baseTokenName === pool.tokenAccountA.name
+              ? pool.tokenAccountA.decimals
+              : pool.tokenAccountB.decimals,
+          ),
+        });
+      },
+    });
 
   console.log('formErrors', formErrors);
 

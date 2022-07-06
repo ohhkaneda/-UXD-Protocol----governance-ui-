@@ -32,40 +32,36 @@ const LenderDeposit = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-    governedAccountPubkey,
-  } = useInstructionFormBuilder<MapleFinanceLenderDepositForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({
-      form,
-      connection,
-      wallet,
-      governedAccountPubkey,
-    }) {
-      const programs = mapleFinanceConfig.getMapleFinancePrograms({
+  const { form, handleSetForm, formErrors, governedAccountPubkey } =
+    useInstructionFormBuilder<MapleFinanceLenderDepositForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
+        form,
         connection,
         wallet,
-      });
+        governedAccountPubkey,
+      }) {
+        const programs = mapleFinanceConfig.getMapleFinancePrograms({
+          connection,
+          wallet,
+        });
 
-      return lenderDeposit({
-        authority: governedAccountPubkey,
-        programs,
-        depositAmount: uiAmountToNativeBN(
-          form.uiDepositAmount!.toString(),
-          MapleFinance.pools[form.poolName!].baseMint.decimals,
-        ),
-        poolName: form.poolName!,
-        sourceAccount: new PublicKey(form.sourceAccount!),
-      });
-    },
-  });
+        return lenderDeposit({
+          authority: governedAccountPubkey,
+          programs,
+          depositAmount: uiAmountToNativeBN(
+            form.uiDepositAmount!.toString(),
+            MapleFinance.pools[form.poolName!].baseMint.decimals,
+          ),
+          poolName: form.poolName!,
+          sourceAccount: new PublicKey(form.sourceAccount!),
+        });
+      },
+    });
 
   // Governance underlying accounts that can be selected as source
   const { ownedTokenAccountsInfo } = useGovernanceUnderlyingTokenAccounts(

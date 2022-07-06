@@ -24,92 +24,88 @@ const ActivateStakingOption = ({
 }) => {
   const wallet = useWalletStore((s) => s.current);
 
-  const {
-    form,
-    connection,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<UXDStakingActivateStakingOptionForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      activate: true,
-    },
-    schema: yup.object().shape({
-      governedAccount: yup
-        .object()
-        .nullable()
-        .required('Governed account is required'),
-      stakingCampaignPda: yup
-        .string()
-        .required('Staking Campaign Pda is required'),
-      activate: yup.boolean().required('Activate is required'),
-      stakingOptionIdentifier: yup
-        .number()
-        .moreThan(0, 'Staking Option Identifier should be more than 0')
-        .required('Staking Option Identifier is required'),
-    }),
+  const { form, connection, formErrors, handleSetForm } =
+    useInstructionFormBuilder<UXDStakingActivateStakingOptionForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        activate: true,
+      },
+      schema: yup.object().shape({
+        governedAccount: yup
+          .object()
+          .nullable()
+          .required('Governed account is required'),
+        stakingCampaignPda: yup
+          .string()
+          .required('Staking Campaign Pda is required'),
+        activate: yup.boolean().required('Activate is required'),
+        stakingOptionIdentifier: yup
+          .number()
+          .moreThan(0, 'Staking Option Identifier should be more than 0')
+          .required('Staking Option Identifier is required'),
+      }),
 
-    buildInstruction: async function () {
-      const programId =
-        uxdProtocolStakingConfiguration.programId[connection.cluster];
+      buildInstruction: async function () {
+        const programId =
+          uxdProtocolStakingConfiguration.programId[connection.cluster];
 
-      if (!programId) {
-        throw new Error(
-          `Unsupported cluster ${connection.cluster} for UXD Protocol Staking`,
+        if (!programId) {
+          throw new Error(
+            `Unsupported cluster ${connection.cluster} for UXD Protocol Staking`,
+          );
+        }
+
+        const stakingCampaignPda = new PublicKey(form.stakingCampaignPda!);
+
+        const stakingCampaignState = await getOnchainStakingCampaign(
+          stakingCampaignPda,
+          connection.current,
+          uxdProtocolStakingConfiguration.TXN_OPTS,
         );
-      }
 
-      const stakingCampaignPda = new PublicKey(form.stakingCampaignPda!);
+        const client: SingleSideStakingClient = new SingleSideStakingClient(
+          programId,
+        );
 
-      const stakingCampaignState = await getOnchainStakingCampaign(
-        stakingCampaignPda,
-        connection.current,
-        uxdProtocolStakingConfiguration.TXN_OPTS,
-      );
+        const authority = governedAccount!.governance!.pubkey;
 
-      const client: SingleSideStakingClient = new SingleSideStakingClient(
-        programId,
-      );
+        console.log('Activate/Deactivate Staking Option', {
+          stakingCampaignPda: stakingCampaignPda.toString(),
+          authority: authority.toString(),
+          rewardMint: stakingCampaignState.rewardMint.toString(),
+          rewardMintDecimals: stakingCampaignState.rewardMintDecimals,
+          rewardVault: stakingCampaignState.rewardVault.toString(),
+          stakedMint: stakingCampaignState.stakedMint.toString(),
+          stakedMintDecimals: stakingCampaignState.stakedMintDecimals,
+          stakedVault: stakingCampaignState.stakedVault.toString(),
+          startTs: stakingCampaignState.startTs.toString(),
+          endTs: stakingCampaignState.endTs?.toString(),
+          stakingOptions: stakingCampaignState.stakingOptions.map(
+            ({ active, identifier, lockupSecs, apr }) => ({
+              active,
+              identifier,
+              lockupSecs: lockupSecs.toString(),
+              apr: apr.toString(),
+            }),
+          ),
+        });
 
-      const authority = governedAccount!.governance!.pubkey;
+        const stakingCampaign = StakingCampaign.fromState(
+          stakingCampaignPda,
+          stakingCampaignState,
+        );
 
-      console.log('Activate/Deactivate Staking Option', {
-        stakingCampaignPda: stakingCampaignPda.toString(),
-        authority: authority.toString(),
-        rewardMint: stakingCampaignState.rewardMint.toString(),
-        rewardMintDecimals: stakingCampaignState.rewardMintDecimals,
-        rewardVault: stakingCampaignState.rewardVault.toString(),
-        stakedMint: stakingCampaignState.stakedMint.toString(),
-        stakedMintDecimals: stakingCampaignState.stakedMintDecimals,
-        stakedVault: stakingCampaignState.stakedVault.toString(),
-        startTs: stakingCampaignState.startTs.toString(),
-        endTs: stakingCampaignState.endTs?.toString(),
-        stakingOptions: stakingCampaignState.stakingOptions.map(
-          ({ active, identifier, lockupSecs, apr }) => ({
-            active,
-            identifier,
-            lockupSecs: lockupSecs.toString(),
-            apr: apr.toString(),
-          }),
-        ),
-      });
-
-      const stakingCampaign = StakingCampaign.fromState(
-        stakingCampaignPda,
-        stakingCampaignState,
-      );
-
-      return client.createActivateStakingOptionInstruction({
-        authority,
-        stakingCampaign,
-        stakingOptionIdentifier: form.stakingOptionIdentifier!,
-        activate: form.activate!,
-        options: uxdProtocolStakingConfiguration.TXN_OPTS,
-        payer: wallet!.publicKey!,
-      });
-    },
-  });
+        return client.createActivateStakingOptionInstruction({
+          authority,
+          stakingCampaign,
+          stakingOptionIdentifier: form.stakingOptionIdentifier!,
+          activate: form.activate!,
+          options: uxdProtocolStakingConfiguration.TXN_OPTS,
+          payer: wallet!.publicKey!,
+        });
+      },
+    });
 
   return (
     <>

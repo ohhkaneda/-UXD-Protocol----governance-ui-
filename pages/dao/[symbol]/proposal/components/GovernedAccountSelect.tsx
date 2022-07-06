@@ -197,7 +197,7 @@ function getLabel<
   T extends
     | GovernedMultiTypeAccount
     | GovernedTokenAccount
-    | GovernedMintInfoAccount
+    | GovernedMintInfoAccount,
 >(value?: T) {
   if (!value) {
     return null;
@@ -247,7 +247,7 @@ function calculateAvailableGovernanceTypes<
   T extends
     | GovernedMultiTypeAccount
     | GovernedTokenAccount
-    | GovernedMintInfoAccount
+    | GovernedMintInfoAccount,
 >(governedAccounts: T[]) {
   // Get all governance types used by a selectable governedAccount
   const governanceTypes = Array.from(
@@ -280,7 +280,7 @@ function sortFilteredGovernedAccounts<
   T extends
     | GovernedMultiTypeAccount
     | GovernedTokenAccount
-    | GovernedMintInfoAccount
+    | GovernedMintInfoAccount,
 >(filteredGovernedAccounts: T[]): T[] {
   return filteredGovernedAccounts.sort((governedAcc1, governedAcc2) => {
     if (!governedAcc1.governance || !governedAcc2.governance) {
@@ -302,7 +302,7 @@ export default function GovernedAccountSelect<
   T extends
     | GovernedMultiTypeAccount
     | GovernedTokenAccount
-    | GovernedMintInfoAccount
+    | GovernedMintInfoAccount,
 >({
   onChange,
   value,
@@ -329,9 +329,8 @@ export default function GovernedAccountSelect<
     setSelectedGovernanceAccountConfigurationId,
   ] = useState<GovernanceAccountType | null>(null);
 
-  const availableGovernanceTypes = calculateAvailableGovernanceTypes<T>(
-    governedAccounts,
-  );
+  const availableGovernanceTypes =
+    calculateAvailableGovernanceTypes<T>(governedAccounts);
 
   const filteredGovernedAccounts = governedAccounts.filter(
     (governedAccount) => {

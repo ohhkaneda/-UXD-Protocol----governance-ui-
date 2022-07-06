@@ -21,14 +21,8 @@ export async function withdrawObligationCollateralAndRedeemReserveLiquidity({
   tokenName: SupportedTokenName;
   destinationLiquidity?: PublicKey;
 }) {
-  const {
-    supportedTokens,
-    lendingMarket,
-    lendingMarketAuthority,
-    seed,
-  } = SolendConfiguration.getSupportedLendingMarketInformation(
-    lendingMarketName,
-  );
+  const { supportedTokens, lendingMarket, lendingMarketAuthority, seed } =
+    SolendConfiguration.getSupportedLendingMarketInformation(lendingMarketName);
 
   if (!supportedTokens[tokenName]) {
     throw new Error(

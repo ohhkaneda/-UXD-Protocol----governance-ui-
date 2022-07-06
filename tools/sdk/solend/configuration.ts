@@ -66,138 +66,137 @@ type SupportedLendingMarketsInformation = {
 };
 
 class SolendConfiguration implements ASolendConfiguration {
-  protected supportedCollateralMintsInformation: SupportedCollateralMintsInformation = {
-    'cUSDC - main pool': {
-      name: 'Solend Protocol: cUSDC - main pool',
-      mint: new PublicKey('993dVFL2uXWYeoXuEBFXR4BijeXdTv4s6BzsCjJZuwqk'),
-      decimals: 6,
-    },
+  protected supportedCollateralMintsInformation: SupportedCollateralMintsInformation =
+    {
+      'cUSDC - main pool': {
+        name: 'Solend Protocol: cUSDC - main pool',
+        mint: new PublicKey('993dVFL2uXWYeoXuEBFXR4BijeXdTv4s6BzsCjJZuwqk'),
+        decimals: 6,
+      },
 
-    'cUXD - stable pool': {
-      name: 'Solend Protocol: cUXD - stable pool',
-      mint: new PublicKey('3R3mzc8o9oXCsBX2dKG7Bzc3ov1m7t4UHtb81ktAeCxY'),
-      decimals: 6,
-    },
+      'cUXD - stable pool': {
+        name: 'Solend Protocol: cUXD - stable pool',
+        mint: new PublicKey('3R3mzc8o9oXCsBX2dKG7Bzc3ov1m7t4UHtb81ktAeCxY'),
+        decimals: 6,
+      },
 
-    'cUXD - coin98 pool': {
-      name: 'Solend Protocol: cUXD - coin98 pool',
-      mint: new PublicKey('ErJswCkk3oRS9poFdRxJHt6j9yQisTB8YQAqJkE7iC5U'),
-      decimals: 6,
-    },
-  };
+      'cUXD - coin98 pool': {
+        name: 'Solend Protocol: cUXD - coin98 pool',
+        mint: new PublicKey('ErJswCkk3oRS9poFdRxJHt6j9yQisTB8YQAqJkE7iC5U'),
+        decimals: 6,
+      },
+    };
 
-  protected supportedLendingMarketsInformation: SupportedLendingMarketsInformation = {
-    MainPool: {
-      lendingMarket: new PublicKey(
-        '4UpD2fh7xH3VP9QQaXtsS1YY3bxzWhtfpks7FatyKvdY',
-      ),
-      lendingMarketAuthority: new PublicKey(
-        'DdZR6zRFiUt4S5mg7AV1uKB2z1f1WzcNYCaTEEWPAuby',
-      ),
+  protected supportedLendingMarketsInformation: SupportedLendingMarketsInformation =
+    {
+      MainPool: {
+        lendingMarket: new PublicKey(
+          '4UpD2fh7xH3VP9QQaXtsS1YY3bxzWhtfpks7FatyKvdY',
+        ),
+        lendingMarketAuthority: new PublicKey(
+          'DdZR6zRFiUt4S5mg7AV1uKB2z1f1WzcNYCaTEEWPAuby',
+        ),
 
-      // First 32 bytes of lending Market
-      seed: '4UpD2fh7xH3VP9QQaXtsS1YY3bxzWhtfpks7FatyKvdY'.slice(0, 32),
+        // First 32 bytes of lending Market
+        seed: '4UpD2fh7xH3VP9QQaXtsS1YY3bxzWhtfpks7FatyKvdY'.slice(0, 32),
 
-      supportedTokens: {
-        USDC: {
-          relatedCollateralMint: this.supportedCollateralMintsInformation[
-            'cUSDC - main pool'
-          ],
-          mint: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),
-          decimals: 6,
-          reserve: new PublicKey(
-            'BgxfHJDzm44T7XG68MYKx7YisTjZu73tVovyZSjJMpmw',
-          ),
-          reserveLiquiditySupply: new PublicKey(
-            '8SheGtsopRUDzdiD6v6BR9a6bqZ9QwywYQY99Fp5meNf',
-          ),
-          pythOracle: new PublicKey(
-            'Gnt27xtC473ZT2Mw5u8wZ68Z3gULkSTb5DuxJy7eJotD',
-          ),
-          switchboardFeedAddress: new PublicKey(
-            'CZx29wKMUxaJDq6aLVQTdViPL754tTR64NAgQBUGxxHb',
-          ),
-          reserveCollateralSupplySplTokenAccount: new PublicKey(
-            'UtRy8gcEu9fCkDuUrU8EmC7Uc6FZy5NCwttzG7i6nkw',
-          ),
+        supportedTokens: {
+          USDC: {
+            relatedCollateralMint:
+              this.supportedCollateralMintsInformation['cUSDC - main pool'],
+            mint: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),
+            decimals: 6,
+            reserve: new PublicKey(
+              'BgxfHJDzm44T7XG68MYKx7YisTjZu73tVovyZSjJMpmw',
+            ),
+            reserveLiquiditySupply: new PublicKey(
+              '8SheGtsopRUDzdiD6v6BR9a6bqZ9QwywYQY99Fp5meNf',
+            ),
+            pythOracle: new PublicKey(
+              'Gnt27xtC473ZT2Mw5u8wZ68Z3gULkSTb5DuxJy7eJotD',
+            ),
+            switchboardFeedAddress: new PublicKey(
+              'CZx29wKMUxaJDq6aLVQTdViPL754tTR64NAgQBUGxxHb',
+            ),
+            reserveCollateralSupplySplTokenAccount: new PublicKey(
+              'UtRy8gcEu9fCkDuUrU8EmC7Uc6FZy5NCwttzG7i6nkw',
+            ),
+          },
         },
       },
-    },
 
-    StablePool: {
-      lendingMarket: new PublicKey(
-        'GktVYgkstojYd8nVXGXKJHi7SstvgZ6pkQqQhUPD7y7Q',
-      ),
-      lendingMarketAuthority: new PublicKey(
-        'Ej4KxxUz73edQzjfsPVWvYxT5eyhQoWoXpo7BYm2Ejhj',
-      ),
+      StablePool: {
+        lendingMarket: new PublicKey(
+          'GktVYgkstojYd8nVXGXKJHi7SstvgZ6pkQqQhUPD7y7Q',
+        ),
+        lendingMarketAuthority: new PublicKey(
+          'Ej4KxxUz73edQzjfsPVWvYxT5eyhQoWoXpo7BYm2Ejhj',
+        ),
 
-      // First 32 bytes of lending Market
-      seed: 'GktVYgkstojYd8nVXGXKJHi7SstvgZ6pkQqQhUPD7y7Q'.slice(0, 32),
+        // First 32 bytes of lending Market
+        seed: 'GktVYgkstojYd8nVXGXKJHi7SstvgZ6pkQqQhUPD7y7Q'.slice(0, 32),
 
-      supportedTokens: {
-        UXD: {
-          relatedCollateralMint: this.supportedCollateralMintsInformation[
-            'cUXD - stable pool'
-          ],
-          mint: new PublicKey('7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT'),
-          decimals: 6,
-          reserve: new PublicKey(
-            '27YJsVpHWvjS8BKaz7Gd8unSFJAMrh6gPEFjqhYxn9AE',
-          ),
-          reserveLiquiditySupply: new PublicKey(
-            '9v6c1QVoyQxX6hWKGCYLwcunc3JfMWQLcMS3KWR5Kqhf',
-          ),
-          pythOracle: new PublicKey(
-            'nu11111111111111111111111111111111111111111',
-          ),
-          switchboardFeedAddress: new PublicKey(
-            'Lj3y2beRYhCaQQH9SYjmMJv3uuTcqpCJjQYe4829FAL',
-          ),
-          reserveCollateralSupplySplTokenAccount: new PublicKey(
-            '6RTTJkwZ7NuK4JaJnnaUgqU78gaW3A8McDTfiGsBBbLX',
-          ),
+        supportedTokens: {
+          UXD: {
+            relatedCollateralMint:
+              this.supportedCollateralMintsInformation['cUXD - stable pool'],
+            mint: new PublicKey('7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT'),
+            decimals: 6,
+            reserve: new PublicKey(
+              '27YJsVpHWvjS8BKaz7Gd8unSFJAMrh6gPEFjqhYxn9AE',
+            ),
+            reserveLiquiditySupply: new PublicKey(
+              '9v6c1QVoyQxX6hWKGCYLwcunc3JfMWQLcMS3KWR5Kqhf',
+            ),
+            pythOracle: new PublicKey(
+              'nu11111111111111111111111111111111111111111',
+            ),
+            switchboardFeedAddress: new PublicKey(
+              'Lj3y2beRYhCaQQH9SYjmMJv3uuTcqpCJjQYe4829FAL',
+            ),
+            reserveCollateralSupplySplTokenAccount: new PublicKey(
+              '6RTTJkwZ7NuK4JaJnnaUgqU78gaW3A8McDTfiGsBBbLX',
+            ),
+          },
         },
       },
-    },
 
-    Coin98Pool: {
-      lendingMarket: new PublicKey(
-        '7tiNvRHSjYDfc6usrWnSNPyuN68xQfKs1ZG2oqtR5F46',
-      ),
-      lendingMarketAuthority: new PublicKey(
-        '8web9hJK4TQJBV23WQpBw9jMvn3YE1EV3PEcnXJvgwQa',
-      ),
+      Coin98Pool: {
+        lendingMarket: new PublicKey(
+          '7tiNvRHSjYDfc6usrWnSNPyuN68xQfKs1ZG2oqtR5F46',
+        ),
+        lendingMarketAuthority: new PublicKey(
+          '8web9hJK4TQJBV23WQpBw9jMvn3YE1EV3PEcnXJvgwQa',
+        ),
 
-      // First 32 bytes of lending Market
-      seed: '7tiNvRHSjYDfc6usrWnSNPyuN68xQfKs1ZG2oqtR5F46'.slice(0, 32),
+        // First 32 bytes of lending Market
+        seed: '7tiNvRHSjYDfc6usrWnSNPyuN68xQfKs1ZG2oqtR5F46'.slice(0, 32),
 
-      supportedTokens: {
-        UXD: {
-          relatedCollateralMint: this.supportedCollateralMintsInformation[
-            'cUXD - coin98 pool'
-          ],
-          mint: new PublicKey('7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT'),
-          decimals: 6,
-          reserve: new PublicKey(
-            '46Lh1P2XmTNG8Gnt4zkTdG1BXi2V18NggfYTbXpSzAYy',
-          ),
-          reserveLiquiditySupply: new PublicKey(
-            'Fr3A2agcj8G8jEVPhE1rYUQsGF85meEN5fDQ4etFp5Wi',
-          ),
-          pythOracle: new PublicKey(
-            'nu11111111111111111111111111111111111111111',
-          ),
-          switchboardFeedAddress: new PublicKey(
-            'Lj3y2beRYhCaQQH9SYjmMJv3uuTcqpCJjQYe4829FAL',
-          ),
-          reserveCollateralSupplySplTokenAccount: new PublicKey(
-            'BdjGeJQNEZhCLyW89RNWgxkn3hwRMsAxncc29QNuHvRf',
-          ),
+        supportedTokens: {
+          UXD: {
+            relatedCollateralMint:
+              this.supportedCollateralMintsInformation['cUXD - coin98 pool'],
+            mint: new PublicKey('7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT'),
+            decimals: 6,
+            reserve: new PublicKey(
+              '46Lh1P2XmTNG8Gnt4zkTdG1BXi2V18NggfYTbXpSzAYy',
+            ),
+            reserveLiquiditySupply: new PublicKey(
+              'Fr3A2agcj8G8jEVPhE1rYUQsGF85meEN5fDQ4etFp5Wi',
+            ),
+            pythOracle: new PublicKey(
+              'nu11111111111111111111111111111111111111111',
+            ),
+            switchboardFeedAddress: new PublicKey(
+              'Lj3y2beRYhCaQQH9SYjmMJv3uuTcqpCJjQYe4829FAL',
+            ),
+            reserveCollateralSupplySplTokenAccount: new PublicKey(
+              'BdjGeJQNEZhCLyW89RNWgxkn3hwRMsAxncc29QNuHvRf',
+            ),
+          },
         },
       },
-    },
-  };
+    };
 
   public readonly programID = new PublicKey(
     'So1endDq2YkqhipRh3WViPa8hdiSpxWy6z3Z6tMCpAo',

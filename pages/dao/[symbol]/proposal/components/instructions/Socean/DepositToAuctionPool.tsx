@@ -29,48 +29,45 @@ const DepositToAuctionPool = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-  } = useInstructionFormBuilder<SoceanDepositToAuctionPoolForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({
-      connection,
-      wallet,
-      cluster,
-      form,
-      governedAccountPubkey,
-    }) {
-      const programs = soceanConfig.getSoceanPrograms({
+  const { form, handleSetForm, formErrors } =
+    useInstructionFormBuilder<SoceanDepositToAuctionPoolForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
         connection,
         wallet,
         cluster,
-      });
-      const mintInfo = await tryGetTokenMint(
-        connection,
-        new PublicKey(form.sourceAccount!),
-      );
-      if (!mintInfo) throw new Error('Cannot load sourceAccount mint info');
+        form,
+        governedAccountPubkey,
+      }) {
+        const programs = soceanConfig.getSoceanPrograms({
+          connection,
+          wallet,
+          cluster,
+        });
+        const mintInfo = await tryGetTokenMint(
+          connection,
+          new PublicKey(form.sourceAccount!),
+        );
+        if (!mintInfo) throw new Error('Cannot load sourceAccount mint info');
 
-      return depositToAuctionPool({
-        cluster,
-        program: programs.DescendingAuction,
-        depositAmount: uiAmountToNativeBN(
-          form.uiDepositAmount!.toString(),
-          mintInfo.account.decimals,
-        ),
-        auction: new PublicKey(form.auction!),
-        authority: governedAccountPubkey,
-        sourceAccount: new PublicKey(form.sourceAccount!),
-        bondedMint: new PublicKey(form.bondedMint!),
-      });
-    },
-  });
+        return depositToAuctionPool({
+          cluster,
+          program: programs.DescendingAuction,
+          depositAmount: uiAmountToNativeBN(
+            form.uiDepositAmount!.toString(),
+            mintInfo.account.decimals,
+          ),
+          auction: new PublicKey(form.auction!),
+          authority: governedAccountPubkey,
+          sourceAccount: new PublicKey(form.sourceAccount!),
+          bondedMint: new PublicKey(form.bondedMint!),
+        });
+      },
+    });
 
   return (
     <>

@@ -37,55 +37,49 @@ const Deposit = ({
 }) => {
   const connection = useWalletStore((s) => s.connection);
   const [pool, setPool] = useState<Pool | null>(null);
-  const [
-    associatedTokenAccounts,
-    setAssociatedTokenAccounts,
-  ] = useState<null | {
-    A: PublicKey;
-    B: PublicKey;
-  }>(null);
+  const [associatedTokenAccounts, setAssociatedTokenAccounts] =
+    useState<null | {
+      A: PublicKey;
+      B: PublicKey;
+    }>(null);
 
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-    governedAccountPubkey,
-  } = useInstructionFormBuilder<SaberPoolsDepositForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({ form, governedAccountPubkey }) {
-      if (!pool) {
-        throw new Error('Saber Pool not found');
-      }
+  const { form, handleSetForm, formErrors, governedAccountPubkey } =
+    useInstructionFormBuilder<SaberPoolsDepositForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({ form, governedAccountPubkey }) {
+        if (!pool) {
+          throw new Error('Saber Pool not found');
+        }
 
-      if (!associatedTokenAccounts) {
-        throw new Error('Associated token accounts not found');
-      }
+        if (!associatedTokenAccounts) {
+          throw new Error('Associated token accounts not found');
+        }
 
-      return deposit({
-        authority: governedAccountPubkey,
-        pool,
-        sourceA: associatedTokenAccounts.A,
-        sourceB: associatedTokenAccounts.B,
+        return deposit({
+          authority: governedAccountPubkey,
+          pool,
+          sourceA: associatedTokenAccounts.A,
+          sourceB: associatedTokenAccounts.B,
 
-        tokenAmountA: uiAmountToNativeBN(
-          form.uiTokenAmountA!.toString(),
-          pool.tokenAccountA.decimals,
-        ),
-        tokenAmountB: uiAmountToNativeBN(
-          form.uiTokenAmountB!.toString(),
-          pool.tokenAccountB.decimals,
-        ),
-        minimumPoolTokenAmount: uiAmountToNativeBN(
-          form.uiMinimumPoolTokenAmount!.toString(),
-          pool.poolToken.decimals,
-        ),
-      });
-    },
-  });
+          tokenAmountA: uiAmountToNativeBN(
+            form.uiTokenAmountA!.toString(),
+            pool.tokenAccountA.decimals,
+          ),
+          tokenAmountB: uiAmountToNativeBN(
+            form.uiTokenAmountB!.toString(),
+            pool.tokenAccountB.decimals,
+          ),
+          minimumPoolTokenAmount: uiAmountToNativeBN(
+            form.uiMinimumPoolTokenAmount!.toString(),
+            pool.poolToken.decimals,
+          ),
+        });
+      },
+    });
 
   useEffect(() => {
     if (!governedAccountPubkey) {

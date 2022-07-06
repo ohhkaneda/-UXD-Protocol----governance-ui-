@@ -8,7 +8,7 @@ import {
   getInsuranceMintSymbols,
 } from '@tools/sdk/uxdProtocol/uxdClient';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
-import { WithdrawInsuranceFromMangoDepositoryForm } from '@utils/uiTypes/proposalCreationTypes';
+import { UXDWithdrawInsuranceFromMangoDepositoryForm } from '@utils/uiTypes/proposalCreationTypes';
 import SelectOptionList from '../../SelectOptionList';
 
 const schema = yup.object().shape({
@@ -31,29 +31,26 @@ const WithdrawInsuranceFromMangoDepository = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    connection,
-    form,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<WithdrawInsuranceFromMangoDepositoryForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      insuranceWithdrawnAmount: 0,
-    },
-    schema,
-    buildInstruction: async function ({ form, governedAccountPubkey }) {
-      return createWithdrawInsuranceFromMangoDepositoryInstruction({
-        connection,
-        uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
-        authority: governedAccountPubkey,
-        depositoryMintName: form.collateralName!,
-        insuranceMintName: form.insuranceName!,
-        insuranceWithdrawnAmount: form.insuranceWithdrawnAmount,
-      });
-    },
-  });
+  const { connection, form, formErrors, handleSetForm } =
+    useInstructionFormBuilder<UXDWithdrawInsuranceFromMangoDepositoryForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        insuranceWithdrawnAmount: 0,
+      },
+      schema,
+      buildInstruction: async function ({ form, governedAccountPubkey }) {
+        return createWithdrawInsuranceFromMangoDepositoryInstruction({
+          connection,
+          uxdProgramId:
+            form.governedAccount!.governance!.account.governedAccount,
+          authority: governedAccountPubkey,
+          depositoryMintName: form.collateralName!,
+          insuranceMintName: form.insuranceName!,
+          insuranceWithdrawnAmount: form.insuranceWithdrawnAmount,
+        });
+      },
+    });
 
   return (
     <>

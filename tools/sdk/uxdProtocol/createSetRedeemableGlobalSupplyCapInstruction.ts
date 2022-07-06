@@ -1,4 +1,4 @@
-import { Provider } from '@project-serum/anchor';
+import { AnchorProvider } from '@project-serum/anchor';
 import { TransactionInstruction, PublicKey } from '@solana/web3.js';
 import { Controller, UXD_DECIMALS } from '@uxd-protocol/uxd-client';
 import { uxdClient } from './uxdClient';
@@ -17,7 +17,7 @@ const createSetRedeemableGlobalSupplyCapInstruction = ({
     new Controller('UXD', UXD_DECIMALS, uxdProgramId),
     authority,
     supplyCapUiAmount,
-    Provider.defaultOptions(),
+    AnchorProvider.defaultOptions(),
   );
 };
 

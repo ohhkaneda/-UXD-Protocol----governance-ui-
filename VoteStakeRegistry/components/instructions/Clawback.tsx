@@ -42,10 +42,8 @@ const Clawback = ({
   const client = useVoteStakeRegistryClientStore((s) => s.state.client);
   const connection = useWalletStore((s) => s.connection);
   const { realm } = useRealm();
-  const {
-    governedTokenAccountsWithoutNfts,
-    governancesArray,
-  } = useGovernanceAssets();
+  const { governedTokenAccountsWithoutNfts, governancesArray } =
+    useGovernanceAssets();
   const shouldBeGoverned = index !== 0 && governance;
   const [voters, setVoters] = useState<Voter[]>([]);
   const [deposits, setDeposits] = useState<DepositWithMintAccount[]>([]);

@@ -16,50 +16,47 @@ const CustomBase64 = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<Base64InstructionForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      base64: '',
-      holdUpTime: 0,
-    },
-    schema: yup.object().shape({
-      governedAccount: yup
-        .object()
-        .nullable()
-        .required('Governed account is required'),
-      base64: yup
-        .string()
-        .required('Instruction is required')
-        .test('base64Test', 'Invalid base64', function (val: string) {
-          if (val) {
-            try {
-              getInstructionDataFromBase64(val);
-              return true;
-            } catch (e) {
-              return false;
+  const { form, formErrors, handleSetForm } =
+    useInstructionFormBuilder<Base64InstructionForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        base64: '',
+        holdUpTime: 0,
+      },
+      schema: yup.object().shape({
+        governedAccount: yup
+          .object()
+          .nullable()
+          .required('Governed account is required'),
+        base64: yup
+          .string()
+          .required('Instruction is required')
+          .test('base64Test', 'Invalid base64', function (val: string) {
+            if (val) {
+              try {
+                getInstructionDataFromBase64(val);
+                return true;
+              } catch (e) {
+                return false;
+              }
             }
-          }
 
-          return this.createError({
-            message: `Instruction is required`,
-          });
-        }),
-      holdUpTime: yup.number().required('Hold up time is required'),
-    }),
+            return this.createError({
+              message: `Instruction is required`,
+            });
+          }),
+        holdUpTime: yup.number().required('Hold up time is required'),
+      }),
 
-    getCustomHoldUpTime: async function () {
-      return form.holdUpTime;
-    },
+      getCustomHoldUpTime: async function () {
+        return form.holdUpTime;
+      },
 
-    buildInstruction: async function () {
-      return form.base64 as SerializedInstruction;
-    },
-  });
+      buildInstruction: async function () {
+        return form.base64 as SerializedInstruction;
+      },
+    });
 
   const validateAmountOnBlur = () => {
     const value = form.holdUpTime;

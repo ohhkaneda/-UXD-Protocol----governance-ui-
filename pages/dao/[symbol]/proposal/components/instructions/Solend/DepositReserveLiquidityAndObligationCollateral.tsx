@@ -29,45 +29,40 @@ const DepositReserveLiquidityAndObligationCollateral = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    connection,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<DepositReserveLiquidityAndObligationCollateralForm>(
-    {
-      index,
-      initialFormValues: {
-        governedAccount,
-        uiAmount: 0,
-      },
-      schema,
-      buildInstruction: async function ({ governedAccountPubkey, form }) {
-        const {
-          supportedTokens,
-        } = SolendConfiguration.getSupportedLendingMarketInformation(
-          form.lendingMarketName!,
-        );
+  const { form, connection, formErrors, handleSetForm } =
+    useInstructionFormBuilder<DepositReserveLiquidityAndObligationCollateralForm>(
+      {
+        index,
+        initialFormValues: {
+          governedAccount,
+          uiAmount: 0,
+        },
+        schema,
+        buildInstruction: async function ({ governedAccountPubkey, form }) {
+          const { supportedTokens } =
+            SolendConfiguration.getSupportedLendingMarketInformation(
+              form.lendingMarketName!,
+            );
 
-        if (!supportedTokens[form.tokenName!]) {
-          throw new Error(
-            `Unsupported token ${form.tokenName!} for Lending market ${
-              form.lendingMarketName
-            }`,
-          );
-        }
-        return depositReserveLiquidityAndObligationCollateral({
-          obligationOwner: governedAccountPubkey,
-          liquidityAmount: uiAmountToNativeBN(
-            form.uiAmount!,
-            supportedTokens[form.tokenName!]!.decimals,
-          ),
-          lendingMarketName: form.lendingMarketName!,
-          tokenName: form.tokenName!,
-        });
+          if (!supportedTokens[form.tokenName!]) {
+            throw new Error(
+              `Unsupported token ${form.tokenName!} for Lending market ${
+                form.lendingMarketName
+              }`,
+            );
+          }
+          return depositReserveLiquidityAndObligationCollateral({
+            obligationOwner: governedAccountPubkey,
+            liquidityAmount: uiAmountToNativeBN(
+              form.uiAmount!,
+              supportedTokens[form.tokenName!]!.decimals,
+            ),
+            lendingMarketName: form.lendingMarketName!,
+            tokenName: form.tokenName!,
+          });
+        },
       },
-    },
-  );
+    );
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {

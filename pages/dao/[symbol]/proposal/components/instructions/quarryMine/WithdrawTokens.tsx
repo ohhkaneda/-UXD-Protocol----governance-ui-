@@ -34,43 +34,38 @@ const WithdrawTokens = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-    connection,
-    governedAccountPubkey,
-  } = useInstructionFormBuilder<QuarryMineWithdrawTokensForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({
-      form,
-      connection,
-      wallet,
-      governedAccountPubkey,
-    }) {
-      const destinationAccount = new PublicKey(form.destinationAccount!);
-      const mintInfo = await tryGetTokenMint(connection, destinationAccount);
-      if (!mintInfo)
-        throw new Error(
-          `could not find mint info for token ${form.destinationAccount}`,
-        );
+  const { form, handleSetForm, formErrors, connection, governedAccountPubkey } =
+    useInstructionFormBuilder<QuarryMineWithdrawTokensForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
+        form,
+        connection,
+        wallet,
+        governedAccountPubkey,
+      }) {
+        const destinationAccount = new PublicKey(form.destinationAccount!);
+        const mintInfo = await tryGetTokenMint(connection, destinationAccount);
+        if (!mintInfo)
+          throw new Error(
+            `could not find mint info for token ${form.destinationAccount}`,
+          );
 
-      return withdrawTokensInstruction({
-        augmentedProvider: augmentedProvider(connection, wallet),
-        authority: governedAccountPubkey,
-        destinationAccount,
-        amount: uiAmountToNativeBN(
-          form.uiAmount!.toString(),
-          mintInfo.account.decimals,
-        ),
-        mintName: form.mintName!,
-      });
-    },
-  });
+        return withdrawTokensInstruction({
+          augmentedProvider: augmentedProvider(connection, wallet),
+          authority: governedAccountPubkey,
+          destinationAccount,
+          amount: uiAmountToNativeBN(
+            form.uiAmount!.toString(),
+            mintInfo.account.decimals,
+          ),
+          mintName: form.mintName!,
+        });
+      },
+    });
 
   const { ownedTokenAccountsInfo } = useGovernanceUnderlyingTokenAccounts(
     governedAccountPubkey ?? undefined,

@@ -13,9 +13,8 @@ export async function createObligationAccount({
   authority: PublicKey;
   lendingMarketName: SupportedLendingMarketName;
 }) {
-  const { seed } = SolendConfiguration.getSupportedLendingMarketInformation(
-    lendingMarketName,
-  );
+  const { seed } =
+    SolendConfiguration.getSupportedLendingMarketInformation(lendingMarketName);
 
   const newAccountPubkey = await deriveObligationAddressFromWalletAndSeed(
     authority,

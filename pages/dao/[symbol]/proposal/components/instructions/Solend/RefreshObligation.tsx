@@ -22,24 +22,20 @@ const RefreshObligation = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    formErrors,
-    connection,
-    handleSetForm,
-  } = useInstructionFormBuilder<RefreshObligationForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({ form, governedAccountPubkey }) {
-      return refreshObligation({
-        obligationOwner: governedAccountPubkey,
-        lendingMarketName: form.lendingMarketName!,
-      });
-    },
-  });
+  const { form, formErrors, connection, handleSetForm } =
+    useInstructionFormBuilder<RefreshObligationForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({ form, governedAccountPubkey }) {
+        return refreshObligation({
+          obligationOwner: governedAccountPubkey,
+          lendingMarketName: form.lendingMarketName!,
+        });
+      },
+    });
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {

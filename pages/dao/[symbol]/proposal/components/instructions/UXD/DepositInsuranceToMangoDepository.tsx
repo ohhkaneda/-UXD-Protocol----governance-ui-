@@ -8,7 +8,7 @@ import {
   getInsuranceMintSymbols,
 } from '@tools/sdk/uxdProtocol/uxdClient';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
-import { DepositInsuranceToMangoDepositoryForm } from '@utils/uiTypes/proposalCreationTypes';
+import { UXDDepositInsuranceToMangoDepositoryForm } from '@utils/uiTypes/proposalCreationTypes';
 import SelectOptionList from '../../SelectOptionList';
 
 const schema = yup.object().shape({
@@ -31,30 +31,27 @@ const UXDDepositInsuranceToMangoDepository = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    connection,
-    form,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<DepositInsuranceToMangoDepositoryForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      insuranceDepositedAmount: 0,
-    },
-    schema,
+  const { connection, form, formErrors, handleSetForm } =
+    useInstructionFormBuilder<UXDDepositInsuranceToMangoDepositoryForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        insuranceDepositedAmount: 0,
+      },
+      schema,
 
-    buildInstruction: async function ({ form, governedAccountPubkey }) {
-      return createDepositInsuranceToMangoDepositoryInstruction({
-        connection,
-        uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
-        authority: governedAccountPubkey,
-        depositoryMintName: form.collateralName!,
-        insuranceMintName: form.insuranceName!,
-        insuranceDepositedAmount: form.insuranceDepositedAmount,
-      });
-    },
-  });
+      buildInstruction: async function ({ form, governedAccountPubkey }) {
+        return createDepositInsuranceToMangoDepositoryInstruction({
+          connection,
+          uxdProgramId:
+            form.governedAccount!.governance!.account.governedAccount,
+          authority: governedAccountPubkey,
+          depositoryMintName: form.collateralName!,
+          insuranceMintName: form.insuranceName!,
+          insuranceDepositedAmount: form.insuranceDepositedAmount,
+        });
+      },
+    });
 
   return (
     <>

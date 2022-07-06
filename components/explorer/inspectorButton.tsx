@@ -23,7 +23,8 @@ export default function InspectorButton({
   const showInspector = async () => {
     let inspectUrl = '';
     if (!wasExecuted) {
-      const instructionData = proposalInstruction.account.getSingleInstruction();
+      const instructionData =
+        proposalInstruction.account.getSingleInstruction();
       const result = await dryRunInstruction(
         connection.current,
         wallet!,
@@ -36,13 +37,14 @@ export default function InspectorButton({
       );
     } else {
       try {
-        const recentActivity = await connection.current.getConfirmedSignaturesForAddress2(
-          proposalInstruction.pubkey,
-          {
-            limit: 5,
-          },
-          'confirmed',
-        );
+        const recentActivity =
+          await connection.current.getConfirmedSignaturesForAddress2(
+            proposalInstruction.pubkey,
+            {
+              limit: 5,
+            },
+            'confirmed',
+          );
         inspectUrl = getExplorerUrl(
           connection.endpoint,
           recentActivity[0].signature,

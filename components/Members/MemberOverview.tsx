@@ -33,10 +33,8 @@ const MemberOverview = () => {
   const connection = useWalletStore((s) => s.connection);
   const selectedRealm = useWalletStore((s) => s.selectedRealm);
   const { mint, councilMint, proposals, symbol } = useRealm();
-  const {
-    setCurrentCompactView,
-    resetCompactViewState,
-  } = useMembersListStore();
+  const { setCurrentCompactView, resetCompactViewState } =
+    useMembersListStore();
   const { fmtUrlWithCluster } = useQueryContext();
   const [ownVoteRecords, setOwnVoteRecords] = useState<
     WalletTokenRecordWithProposal[]
@@ -57,15 +55,17 @@ const MemberOverview = () => {
   const totalVotes = votesCasted;
   const communityAmount =
     communityVotes && !communityVotes.isZero()
-      ? useMemo(() => fmtMintAmount(mint, communityVotes), [
-          member!.walletAddress,
-        ])
+      ? useMemo(
+          () => fmtMintAmount(mint, communityVotes),
+          [member!.walletAddress],
+        )
       : null;
   const councilAmount =
     councilVotes && !councilVotes.isZero()
-      ? useMemo(() => fmtMintAmount(councilMint, councilVotes), [
-          member!.walletAddress,
-        ])
+      ? useMemo(
+          () => fmtMintAmount(councilMint, councilVotes),
+          [member!.walletAddress],
+        )
       : null;
 
   const handleGoBackToMainView = async () => {

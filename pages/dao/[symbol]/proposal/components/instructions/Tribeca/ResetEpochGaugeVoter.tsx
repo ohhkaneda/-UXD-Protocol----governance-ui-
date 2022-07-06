@@ -25,34 +25,32 @@ const ResetEpochGaugeVoter = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    handleSetForm,
-  } = useInstructionFormBuilder<TribecaResetEpochGaugeVoterForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      tribecaConfiguration: null,
-    },
-    schema,
-    buildInstruction: async function ({
-      connection,
-      wallet,
-      form,
-      governedAccountPubkey,
-    }) {
-      const programs = getTribecaPrograms({
+  const { form, handleSetForm } =
+    useInstructionFormBuilder<TribecaResetEpochGaugeVoterForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        tribecaConfiguration: null,
+      },
+      schema,
+      buildInstruction: async function ({
         connection,
         wallet,
-        config: form.tribecaConfiguration!,
-      });
-      return resetEpochGaugeVoterInstruction({
-        programs,
-        authority: governedAccountPubkey,
-        tribecaConfiguration: form.tribecaConfiguration!,
-      });
-    },
-  });
+        form,
+        governedAccountPubkey,
+      }) {
+        const programs = getTribecaPrograms({
+          connection,
+          wallet,
+          config: form.tribecaConfiguration!,
+        });
+        return resetEpochGaugeVoterInstruction({
+          programs,
+          authority: governedAccountPubkey,
+          tribecaConfiguration: form.tribecaConfiguration!,
+        });
+      },
+    });
   const connection = useWalletStore((s) => s.connection);
 
   // Hardcoded gate used to be clear about what cluster is supported for now

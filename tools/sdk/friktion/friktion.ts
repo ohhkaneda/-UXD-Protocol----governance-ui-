@@ -4,7 +4,7 @@ import {
   FriktionSnapshot,
   VoltSnapshot,
 } from '@friktion-labs/friktion-sdk';
-import { Wallet } from '@project-serum/sol-wallet-adapter';
+import Wallet from '@project-serum/sol-wallet-adapter';
 import { Connection, PublicKey } from '@solana/web3.js';
 
 export const FRIKTION_VOLT_PROGRAM =

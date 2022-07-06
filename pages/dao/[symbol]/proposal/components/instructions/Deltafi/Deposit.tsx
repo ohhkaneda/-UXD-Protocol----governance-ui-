@@ -46,55 +46,55 @@ const DeltafiPoolDeposit = ({
 
   const deltafiProgram = useDeltafiProgram();
 
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-  } = useInstructionFormBuilder<DeltafiPoolDepositForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({
-      cluster,
-      governedAccountPubkey,
-      form,
-    }) {
-      if (cluster !== 'mainnet') {
-        throw new Error('Other cluster than mainnet are not supported yet.');
-      }
+  const { form, handleSetForm, formErrors } =
+    useInstructionFormBuilder<DeltafiPoolDepositForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
+        cluster,
+        governedAccountPubkey,
+        form,
+      }) {
+        if (cluster !== 'mainnet') {
+          throw new Error('Other cluster than mainnet are not supported yet.');
+        }
 
-      if (!deltafiProgram) {
-        throw new Error('Deltafi program not loaded yet');
-      }
+        if (!deltafiProgram) {
+          throw new Error('Deltafi program not loaded yet');
+        }
 
-      const poolInfo = deltafiConfiguration.getPoolInfoByPoolName(
-        form.poolName!,
-      );
+        const poolInfo = deltafiConfiguration.getPoolInfoByPoolName(
+          form.poolName!,
+        );
 
-      if (!poolInfo) {
-        throw new Error('Pool info is required');
-      }
+        if (!poolInfo) {
+          throw new Error('Pool info is required');
+        }
 
-      const baseDecimals = deltafiConfiguration.getBaseOrQuoteMintDecimals(
-        poolInfo.mintBase,
-      );
-      const quoteDecimals = deltafiConfiguration.getBaseOrQuoteMintDecimals(
-        poolInfo.mintQuote,
-      );
+        const baseDecimals = deltafiConfiguration.getBaseOrQuoteMintDecimals(
+          poolInfo.mintBase,
+        );
+        const quoteDecimals = deltafiConfiguration.getBaseOrQuoteMintDecimals(
+          poolInfo.mintQuote,
+        );
 
-      return deposit({
-        deltafiProgram,
-        authority: governedAccountPubkey,
-        poolInfo,
-        baseAmount: uiAmountToNativeBN(form.uiBaseAmount!, baseDecimals),
-        quoteAmount: uiAmountToNativeBN(form.uiQuoteAmount!, quoteDecimals),
-        minBaseShare: uiAmountToNativeBN(form.uiMinBaseShare!, baseDecimals),
-        minQuoteShare: uiAmountToNativeBN(form.uiMinQuoteShare!, quoteDecimals),
-      });
-    },
-  });
+        return deposit({
+          deltafiProgram,
+          authority: governedAccountPubkey,
+          poolInfo,
+          baseAmount: uiAmountToNativeBN(form.uiBaseAmount!, baseDecimals),
+          quoteAmount: uiAmountToNativeBN(form.uiQuoteAmount!, quoteDecimals),
+          minBaseShare: uiAmountToNativeBN(form.uiMinBaseShare!, baseDecimals),
+          minQuoteShare: uiAmountToNativeBN(
+            form.uiMinQuoteShare!,
+            quoteDecimals,
+          ),
+        });
+      },
+    });
 
   return (
     <>

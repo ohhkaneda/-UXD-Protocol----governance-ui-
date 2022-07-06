@@ -46,34 +46,30 @@ const RaydiumAddLiquidityToPool = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    connection,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<AddLiquidityRaydiumForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      fixedSide: 'base',
-      slippage: 0.5,
-    },
-    schema,
-    buildInstruction: async function ({ form, governedAccountPubkey }) {
-      const poolKeys = getLiquidityPoolKeysByLabel(form.liquidityPool!);
-      const [base, quote] = await Promise.all([
-        connection.current.getTokenSupply(poolKeys.baseMint),
-        connection.current.getTokenSupply(poolKeys.quoteMint),
-      ]);
-      return createAddLiquidityInstruction(
-        poolKeys,
-        uiAmountToNativeBN(form.baseAmountIn!, base.value.decimals),
-        uiAmountToNativeBN(form.quoteAmountIn!, quote.value.decimals),
-        form.fixedSide,
-        governedAccountPubkey,
-      );
-    },
-  });
+  const { form, connection, formErrors, handleSetForm } =
+    useInstructionFormBuilder<AddLiquidityRaydiumForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        fixedSide: 'base',
+        slippage: 0.5,
+      },
+      schema,
+      buildInstruction: async function ({ form, governedAccountPubkey }) {
+        const poolKeys = getLiquidityPoolKeysByLabel(form.liquidityPool!);
+        const [base, quote] = await Promise.all([
+          connection.current.getTokenSupply(poolKeys.baseMint),
+          connection.current.getTokenSupply(poolKeys.quoteMint),
+        ]);
+        return createAddLiquidityInstruction(
+          poolKeys,
+          uiAmountToNativeBN(form.baseAmountIn!, base.value.decimals),
+          uiAmountToNativeBN(form.quoteAmountIn!, quote.value.decimals),
+          form.fixedSide,
+          governedAccountPubkey,
+        );
+      },
+    });
 
   useEffect(() => {
     debounce.debounceFcn(async () => {

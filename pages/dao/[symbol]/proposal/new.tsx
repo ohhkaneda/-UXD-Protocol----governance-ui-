@@ -49,9 +49,8 @@ const defaultGovernanceCtx: InstructionsContext = {
   handleSetInstruction: () => null,
 };
 
-export const NewProposalContext = createContext<InstructionsContext>(
-  defaultGovernanceCtx,
-);
+export const NewProposalContext =
+  createContext<InstructionsContext>(defaultGovernanceCtx);
 
 const New = () => {
   const router = useRouter();
@@ -59,10 +58,8 @@ const New = () => {
   const { fmtUrlWithCluster } = useQueryContext();
   const { symbol, realm, realmDisplayName, canChooseWhoVote } = useRealm();
   const { availableInstructions } = useGovernanceAssets();
-  const {
-    fetchRealmGovernance,
-    fetchTokenAccountsForSelectedRealmGovernance,
-  } = useWalletStore((s) => s.actions);
+  const { fetchRealmGovernance, fetchTokenAccountsForSelectedRealmGovernance } =
+    useWalletStore((s) => s.actions);
   const [voteByCouncil, setVoteByCouncil] = useState(true);
   const [form, setForm] = useState<Form>({
     title: '',
@@ -99,7 +96,8 @@ const New = () => {
 
     for (const inst of instructions) {
       if (inst.getInstruction) {
-        const formInstructionData: FormInstructionData = await inst?.getInstruction();
+        const formInstructionData: FormInstructionData =
+          await inst?.getInstruction();
 
         formInstructionsData.push(formInstructionData);
       }
@@ -137,7 +135,8 @@ const New = () => {
       form,
     );
 
-    const formInstructionsData: FormInstructionData[] = await getFormInstructionsData();
+    const formInstructionsData: FormInstructionData[] =
+      await getFormInstructionsData();
 
     if (
       !isValid ||

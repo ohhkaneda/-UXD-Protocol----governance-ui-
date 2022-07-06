@@ -40,10 +40,8 @@ export async function mintBondedTokens({
 
   const [bondMintAuthority, vault] = await Promise.all([
     (async () => {
-      const [
-        bondMintAuthority,
-        bondMintAuthorityBump,
-      ] = await findBondMintAuthorityPDA(bondingProgramId, bondPool);
+      const [bondMintAuthority, bondMintAuthorityBump] =
+        await findBondMintAuthorityPDA(bondingProgramId, bondPool);
 
       await createBondMintAuthorityPDA(
         bondingProgramId,

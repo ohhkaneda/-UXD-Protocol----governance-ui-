@@ -39,52 +39,44 @@ const DepositToPool = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    connection,
-    wallet,
-    form,
-    handleSetForm,
-    formErrors,
-  } = useInstructionFormBuilder<LifinityDepositToPoolForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      uiAmountTokenA: 0,
-      uiAmountTokenB: 0,
-      slippage: 0.5,
-    },
-    schema,
-    buildInstruction: async function ({
-      connection,
-      wallet,
-      form,
-      governedAccountPubkey,
-    }) {
-      // let's recalculate at the last moment to get the LP amount.
-      const {
-        maximumAmountTokenA,
-        maximumAmountTokenB,
-        amountLpToken,
-      } = await calculateDepositAmounts({
-        connection: connection,
-        wallet,
-        uiAmountTokenA: form.uiAmountTokenA!,
-        slippage: form.slippage,
-        poolName: form.poolName!,
-      });
-
-      return depositToPool({
+  const { connection, wallet, form, handleSetForm, formErrors } =
+    useInstructionFormBuilder<LifinityDepositToPoolForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        uiAmountTokenA: 0,
+        uiAmountTokenB: 0,
+        slippage: 0.5,
+      },
+      schema,
+      buildInstruction: async function ({
         connection,
         wallet,
-        userTransferAuthority: governedAccountPubkey,
-        poolName: form.poolName!,
-        maximumAmountTokenA,
-        maximumAmountTokenB,
-        amountLpToken,
-        slippage: form.slippage,
-      });
-    },
-  });
+        form,
+        governedAccountPubkey,
+      }) {
+        // let's recalculate at the last moment to get the LP amount.
+        const { maximumAmountTokenA, maximumAmountTokenB, amountLpToken } =
+          await calculateDepositAmounts({
+            connection: connection,
+            wallet,
+            uiAmountTokenA: form.uiAmountTokenA!,
+            slippage: form.slippage,
+            poolName: form.poolName!,
+          });
+
+        return depositToPool({
+          connection,
+          wallet,
+          userTransferAuthority: governedAccountPubkey,
+          poolName: form.poolName!,
+          maximumAmountTokenA,
+          maximumAmountTokenB,
+          amountLpToken,
+          slippage: form.slippage,
+        });
+      },
+    });
 
   useEffect(() => {
     debounce.debounceFcn(async () => {

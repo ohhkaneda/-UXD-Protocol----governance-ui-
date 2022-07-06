@@ -11,13 +11,8 @@ import useRpcContext from './useRpcContext';
 export default function useCreateProposal() {
   const client = useVoteStakeRegistryClientStore((s) => s.state.client);
   const { fetchRealmGovernance } = useWalletStore((s) => s.actions);
-  const {
-    realm,
-    ownVoterWeight,
-    mint,
-    councilMint,
-    canChooseWhoVote,
-  } = useRealm();
+  const { realm, ownVoterWeight, mint, councilMint, canChooseWhoVote } =
+    useRealm();
   const { getRpcContext } = useRpcContext();
   const handleCreateProposal = async ({
     title,

@@ -19,14 +19,8 @@ export async function depositReserveLiquidityAndObligationCollateral({
   lendingMarketName: SupportedLendingMarketName;
   tokenName: SupportedTokenName;
 }) {
-  const {
-    supportedTokens,
-    lendingMarket,
-    lendingMarketAuthority,
-    seed,
-  } = SolendConfiguration.getSupportedLendingMarketInformation(
-    lendingMarketName,
-  );
+  const { supportedTokens, lendingMarket, lendingMarketAuthority, seed } =
+    SolendConfiguration.getSupportedLendingMarketInformation(lendingMarketName);
 
   if (!supportedTokens[tokenName]) {
     throw new Error(

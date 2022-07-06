@@ -104,9 +104,8 @@ const REALM = () => {
     [string, ProgramAccount<Proposal>][]
   >([]);
 
-  const [filteredProposals, setFilteredProposals] = useState(
-    displayedProposals,
-  );
+  const [filteredProposals, setFilteredProposals] =
+    useState(displayedProposals);
 
   const [filterText, setFilterText] = useState<string>('');
 

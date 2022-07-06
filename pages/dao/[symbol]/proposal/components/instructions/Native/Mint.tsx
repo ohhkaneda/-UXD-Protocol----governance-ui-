@@ -48,15 +48,11 @@ const Mint = ({
   const [governedAccount, setGovernedAccount] = useState<
     ProgramAccount<Governance> | undefined
   >(undefined);
-  const [
-    destinationAccount,
-    setDestinationAccount,
-  ] = useState<TokenProgramAccount<AccountInfo> | null>(null);
+  const [destinationAccount, setDestinationAccount] =
+    useState<TokenProgramAccount<AccountInfo> | null>(null);
   const [formErrors, setFormErrors] = useState({});
-  const [
-    mintGovernancesWithMintInfo,
-    setMintGovernancesWithMintInfo,
-  ] = useState<GovernedMintInfoAccount[]>([]);
+  const [mintGovernancesWithMintInfo, setMintGovernancesWithMintInfo] =
+    useState<GovernedMintInfoAccount[]>([]);
   const mintMinAmount = form.mintAccount
     ? getMintMinAmountAsDecimal(form.mintAccount.mintInfo)
     : 1;

@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js';
 import * as mplCore from '@metaplex-foundation/mpl-core';
 import * as mplTokenMetadata from '@metaplex-foundation/mpl-token-metadata';
-import { Program, Provider } from '@project-serum/anchor';
-import { Wallet } from '@project-serum/sol-wallet-adapter';
+import { AnchorProvider, Program } from '@project-serum/anchor';
+import Wallet from '@project-serum/sol-wallet-adapter';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { SignerWalletAdapter } from '@solana/wallet-adapter-base';
 import { Connection, PublicKey } from '@solana/web3.js';
@@ -29,7 +29,11 @@ export const buildLifinity = ({
   return new Program(
     LifinityAmmIDL,
     AMM_PROGRAM_ADDR,
-    new Provider(connection, wallet, Provider.defaultOptions()),
+    new AnchorProvider(
+      connection,
+      wallet as any,
+      AnchorProvider.defaultOptions(),
+    ),
   );
 };
 
@@ -43,15 +47,14 @@ export const getWalletNftAccounts = async ({
   lifinityNftAccount: PublicKey;
   lifinityNftMetaAccount: PublicKey;
 } | null> => {
-  const {
-    value: parsedTokenAccounts,
-  } = await connection.getParsedTokenAccountsByOwner(
-    wallet,
-    {
-      programId: TOKEN_PROGRAM_ID,
-    },
-    'confirmed',
-  );
+  const { value: parsedTokenAccounts } =
+    await connection.getParsedTokenAccountsByOwner(
+      wallet,
+      {
+        programId: TOKEN_PROGRAM_ID,
+      },
+      'confirmed',
+    );
 
   for (const tokenAccountInfo of parsedTokenAccounts) {
     const {
@@ -266,15 +269,12 @@ export const calculateDepositAmounts = async ({
     tokenB: { decimals: decimalsTokenB, tokenAccount: tokenAccountTokenB },
   } = poolInfo;
 
-  const [
-    rawLiquidityPoolTokenSupply,
-    rawBalanceTokenA,
-    rawBalanceTokenB,
-  ] = await Promise.all([
-    connection.getTokenSupply(mintLpToken),
-    connection.getTokenAccountBalance(tokenAccountTokenA),
-    connection.getTokenAccountBalance(tokenAccountTokenB),
-  ]);
+  const [rawLiquidityPoolTokenSupply, rawBalanceTokenA, rawBalanceTokenB] =
+    await Promise.all([
+      connection.getTokenSupply(mintLpToken),
+      connection.getTokenAccountBalance(tokenAccountTokenA),
+      connection.getTokenAccountBalance(tokenAccountTokenB),
+    ]);
 
   const lpTokenSupply = new BigNumber(rawLiquidityPoolTokenSupply.value.amount);
   const balanceTokenA = new BigNumber(rawBalanceTokenA.value.amount);
@@ -341,8 +341,13 @@ export const getPoolInfoByName = (label: PoolNames): IPoolInfo =>
   PoolList[label];
 
 export const getPoolNameByPoolTokenMint = (poolTokenMint: PublicKey) => {
-  const [label] = Object.entries(PoolList).find(([, { lpToken: { mint } }]) =>
-    mint.equals(poolTokenMint),
+  const [label] = Object.entries(PoolList).find(
+    ([
+      ,
+      {
+        lpToken: { mint },
+      },
+    ]) => mint.equals(poolTokenMint),
   ) ?? ['not found'];
 
   return label;

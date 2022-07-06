@@ -58,147 +58,148 @@ export default function useTribecaGaugeInfos(
 
   const [infos, setInfos] = useState<TribecaGaugesInfos | null>(null);
 
-  const loadInfos = useCallback(async (): Promise<TribecaGaugesInfos | null> => {
-    if (!tribecaConfiguration || !programs || !escrowOwner || !gauges)
-      return null;
-
-    try {
-      const [escrow] = await tribecaConfiguration.findEscrowAddress(
-        escrowOwner.publicKey,
-      );
-
-      const [escrowData, gaugemeisterData] = await Promise.all([
-        programs.LockedVoter.account.escrow.fetch(escrow),
-
-        programs.Gauge.account.gaugemeister.fetch(
-          tribecaConfiguration.gaugemeister,
-        ),
-      ]);
-
-      let gaugeVoter: PublicKey;
+  const loadInfos =
+    useCallback(async (): Promise<TribecaGaugesInfos | null> => {
+      if (!tribecaConfiguration || !programs || !escrowOwner || !gauges)
+        return null;
 
       try {
-        const [publicKey] = await tribecaConfiguration.findGaugeVoterAddress(
-          escrow,
+        const [escrow] = await tribecaConfiguration.findEscrowAddress(
+          escrowOwner.publicKey,
         );
 
-        gaugeVoter = publicKey;
-      } catch (_) {
-        // means we have no gaugeVoter
-        return {
-          escrowData,
-          gaugemeisterData,
-          gaugeVoterData: null,
-          activeGaugeVotesData: null,
-          currentEpochGaugeVoterData: null,
-          nextEpochGaugeVoterData: null,
-        };
-      }
+        const [escrowData, gaugemeisterData] = await Promise.all([
+          programs.LockedVoter.account.escrow.fetch(escrow),
 
-      let gaugeVoterData: GaugeVoterData;
-
-      try {
-        gaugeVoterData = await programs.Gauge.account.gaugeVoter.fetch(
-          gaugeVoter,
-        );
-      } catch (_) {
-        // Gauge voter has not been initialized
-        return {
-          escrowData,
-          gaugemeisterData,
-          gaugeVoterData: null,
-          activeGaugeVotesData: null,
-          currentEpochGaugeVoterData: null,
-          nextEpochGaugeVoterData: null,
-        };
-      }
-
-      const gaugeVotes = await programs.Gauge.account.gaugeVote.all();
-
-      const activeGaugeVotes = gaugeVotes.filter(
-        (gaugeVote) =>
-          gaugeVote.account.weight > 0 &&
-          gaugeVote.account.gaugeVoter.equals(gaugeVoter),
-      );
-
-      const totalRelativeGaugeVotesWeight = activeGaugeVotes.reduce(
-        (totalWeight, activeGaugeVote) =>
-          totalWeight + activeGaugeVote.account.weight,
-        0,
-      );
-
-      const activeGaugeVotesData = activeGaugeVotes.map((activeGaugeVote) => {
-        const [name, gaugeInfos] = Object.entries(gauges).find(([, gauge]) =>
-          gauge.publicKey.equals(activeGaugeVote.account.gauge),
-        )!;
-
-        return {
-          name,
-          mint: gaugeInfos.mint,
-          logoURI: gaugeInfos.logoURI,
-          weight: activeGaugeVote.account.weight,
-          weightPercentage: Number(
-            (
-              (activeGaugeVote.account.weight * 100) /
-              totalRelativeGaugeVotesWeight
-            ).toFixed(2),
+          programs.Gauge.account.gaugemeister.fetch(
+            tribecaConfiguration.gaugemeister,
           ),
+        ]);
+
+        let gaugeVoter: PublicKey;
+
+        try {
+          const [publicKey] = await tribecaConfiguration.findGaugeVoterAddress(
+            escrow,
+          );
+
+          gaugeVoter = publicKey;
+        } catch (_) {
+          // means we have no gaugeVoter
+          return {
+            escrowData,
+            gaugemeisterData,
+            gaugeVoterData: null,
+            activeGaugeVotesData: null,
+            currentEpochGaugeVoterData: null,
+            nextEpochGaugeVoterData: null,
+          };
+        }
+
+        let gaugeVoterData: GaugeVoterData;
+
+        try {
+          gaugeVoterData = await programs.Gauge.account.gaugeVoter.fetch(
+            gaugeVoter,
+          );
+        } catch (_) {
+          // Gauge voter has not been initialized
+          return {
+            escrowData,
+            gaugemeisterData,
+            gaugeVoterData: null,
+            activeGaugeVotesData: null,
+            currentEpochGaugeVoterData: null,
+            nextEpochGaugeVoterData: null,
+          };
+        }
+
+        const gaugeVotes = await programs.Gauge.account.gaugeVote.all();
+
+        const activeGaugeVotes = gaugeVotes.filter(
+          (gaugeVote) =>
+            gaugeVote.account.weight > 0 &&
+            gaugeVote.account.gaugeVoter.equals(gaugeVoter),
+        );
+
+        const totalRelativeGaugeVotesWeight = activeGaugeVotes.reduce(
+          (totalWeight, activeGaugeVote) =>
+            totalWeight + activeGaugeVote.account.weight,
+          0,
+        );
+
+        const activeGaugeVotesData = activeGaugeVotes.map((activeGaugeVote) => {
+          const [name, gaugeInfos] = Object.entries(gauges).find(([, gauge]) =>
+            gauge.publicKey.equals(activeGaugeVote.account.gauge),
+          )!;
+
+          return {
+            name,
+            mint: gaugeInfos.mint,
+            logoURI: gaugeInfos.logoURI,
+            weight: activeGaugeVote.account.weight,
+            weightPercentage: Number(
+              (
+                (activeGaugeVote.account.weight * 100) /
+                totalRelativeGaugeVotesWeight
+              ).toFixed(2),
+            ),
+          };
+        });
+
+        let currentEpochGaugeVoterData: EpochGaugeVoterData | null = null;
+
+        try {
+          const [currentEpochGaugeVoter] =
+            await tribecaConfiguration.findEpochGaugeVoterAddress(
+              gaugeVoter,
+              gaugemeisterData.currentRewardsEpoch,
+            );
+
+          currentEpochGaugeVoterData =
+            await programs.Gauge.account.epochGaugeVoter.fetch(
+              currentEpochGaugeVoter,
+            );
+        } catch (_) {
+          // ignore error, means we have not voted on the epoch
+        }
+
+        let nextEpochGaugeVoterData: EpochGaugeVoterData | null = null;
+
+        try {
+          const [nextEpochGaugeVoter] =
+            await tribecaConfiguration.findEpochGaugeVoterAddress(
+              gaugeVoter,
+              gaugemeisterData.currentRewardsEpoch + 1,
+            );
+
+          nextEpochGaugeVoterData =
+            await programs.Gauge.account.epochGaugeVoter.fetch(
+              nextEpochGaugeVoter,
+            );
+        } catch (_) {
+          // ignore error, means we have not voted on the epoch
+        }
+
+        return {
+          escrowData,
+          gaugemeisterData,
+          gaugeVoterData,
+          activeGaugeVotesData,
+          currentEpochGaugeVoterData,
+          nextEpochGaugeVoterData,
         };
-      });
-
-      let currentEpochGaugeVoterData: EpochGaugeVoterData | null = null;
-
-      try {
-        const [
-          currentEpochGaugeVoter,
-        ] = await tribecaConfiguration.findEpochGaugeVoterAddress(
-          gaugeVoter,
-          gaugemeisterData.currentRewardsEpoch,
+      } catch (err) {
+        console.log(
+          `Cannot load Gauges infos for escrowOwner ${
+            escrowOwner.name
+          } / ${escrowOwner.publicKey.toString()}`,
+          err,
         );
 
-        currentEpochGaugeVoterData = await programs.Gauge.account.epochGaugeVoter.fetch(
-          currentEpochGaugeVoter,
-        );
-      } catch (_) {
-        // ignore error, means we have not voted on the epoch
+        return null;
       }
-
-      let nextEpochGaugeVoterData: EpochGaugeVoterData | null = null;
-
-      try {
-        const [
-          nextEpochGaugeVoter,
-        ] = await tribecaConfiguration.findEpochGaugeVoterAddress(
-          gaugeVoter,
-          gaugemeisterData.currentRewardsEpoch + 1,
-        );
-
-        nextEpochGaugeVoterData = await programs.Gauge.account.epochGaugeVoter.fetch(
-          nextEpochGaugeVoter,
-        );
-      } catch (_) {
-        // ignore error, means we have not voted on the epoch
-      }
-
-      return {
-        escrowData,
-        gaugemeisterData,
-        gaugeVoterData,
-        activeGaugeVotesData,
-        currentEpochGaugeVoterData,
-        nextEpochGaugeVoterData,
-      };
-    } catch (err) {
-      console.log(
-        `Cannot load Gauges infos for escrowOwner ${
-          escrowOwner.name
-        } / ${escrowOwner.publicKey.toString()}`,
-        err,
-      );
-
-      return null;
-    }
-  }, [tribecaConfiguration, programs, escrowOwner, gauges]);
+    }, [tribecaConfiguration, programs, escrowOwner, gauges]);
 
   useEffect(() => {
     loadInfos().then(setInfos);

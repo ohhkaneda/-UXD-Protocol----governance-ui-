@@ -19,12 +19,8 @@ import { getProgramVersionForRealm } from '@models/registry/api';
 const VotePanel = () => {
   const [showVoteModal, setShowVoteModal] = useState(false);
   const [vote, setVote] = useState<YesNoVote | null>(null);
-  const {
-    governance,
-    proposal,
-    voteRecordsByVoter,
-    tokenType,
-  } = useWalletStore((s) => s.selectedProposal);
+  const { governance, proposal, voteRecordsByVoter, tokenType } =
+    useWalletStore((s) => s.selectedProposal);
   const {
     ownTokenRecord,
     ownCouncilTokenRecord,

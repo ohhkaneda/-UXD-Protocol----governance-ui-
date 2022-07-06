@@ -195,35 +195,68 @@ export interface RemoveLiquidityRaydiumForm {
   amountIn: number;
 }
 
-export interface InitializeControllerForm {
+export interface UXDInitializeControllerForm {
   governedAccount?: GovernedMultiTypeAccount;
   mintDecimals: number;
 }
 
-export interface SetRedeemableGlobalSupplyCapForm {
+export interface UXDSetRedeemableGlobalSupplyCapForm {
   governedAccount?: GovernedMultiTypeAccount;
   supplyCap: number;
 }
 
-export interface SetMangoDepositoriesRedeemableSoftCapForm {
+export interface UXDSetMangoDepositoriesRedeemableSoftCapForm {
   governedAccount?: GovernedMultiTypeAccount;
   softCap: number;
 }
 
-export interface RegisterMangoDepositoryForm {
+export interface UXDRegisterMangoDepositoryForm {
   governedAccount?: GovernedMultiTypeAccount;
   collateralName?: string;
   insuranceName?: string;
 }
 
-export interface DepositInsuranceToMangoDepositoryForm {
+export interface UXDDisableDepositoryMintingForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  collateralName?: string;
+  insuranceName?: string;
+  disableMinting: boolean;
+}
+
+export interface UXDQuoteMintWithMangoDepositoryForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  collateralName?: string;
+  insuranceName?: string;
+  uiQuoteAmount?: number;
+}
+
+export interface UXDQuoteRedeemWithMangoDepositoryForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  collateralName?: string;
+  insuranceName?: string;
+  uiRedeemableAmount?: number;
+}
+
+export interface UXDSetMangoDepositoryQuoteMintAndRedeemFeeForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  collateralName?: string;
+  insuranceName?: string;
+  uiQuoteMintAndRedeemFee?: number;
+}
+
+export interface UXDSetMangoDepositoryQuoteMintAndRedeemSoftCapForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  softCapUiAmount?: number;
+}
+
+export interface UXDDepositInsuranceToMangoDepositoryForm {
   governedAccount?: GovernedMultiTypeAccount;
   collateralName?: string;
   insuranceName?: string;
   insuranceDepositedAmount: number;
 }
 
-export interface WithdrawInsuranceFromMangoDepositoryForm {
+export interface UXDWithdrawInsuranceFromMangoDepositoryForm {
   governedAccount?: GovernedMultiTypeAccount;
   collateralName?: string;
   insuranceName?: string;
@@ -537,7 +570,12 @@ export enum InstructionEnum {
   UXDSetMangoDepositoriesRedeemableSoftCap,
   UXDRegisterMangoDepository,
   UXDDepositInsuranceToMangoDepository,
+  UXDDisableDepositoryMinting,
+  UXDQuoteMintWithMangoDepository,
+  UXDQuoteRedeemWithMangoDepository,
+  UXDSetMangoDepositoryQuoteMintAndRedeemFee,
   UXDWithdrawInsuranceFromMangoDepository,
+  UXDSetMangoDepositoryQuoteMintAndRedeemSoftCap,
   UXDStakingInitializeStakingCampaign,
   UXDStakingFinalizeStakingCampaign,
   UXDStakingAddStakingOption,

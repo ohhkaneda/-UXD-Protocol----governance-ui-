@@ -3,7 +3,7 @@ import Input from '@components/inputs/Input';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import createSetMangoDepositoriesRedeemableSoftCapInstruction from '@tools/sdk/uxdProtocol/createSetMangoDepositoriesRedeemableSoftCapInstruction';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
-import { SetMangoDepositoriesRedeemableSoftCapForm } from '@utils/uiTypes/proposalCreationTypes';
+import { UXDSetMangoDepositoriesRedeemableSoftCapForm } from '@utils/uiTypes/proposalCreationTypes';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -23,25 +23,23 @@ const SetMangoDepositoriesRedeemableSoftCap = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<SetMangoDepositoriesRedeemableSoftCapForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      softCap: 0,
-    },
-    schema,
-    buildInstruction: async function ({ form, governedAccountPubkey }) {
-      return createSetMangoDepositoriesRedeemableSoftCapInstruction({
-        uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
-        softCapUiAmount: form.softCap,
-        authority: governedAccountPubkey,
-      });
-    },
-  });
+  const { form, formErrors, handleSetForm } =
+    useInstructionFormBuilder<UXDSetMangoDepositoriesRedeemableSoftCapForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        softCap: 0,
+      },
+      schema,
+      buildInstruction: async function ({ form, governedAccountPubkey }) {
+        return createSetMangoDepositoriesRedeemableSoftCapInstruction({
+          uxdProgramId:
+            form.governedAccount!.governance!.account.governedAccount,
+          softCapUiAmount: form.softCap,
+          authority: governedAccountPubkey,
+        });
+      },
+    });
 
   return (
     <Input

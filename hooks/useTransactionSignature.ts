@@ -8,11 +8,12 @@ const useTransactionSignature = (address?: PublicKey) => {
   useEffect(() => {
     async function getSignature() {
       if (!address) return;
-      const transactions = await connection.current.getConfirmedSignaturesForAddress2(
-        address,
-        { limit: 1 },
-        'finalized',
-      );
+      const transactions =
+        await connection.current.getConfirmedSignaturesForAddress2(
+          address,
+          { limit: 1 },
+          'finalized',
+        );
 
       if (!transactions[0]?.signature)
         throw new Error(

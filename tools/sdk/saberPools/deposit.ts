@@ -40,7 +40,8 @@ export async function deposit({
     config: {
       authority: pool.swapAccountAuthority.toString(),
       swapAccount: pool.swapAccount.toString(),
-      swapProgramID: saberPoolsConfiguration.saberStableSwapProgramId.toString(),
+      swapProgramID:
+        saberPoolsConfiguration.saberStableSwapProgramId.toString(),
       tokenProgramID: TOKEN_PROGRAM_ID.toString(),
     },
     userAuthority: authority.toString(),

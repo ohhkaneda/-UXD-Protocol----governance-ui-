@@ -26,97 +26,99 @@ const InitializeStakingCampaign = ({
 
   const nowInSec = Math.floor(Date.now() / 1000);
 
-  const {
-    form,
-    connection,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<UXDStakingInitializeStakingCampaignForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema: yup.object().shape({
-      governedAccount: yup
-        .object()
-        .nullable()
-        .required('Governed account is required'),
-      rewardMintUIName: yup.string().required('Reward Mint Name is required'),
-      stakedMintUIName: yup.string().required('Staked Mint Name is required'),
-      startTs: yup
-        .number()
-        .moreThan(nowInSec, `Start Timestamp should be more than ${nowInSec}`)
-        .required('Start Timestamp is required'),
-      endTs: yup
-        .number()
-        .moreThan(nowInSec, `End Timestamp should be more than ${nowInSec}`)
-        .moreThan(yup.ref('startTs'), 'EndTs should be > StartTs'),
-      uiRewardAmountToDeposit: yup
-        .number()
-        .moreThan(0, 'Reward Amount To Deposit should be more than 0')
-        .required('Reward Amount to Deposit is required'),
-    }),
+  const { form, connection, formErrors, handleSetForm } =
+    useInstructionFormBuilder<UXDStakingInitializeStakingCampaignForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema: yup.object().shape({
+        governedAccount: yup
+          .object()
+          .nullable()
+          .required('Governed account is required'),
+        rewardMintUIName: yup.string().required('Reward Mint Name is required'),
+        stakedMintUIName: yup.string().required('Staked Mint Name is required'),
+        startTs: yup
+          .number()
+          .moreThan(nowInSec, `Start Timestamp should be more than ${nowInSec}`)
+          .required('Start Timestamp is required'),
+        endTs: yup
+          .number()
+          .moreThan(nowInSec, `End Timestamp should be more than ${nowInSec}`)
+          .moreThan(yup.ref('startTs'), 'EndTs should be > StartTs'),
+        uiRewardAmountToDeposit: yup
+          .number()
+          .moreThan(0, 'Reward Amount To Deposit should be more than 0')
+          .required('Reward Amount to Deposit is required'),
+      }),
 
-    buildInstruction: async function () {
-      const programId =
-        uxdProtocolStakingConfiguration.programId[connection.cluster];
+      buildInstruction: async function () {
+        const programId =
+          uxdProtocolStakingConfiguration.programId[connection.cluster];
 
-      if (!programId) {
-        throw new Error(
-          `Unsupported cluster ${connection.cluster} for UXD Protocol Staking`,
+        if (!programId) {
+          throw new Error(
+            `Unsupported cluster ${connection.cluster} for UXD Protocol Staking`,
+          );
+        }
+
+        const client: SingleSideStakingClient = new SingleSideStakingClient(
+          programId,
         );
-      }
 
-      const client: SingleSideStakingClient = new SingleSideStakingClient(
-        programId,
-      );
+        const rewardSplToken = getSplTokenInformationByUIName(
+          form.rewardMintUIName!,
+        );
+        const stakedSplToken = getSplTokenInformationByUIName(
+          form.stakedMintUIName!,
+        );
 
-      const rewardSplToken = getSplTokenInformationByUIName(
-        form.rewardMintUIName!,
-      );
-      const stakedSplToken = getSplTokenInformationByUIName(
-        form.stakedMintUIName!,
-      );
+        const authority = governedAccount!.governance!.pubkey;
 
-      const authority = governedAccount!.governance!.pubkey;
+        const [rewardVaultPda] = findATAAddrSync(
+          authority,
+          rewardSplToken.mint,
+        );
+        const [stakedVaultPda] = findATAAddrSync(
+          authority,
+          stakedSplToken.mint,
+        );
 
-      const [rewardVaultPda] = findATAAddrSync(authority, rewardSplToken.mint);
-      const [stakedVaultPda] = findATAAddrSync(authority, stakedSplToken.mint);
+        const stakingCampaign = StakingCampaign.setup(
+          rewardSplToken.mint,
+          rewardSplToken.decimals,
+          stakedSplToken.mint,
+          stakedSplToken.decimals,
+          programId,
+          Number(form.startTs!),
+          form.endTs ? form.endTs : undefined,
+        );
 
-      const stakingCampaign = StakingCampaign.setup(
-        rewardSplToken.mint,
-        rewardSplToken.decimals,
-        stakedSplToken.mint,
-        stakedSplToken.decimals,
-        programId,
-        Number(form.startTs!),
-        form.endTs ? form.endTs : undefined,
-      );
+        console.log('Initialize Staking Campaign', {
+          authority: authority.toString(),
+          campaignPDA: stakingCampaign.pda.toString(),
+          rewardSplTokenMint: rewardSplToken.mint.toString(),
+          rewardSplTokenDecimals: rewardSplToken.decimals,
+          rewardVaultPda: rewardVaultPda.toString(),
+          stakedSplTokenMint: stakedSplToken.mint.toString(),
+          stakedSplTokenDecimals: stakedSplToken.decimals,
+          stakedVaultPda: stakedVaultPda.toString(),
+          startTs: form.startTs,
+          endTs: form.endTs,
+          payer: wallet!.publicKey!.toBase58(),
+          uiRewardAmountToDeposit: form.uiRewardAmountToDeposit?.toString(),
+        });
 
-      console.log('Initialize Staking Campaign', {
-        authority: authority.toString(),
-        campaignPDA: stakingCampaign.pda.toString(),
-        rewardSplTokenMint: rewardSplToken.mint.toString(),
-        rewardSplTokenDecimals: rewardSplToken.decimals,
-        rewardVaultPda: rewardVaultPda.toString(),
-        stakedSplTokenMint: stakedSplToken.mint.toString(),
-        stakedSplTokenDecimals: stakedSplToken.decimals,
-        stakedVaultPda: stakedVaultPda.toString(),
-        startTs: form.startTs,
-        endTs: form.endTs,
-        payer: wallet!.publicKey!.toBase58(),
-        uiRewardAmountToDeposit: form.uiRewardAmountToDeposit?.toString(),
-      });
-
-      return client.createInitializeStakingCampaignInstruction({
-        authority,
-        stakingCampaign,
-        rewardDepositAmount: form.uiRewardAmountToDeposit!,
-        options: uxdProtocolStakingConfiguration.TXN_OPTS,
-        payer: wallet!.publicKey!,
-      });
-    },
-  });
+        return client.createInitializeStakingCampaignInstruction({
+          authority,
+          stakingCampaign,
+          rewardDepositAmount: form.uiRewardAmountToDeposit!,
+          options: uxdProtocolStakingConfiguration.TXN_OPTS,
+          payer: wallet!.publicKey!,
+        });
+      },
+    });
 
   return (
     <>

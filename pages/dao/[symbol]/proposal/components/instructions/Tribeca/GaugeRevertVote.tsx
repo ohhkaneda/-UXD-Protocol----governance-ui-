@@ -24,42 +24,40 @@ const GaugeRevertVote = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const [
-    tribecaConfiguration,
-    setTribecaConfiguration,
-  ] = useState<ATribecaConfiguration | null>(null);
+  const [tribecaConfiguration, setTribecaConfiguration] =
+    useState<ATribecaConfiguration | null>(null);
 
   const { gauges, programs } = useTribecaGauge(tribecaConfiguration);
-  const {
-    connection,
-    form,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<TribecaGaugeRevertVoteForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({ wallet, form, governedAccountPubkey }) {
-      if (
-        !programs ||
-        !gauges ||
-        !gauges[form.gaugeName!] ||
-        !tribecaConfiguration
-      ) {
-        throw new Error('Error initializing Tribeca configuration');
-      }
+  const { connection, form, formErrors, handleSetForm } =
+    useInstructionFormBuilder<TribecaGaugeRevertVoteForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
+        wallet,
+        form,
+        governedAccountPubkey,
+      }) {
+        if (
+          !programs ||
+          !gauges ||
+          !gauges[form.gaugeName!] ||
+          !tribecaConfiguration
+        ) {
+          throw new Error('Error initializing Tribeca configuration');
+        }
 
-      return gaugeRevertVoteInstruction({
-        programs,
-        gauge: gauges[form.gaugeName!].mint,
-        authority: governedAccountPubkey,
-        payer: wallet.publicKey!,
-        tribecaConfiguration,
-      });
-    },
-  });
+        return gaugeRevertVoteInstruction({
+          programs,
+          gauge: gauges[form.gaugeName!].mint,
+          authority: governedAccountPubkey,
+          payer: wallet.publicKey!,
+          tribecaConfiguration,
+        });
+      },
+    });
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {

@@ -12,11 +12,8 @@ export async function refreshReserve({
   lendingMarketName: SupportedLendingMarketName;
   tokenName: SupportedTokenName;
 }): Promise<TransactionInstruction> {
-  const {
-    supportedTokens,
-  } = SolendConfiguration.getSupportedLendingMarketInformation(
-    lendingMarketName,
-  );
+  const { supportedTokens } =
+    SolendConfiguration.getSupportedLendingMarketInformation(lendingMarketName);
 
   if (!supportedTokens[tokenName]) {
     throw new Error(
@@ -24,9 +21,8 @@ export async function refreshReserve({
     );
   }
 
-  const { reserve, pythOracle, switchboardFeedAddress } = supportedTokens[
-    tokenName
-  ]!;
+  const { reserve, pythOracle, switchboardFeedAddress } =
+    supportedTokens[tokenName]!;
 
   return refreshReserveInstruction(
     reserve,

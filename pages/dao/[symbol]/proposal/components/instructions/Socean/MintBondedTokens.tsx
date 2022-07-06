@@ -30,49 +30,46 @@ const MintBondedTokens = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-  } = useInstructionFormBuilder<SoceanMintBondedTokensForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({
-      connection,
-      wallet,
-      cluster,
-      form,
-      governedAccountPubkey,
-    }) {
-      const programs = soceanConfig.getSoceanPrograms({
+  const { form, handleSetForm, formErrors } =
+    useInstructionFormBuilder<SoceanMintBondedTokensForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
         connection,
-        cluster,
         wallet,
-      });
-
-      const mintInfo = await tryGetTokenMint(
-        connection,
-        new PublicKey(form.depositFrom!),
-      );
-      if (!mintInfo) throw new Error('Cannot load depositFrom mint info');
-      return mintBondedTokens({
         cluster,
-        program: programs.Bonding,
-        amount: uiAmountToNativeBN(
-          form.uiAmount!.toString(),
-          mintInfo.account.decimals,
-        ),
-        depositFrom: new PublicKey(form.depositFrom!),
-        authority: governedAccountPubkey,
-        bondPool: new PublicKey(form.bondPool!),
-        bondedMint: new PublicKey(form.bondedMint!),
-        mintTo: new PublicKey(form.mintTo!),
-      });
-    },
-  });
+        form,
+        governedAccountPubkey,
+      }) {
+        const programs = soceanConfig.getSoceanPrograms({
+          connection,
+          cluster,
+          wallet,
+        });
+
+        const mintInfo = await tryGetTokenMint(
+          connection,
+          new PublicKey(form.depositFrom!),
+        );
+        if (!mintInfo) throw new Error('Cannot load depositFrom mint info');
+        return mintBondedTokens({
+          cluster,
+          program: programs.Bonding,
+          amount: uiAmountToNativeBN(
+            form.uiAmount!.toString(),
+            mintInfo.account.decimals,
+          ),
+          depositFrom: new PublicKey(form.depositFrom!),
+          authority: governedAccountPubkey,
+          bondPool: new PublicKey(form.bondPool!),
+          bondedMint: new PublicKey(form.bondedMint!),
+          mintTo: new PublicKey(form.mintTo!),
+        });
+      },
+    });
 
   return (
     <>

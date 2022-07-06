@@ -21,30 +21,31 @@ const CreateAssociatedTokenAccount = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<CreateAssociatedTokenAccountForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({ wallet, governedAccountPubkey, form }) {
-      const [tx] = await createAssociatedTokenAccount(
-        // fundingAddress
-        wallet.publicKey!,
-
-        // walletAddress
+  const { form, formErrors, handleSetForm } =
+    useInstructionFormBuilder<CreateAssociatedTokenAccountForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
+        wallet,
         governedAccountPubkey,
+        form,
+      }) {
+        const [tx] = await createAssociatedTokenAccount(
+          // fundingAddress
+          wallet.publicKey!,
 
-        // splTokenMintAddress
-        getSplTokenMintAddressByUIName(form.splTokenMintUIName!),
-      );
-      return tx;
-    },
-  });
+          // walletAddress
+          governedAccountPubkey,
+
+          // splTokenMintAddress
+          getSplTokenMintAddressByUIName(form.splTokenMintUIName!),
+        );
+        return tx;
+      },
+    });
 
   return (
     <Select

@@ -23,31 +23,27 @@ const CreateMiner = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-    connection,
-  } = useInstructionFormBuilder<QuarryMineCreateMinerForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({
-      form,
-      governedAccountPubkey,
-      connection,
-      wallet,
-    }) {
-      return createMinerInstruction({
-        augmentedProvider: augmentedProvider(connection, wallet),
-        authority: governedAccountPubkey,
-        payer: wallet.publicKey!,
-        mintName: form.mintName!,
-      });
-    },
-  });
+  const { form, handleSetForm, formErrors, connection } =
+    useInstructionFormBuilder<QuarryMineCreateMinerForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
+        form,
+        governedAccountPubkey,
+        connection,
+        wallet,
+      }) {
+        return createMinerInstruction({
+          augmentedProvider: augmentedProvider(connection, wallet),
+          authority: governedAccountPubkey,
+          payer: wallet.publicKey!,
+          mintName: form.mintName!,
+        });
+      },
+    });
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {

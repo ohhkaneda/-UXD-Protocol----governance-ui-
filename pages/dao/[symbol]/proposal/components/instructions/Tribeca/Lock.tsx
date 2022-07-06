@@ -37,48 +37,45 @@ const Lock = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    handleSetForm,
-    formErrors,
-  } = useInstructionFormBuilder<TribecaLockForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-      tribecaConfiguration: null,
-      uiAmount: 0,
-      durationSeconds: 0,
-    },
-    schema,
-    buildInstruction: async function ({
-      connection,
-      wallet,
-      form,
-      governedAccountPubkey,
-    }) {
-      const programs = getTribecaPrograms({
+  const { form, handleSetForm, formErrors } =
+    useInstructionFormBuilder<TribecaLockForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+        tribecaConfiguration: null,
+        uiAmount: 0,
+        durationSeconds: 0,
+      },
+      schema,
+      buildInstruction: async function ({
         connection,
         wallet,
-        config: form.tribecaConfiguration!,
-      });
-      const lockerData = await getTribecaLocker({
-        programs,
-        config: form.tribecaConfiguration!,
-      });
+        form,
+        governedAccountPubkey,
+      }) {
+        const programs = getTribecaPrograms({
+          connection,
+          wallet,
+          config: form.tribecaConfiguration!,
+        });
+        const lockerData = await getTribecaLocker({
+          programs,
+          config: form.tribecaConfiguration!,
+        });
 
-      return lockInstruction({
-        tribecaConfiguration: form.tribecaConfiguration!,
-        programs,
-        lockerData,
-        authority: governedAccountPubkey,
-        amount: uiAmountToNativeBN(
-          form.uiAmount!.toString(),
-          form.tribecaConfiguration!.token.decimals,
-        ),
-        durationSeconds: new BN(form.durationSeconds * 60 * 60 * 24 * 365),
-      });
-    },
-  });
+        return lockInstruction({
+          tribecaConfiguration: form.tribecaConfiguration!,
+          programs,
+          lockerData,
+          authority: governedAccountPubkey,
+          amount: uiAmountToNativeBN(
+            form.uiAmount!.toString(),
+            form.tribecaConfiguration!.token.decimals,
+          ),
+          durationSeconds: new BN(form.durationSeconds * 60 * 60 * 24 * 365),
+        });
+      },
+    });
 
   return (
     <>

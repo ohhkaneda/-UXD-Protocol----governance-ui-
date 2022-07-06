@@ -12,10 +12,8 @@ import useWalletStore from 'stores/useWalletStore';
 
 const MemberItem = ({ item }: { item: Member }) => {
   const { mint, councilMint, realm } = useRealm();
-  const {
-    setCurrentCompactView,
-    setCurrentCompactViewMember,
-  } = useMembersListStore();
+  const { setCurrentCompactView, setCurrentCompactViewMember } =
+    useMembersListStore();
   const {
     walletAddress,
     councilVotes,
@@ -37,9 +35,10 @@ const MemberItem = ({ item }: { item: Member }) => {
       : null;
   const councilAmount =
     councilVotes && !councilVotes.isZero()
-      ? useMemo(() => fmtMintAmount(councilMint, councilVotes), [
-          item.walletAddress,
-        ])
+      ? useMemo(
+          () => fmtMintAmount(councilMint, councilVotes),
+          [item.walletAddress],
+        )
       : null;
 
   async function handleGoToMemberOverview() {

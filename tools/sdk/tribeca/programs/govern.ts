@@ -29,9 +29,11 @@ export type ProposalMetaData = Accounts['ProposalMeta'] & {
   descriptionLink: string;
 };
 
-export type GovernanceParameters = GovernTypes['Defined']['GovernanceParameters'];
-export type ProposalInstruction = GovernTypes['Defined']['ProposalInstruction'] & {
-  keys: AccountMeta[];
-};
+export type GovernanceParameters =
+  GovernTypes['Defined']['GovernanceParameters'];
+export type ProposalInstruction =
+  GovernTypes['Defined']['ProposalInstruction'] & {
+    keys: AccountMeta[];
+  };
 
 export type GovernProgram = GovernTypes['Program'];

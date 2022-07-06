@@ -22,13 +22,8 @@ export async function lenderDeposit({
   depositAmount: u64;
   sourceAccount: PublicKey;
 }): Promise<TransactionInstruction> {
-  const {
-    pool,
-    globals,
-    baseMint,
-    poolLocker,
-    sharesMint,
-  } = MapleFinance.pools[poolName];
+  const { pool, globals, baseMint, poolLocker, sharesMint } =
+    MapleFinance.pools[poolName];
 
   const lender = await MapleFinance.findLenderAddress(poolName, lenderUser);
   const lockedShares = await MapleFinance.findLockedSharesAddress(lender);

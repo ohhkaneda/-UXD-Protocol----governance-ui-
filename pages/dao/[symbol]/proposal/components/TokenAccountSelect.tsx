@@ -31,9 +31,8 @@ const TokenAccountSelect = ({
       return null;
     }
 
-    const { mint, uiAmount, mintName, isATA } = ownedTokenAccountsInfo[
-      pubkeyString
-    ];
+    const { mint, uiAmount, mintName, isATA } =
+      ownedTokenAccountsInfo[pubkeyString];
 
     const details = [
       {

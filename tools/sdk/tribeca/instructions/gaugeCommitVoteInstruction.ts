@@ -40,20 +40,17 @@ export async function gaugeCommitVoteInstruction({
     votingEpoch,
   );
 
-  const [
-    epochGaugeVoter,
-  ] = await tribecaConfiguration.findEpochGaugeVoterAddress(
-    gaugeVoter,
-    votingEpoch,
-  );
+  const [epochGaugeVoter] =
+    await tribecaConfiguration.findEpochGaugeVoterAddress(
+      gaugeVoter,
+      votingEpoch,
+    );
 
-  const [
-    epochGaugeVote,
-    voteBump,
-  ] = await tribecaConfiguration.findEpochGaugeVoteAddress(
-    gaugeVote,
-    votingEpoch,
-  );
+  const [epochGaugeVote, voteBump] =
+    await tribecaConfiguration.findEpochGaugeVoteAddress(
+      gaugeVote,
+      votingEpoch,
+    );
 
   return programs.Gauge.instruction.gaugeCommitVote(voteBump, {
     accounts: {

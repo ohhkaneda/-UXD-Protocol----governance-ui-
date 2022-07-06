@@ -29,46 +29,41 @@ const WithdrawObligationCollateralAndRedeemReserveLiquidity = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    form,
-    connection,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<WithdrawObligationCollateralAndRedeemReserveLiquidityForm>(
-    {
-      index,
-      initialFormValues: {
-        governedAccount,
-        uiAmount: 0,
-      },
-      schema,
-      buildInstruction: async function ({ form, governedAccountPubkey }) {
-        const {
-          supportedTokens,
-        } = SolendConfiguration.getSupportedLendingMarketInformation(
-          form.lendingMarketName!,
-        );
-        const token = supportedTokens[form.tokenName!];
+  const { form, connection, formErrors, handleSetForm } =
+    useInstructionFormBuilder<WithdrawObligationCollateralAndRedeemReserveLiquidityForm>(
+      {
+        index,
+        initialFormValues: {
+          governedAccount,
+          uiAmount: 0,
+        },
+        schema,
+        buildInstruction: async function ({ form, governedAccountPubkey }) {
+          const { supportedTokens } =
+            SolendConfiguration.getSupportedLendingMarketInformation(
+              form.lendingMarketName!,
+            );
+          const token = supportedTokens[form.tokenName!];
 
-        if (!token) {
-          throw new Error(
-            `Unsupported token ${form.tokenName!} for Lending market ${
-              form.lendingMarketName
-            }`,
-          );
-        }
-        return withdrawObligationCollateralAndRedeemReserveLiquidity({
-          obligationOwner: governedAccountPubkey,
-          liquidityAmount: uiAmountToNativeBN(form.uiAmount!, token.decimals),
-          lendingMarketName: form.lendingMarketName!,
-          ...(form.destinationLiquidity && {
-            destinationLiquidity: new PublicKey(form.destinationLiquidity),
-          }),
-          tokenName: form.tokenName!,
-        });
+          if (!token) {
+            throw new Error(
+              `Unsupported token ${form.tokenName!} for Lending market ${
+                form.lendingMarketName
+              }`,
+            );
+          }
+          return withdrawObligationCollateralAndRedeemReserveLiquidity({
+            obligationOwner: governedAccountPubkey,
+            liquidityAmount: uiAmountToNativeBN(form.uiAmount!, token.decimals),
+            lendingMarketName: form.lendingMarketName!,
+            ...(form.destinationLiquidity && {
+              destinationLiquidity: new PublicKey(form.destinationLiquidity),
+            }),
+            tokenName: form.tokenName!,
+          });
+        },
       },
-    },
-  );
+    );
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {

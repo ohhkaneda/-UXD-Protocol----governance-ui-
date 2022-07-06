@@ -22,25 +22,25 @@ const CreateObligationAccount = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const {
-    connection,
-    form,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<CreateSolendObligationAccountForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({ wallet, governedAccountPubkey, form }) {
-      return createObligationAccount({
-        payer: wallet.publicKey!,
-        authority: governedAccountPubkey,
-        lendingMarketName: form.lendingMarketName!,
-      });
-    },
-  });
+  const { connection, form, formErrors, handleSetForm } =
+    useInstructionFormBuilder<CreateSolendObligationAccountForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({
+        wallet,
+        governedAccountPubkey,
+        form,
+      }) {
+        return createObligationAccount({
+          payer: wallet.publicKey!,
+          authority: governedAccountPubkey,
+          lendingMarketName: form.lendingMarketName!,
+        });
+      },
+    });
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {

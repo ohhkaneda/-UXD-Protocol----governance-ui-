@@ -1,4 +1,4 @@
-import { Provider } from '@project-serum/anchor';
+import { AnchorProvider } from '@project-serum/anchor';
 import { TransactionInstruction, PublicKey } from '@solana/web3.js';
 import { Controller, UXD_DECIMALS } from '@uxd-protocol/uxd-client';
 import type { ConnectionContext } from 'utils/connection';
@@ -6,8 +6,8 @@ import {
   uxdClient,
   initializeMango,
   instantiateMangoDepository,
-  getDepositoryMintKey,
-  getInsuranceMintKey,
+  getDepositoryMintInfo,
+  getInsuranceMintInfo,
 } from './uxdClient';
 
 const createDepositInsuranceToMangoDepositoryInstruction = async ({
@@ -29,11 +29,21 @@ const createDepositInsuranceToMangoDepositoryInstruction = async ({
 
   const mango = await initializeMango(connection.current, connection.cluster);
 
-  const depository = instantiateMangoDepository(
+  const { address: depositoryMint, decimals: depositoryDecimals } =
+    getDepositoryMintInfo(connection.cluster, depositoryMintName);
+
+  const { address: insuranceMint, decimals: insuranceDecimals } =
+    getInsuranceMintInfo(connection.cluster, insuranceMintName);
+
+  const depository = instantiateMangoDepository({
     uxdProgramId,
-    getDepositoryMintKey(connection.cluster, depositoryMintName),
-    getInsuranceMintKey(connection.cluster, insuranceMintName),
-  );
+    depositoryMint,
+    insuranceMint,
+    depositoryName: depositoryMintName,
+    depositoryDecimals,
+    insuranceName: insuranceMintName,
+    insuranceDecimals,
+  });
 
   return client.createDepositInsuranceToMangoDepositoryInstruction(
     insuranceDepositedAmount,
@@ -41,7 +51,7 @@ const createDepositInsuranceToMangoDepositoryInstruction = async ({
     depository,
     mango,
     authority,
-    Provider.defaultOptions(),
+    AnchorProvider.defaultOptions(),
   );
 };
 
