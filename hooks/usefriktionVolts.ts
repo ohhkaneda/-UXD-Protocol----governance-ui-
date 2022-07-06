@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import Wallet from '@project-serum/sol-wallet-adapter';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { getVolts, VoltList } from '@tools/sdk/friktion/friktion';
+import { Wallet } from '@project-serum/anchor';
 
 const useFriktionVolt = ({
   connection,

@@ -55,7 +55,7 @@ const Withdraw = ({
       const volt = friktionVolts[form.volt!];
       return withdrawFromVault({
         connection,
-        wallet,
+        wallet: wallet as any,
         voltVaultId: volt.voltVaultId,
         governancePubkey: governedAccountPubkey,
         amount: uiAmountToNativeBN(
@@ -68,7 +68,7 @@ const Withdraw = ({
 
   const { friktionVolts } = useFriktionVolt({
     connection: connection.current,
-    wallet,
+    wallet: wallet as any,
     governedAccountPubkey,
   });
 

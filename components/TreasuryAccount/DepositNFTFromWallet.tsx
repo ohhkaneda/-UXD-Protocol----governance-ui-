@@ -20,6 +20,7 @@ import NFTSelector, {
 } from '@components/NFTS/NFTSelector';
 import useGovernanceAssets from '@hooks/useGovernanceAssets';
 import NFTAccountSelect from './NFTAccountSelect';
+import { WalletSigner } from '@solana/spl-governance';
 
 const DepositNFTFromWallet = ({ additionalBtns }: { additionalBtns?: any }) => {
   const nftSelectorRef = useRef<NftSelectorFunctions>(null);
@@ -82,7 +83,7 @@ const DepositNFTFromWallet = ({ additionalBtns }: { additionalBtns?: any }) => {
       );
       await sendTransaction({
         connection: connection.current,
-        wallet,
+        wallet: wallet as WalletSigner,
         transaction,
         sendingMessage: 'Depositing NFT',
         successMessage: 'NFT has been deposited',

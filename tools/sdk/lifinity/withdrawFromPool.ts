@@ -1,6 +1,5 @@
-import { BN } from '@project-serum/anchor';
+import { BN, Wallet } from '@project-serum/anchor';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import { SignerWalletAdapter } from '@solana/wallet-adapter-base';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { findATAAddrSync } from '@utils/ataTools';
 import BigNumber from 'bignumber.js';
@@ -17,7 +16,7 @@ const withdrawFromPool = async ({
   minimumAmountTokenB,
 }: {
   connection: Connection;
-  wallet: SignerWalletAdapter;
+  wallet: Wallet;
   poolName: PoolNames;
   userTransferAuthority: PublicKey;
   lpTokenAmount: BigNumber;

@@ -8,8 +8,8 @@ import {
   Transaction,
   TransactionSignature,
 } from '@solana/web3.js';
-import Wallet from '@project-serum/sol-wallet-adapter';
 import { sleep } from '@project-serum/common';
+import { WalletSigner } from '@solana/spl-governance';
 
 class TransactionError extends Error {
   public txid: string;
@@ -35,7 +35,7 @@ export async function sendTransaction({
   timeout = DEFAULT_TIMEOUT,
 }: {
   transaction: Transaction;
-  wallet: Wallet;
+  wallet: WalletSigner;
   signers?: Array<Keypair>;
   connection: Connection;
   sendingMessage?: string;
@@ -65,7 +65,7 @@ export async function signTransaction({
   connection,
 }: {
   transaction: Transaction;
-  wallet: Wallet;
+  wallet: WalletSigner;
   signers?: Array<Keypair>;
   connection: Connection;
 }) {
@@ -88,7 +88,7 @@ export async function signTransactions({
     transaction: Transaction;
     signers?: Array<Keypair>;
   }[];
-  wallet: Wallet;
+  wallet: WalletSigner;
   connection: Connection;
 }) {
   const blockhash = (await connection.getRecentBlockhash('max')).blockhash;

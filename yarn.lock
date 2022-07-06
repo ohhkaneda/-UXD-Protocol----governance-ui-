@@ -472,7 +472,7 @@
     tiny-invariant "^1.2.0"
     tslib "^2.3.1"
 
-"@colors/colors@1.5.0":
+"@colors/colors@1.5.0", "@colors/colors@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
@@ -1750,15 +1750,18 @@
     tiny-invariant "^1.2.0"
     tslib "^2.3.1"
 
-"@raydium-io/raydium-sdk@^1.0.1-beta.34":
-  version "1.0.1-rc.0"
-  resolved "https://registry.yarnpkg.com/@raydium-io/raydium-sdk/-/raydium-sdk-1.0.1-rc.0.tgz#ce2ff0e8b770e1c6f5de542d83836c9a302e4533"
-  integrity sha512-aX0IF5XFKoIWC0xaS4J0KjRSRds7ni1xjxZG5u90KaoxebIWgJHs0xGojq6HBhZXRiAsQZ3ESHdUuZTTYbzGFg==
+"@raydium-io/raydium-sdk@1.0.1-beta.34":
+  version "1.0.1-beta.34"
+  resolved "https://registry.yarnpkg.com/@raydium-io/raydium-sdk/-/raydium-sdk-1.0.1-beta.34.tgz#f252d3ae598fc18952108dc7247e87744c624814"
+  integrity sha512-hOYVlopCeTyrTsOqihXF6fFQ0tGyog75ik/BuNHyxllv91oI01Xtm4QevrV519XBvmfifrI3N5qojZP7wbx3Ww==
   dependencies:
+    "@colors/colors" "^1.5.0"
     "@solana/buffer-layout" "^3.0.0"
     "@solana/spl-token" "^0.1.8"
     big.js "^6.1.1"
     decimal.js-light "^2.5.1"
+    fecha "^4.2.1"
+    lodash "^4.17.21"
     toformat "^2.0.0"
 
 "@reach/dialog@^0.16.2":
@@ -4744,6 +4747,11 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
+fecha@^4.2.1:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/fecha/-/fecha-4.2.3.tgz#4d9ccdbc61e8629b259fdca67e65891448d569fd"
+  integrity sha512-OP2IUU6HeYKJi3i0z4A19kHMQoLVs4Hc+DPqqxI2h/DPZHTm/vjsfC6P0b4jCMy14XizLBqvndQ+UilD7707Jw==
+
 file-entry-cache@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/file-entry-cache/-/file-entry-cache-6.0.1.tgz#211b2dd9659cb0394b073e7323ac3c933d522027"
@@ -5227,11 +5235,6 @@ hash.js@1.1.7, hash.js@^1.0.0, hash.js@^1.0.3:
   dependencies:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
-
-hast-util-whitespace@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/hast-util-whitespace/-/hast-util-whitespace-2.0.0.tgz#4fc1086467cc1ef5ba20673cb6b03cec3a970f1c"
-  integrity sha512-Pkw+xBHuV6xFeJprJe2BBEoDV+AvQySaz3pPDRUs5PNZEMQjpXJJueqrpcHIXxnWTcAGi/UOCgVShlkY6kLoqg==
 
 he@1.2.0:
   version "1.2.0"
@@ -8745,15 +8748,14 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
-react-markdown@^7.0.0:
-  version "7.1.2"
-  resolved "https://registry.yarnpkg.com/react-markdown/-/react-markdown-7.1.2.tgz#c9fa9d1c87e24529f028e1cdf731e81ccdd8e547"
-  integrity sha512-ibMcc0EbfmbwApqJD8AUr0yls8BSrKzIbHaUsPidQljxToCqFh34nwtu3CXNEItcVJNzpjDHrhK8A+MAh2JW3A==
+react-markdown@7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/react-markdown/-/react-markdown-7.0.0.tgz#66565968e8513af070eeef65abc77e80fc1a9b87"
+  integrity sha512-qdWfKxMgdKF3kHAV5pmcB12fAvytPoTpYwKTO6O/I3HujrK7sKIv6j4RnXVNLrNUh+TaBk+KtqpGzIKslX2rDg==
   dependencies:
     "@types/hast" "^2.0.0"
     "@types/unist" "^2.0.0"
     comma-separated-tokens "^2.0.0"
-    hast-util-whitespace "^2.0.0"
     prop-types "^15.0.0"
     property-information "^6.0.0"
     react-is "^17.0.0"

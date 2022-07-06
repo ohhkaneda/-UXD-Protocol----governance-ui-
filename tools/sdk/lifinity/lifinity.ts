@@ -1,8 +1,7 @@
 import BigNumber from 'bignumber.js';
 import * as mplCore from '@metaplex-foundation/mpl-core';
 import * as mplTokenMetadata from '@metaplex-foundation/mpl-token-metadata';
-import { AnchorProvider, Program } from '@project-serum/anchor';
-import Wallet from '@project-serum/sol-wallet-adapter';
+import { AnchorProvider, Program, Wallet } from '@project-serum/anchor';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { SignerWalletAdapter } from '@solana/wallet-adapter-base';
 import { Connection, PublicKey } from '@solana/web3.js';
@@ -29,11 +28,7 @@ export const buildLifinity = ({
   return new Program(
     LifinityAmmIDL,
     AMM_PROGRAM_ADDR,
-    new AnchorProvider(
-      connection,
-      wallet as any,
-      AnchorProvider.defaultOptions(),
-    ),
+    new AnchorProvider(connection, wallet, AnchorProvider.defaultOptions()),
   );
 };
 

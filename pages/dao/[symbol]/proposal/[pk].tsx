@@ -48,6 +48,7 @@ const Proposal = () => {
       const description = await resolveProposalDescription(descriptionLink!);
       setDescription(description);
     };
+
     if (descriptionLink) {
       handleResolveDescription();
     }

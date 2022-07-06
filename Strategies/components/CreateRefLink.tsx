@@ -10,6 +10,7 @@ import Input from '@components/inputs/Input';
 import Tooltip from '@components/Tooltip';
 import { DuplicateIcon } from '@heroicons/react/outline';
 import useGovernanceAssets from '@hooks/useGovernanceAssets';
+import { WalletSigner } from '@solana/spl-governance';
 import { PublicKey, Transaction } from '@solana/web3.js';
 import { notify } from '@utils/notifications';
 import { sendTransaction } from '@utils/send';
@@ -74,7 +75,7 @@ const CreateRefForm = ({
       transaction.add(instruction);
       await sendTransaction({
         transaction,
-        wallet,
+        wallet: wallet as WalletSigner,
         connection: connection.current,
         signers,
         sendingMessage: 'Creating ref link',

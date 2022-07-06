@@ -4,7 +4,7 @@ import {
   FriktionSnapshot,
   VoltSnapshot,
 } from '@friktion-labs/friktion-sdk';
-import Wallet from '@project-serum/sol-wallet-adapter';
+import { Wallet } from '@project-serum/anchor';
 import { Connection, PublicKey } from '@solana/web3.js';
 
 export const FRIKTION_VOLT_PROGRAM =
@@ -59,7 +59,7 @@ export const buildVoltSDK = async ({
 
   return new ConnectedVoltSDK(
     connection,
-    wallet.publicKey,
+    wallet.publicKey!,
     await sdk.loadVoltAndExtraDataByKey(new PublicKey(voltVaultId)),
     governancePubkey,
   );

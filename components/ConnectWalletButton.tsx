@@ -170,7 +170,7 @@ const ConnectWalletButton = (props) => {
                       <hr
                         className={`border border-fgd-3 opacity-50 mt-2 mb-2`}
                       ></hr>
-                      <Menu.Item
+                      <Menu.Button
                         key={'twitter'}
                         onClick={() =>
                           show(
@@ -187,8 +187,8 @@ const ConnectWalletButton = (props) => {
                             {displayName ? 'Edit Twitter' : 'Link Twitter'}
                           </span>
                         </button>
-                      </Menu.Item>
-                      <Menu.Item
+                      </Menu.Button>
+                      <Menu.Button
                         key={'disconnect'}
                         onClick={handleConnectDisconnect}
                       >
@@ -196,8 +196,8 @@ const ConnectWalletButton = (props) => {
                           <BackspaceIcon className="h-4 w-4 mr-2" />
                           <span className="text-sm">Disconnect</span>
                         </button>
-                      </Menu.Item>
-                      <Menu.Item
+                      </Menu.Button>
+                      <Menu.Button
                         key={'devnet'}
                         onClick={() => {
                           handleToggleDevnet();
@@ -212,7 +212,7 @@ const ConnectWalletButton = (props) => {
                             }}
                           />
                         </button>
-                      </Menu.Item>
+                      </Menu.Button>
                     </>
                   )}
                 </>

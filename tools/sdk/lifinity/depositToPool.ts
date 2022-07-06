@@ -1,5 +1,4 @@
 import { Connection, PublicKey } from '@solana/web3.js';
-import { SignerWalletAdapter } from '@solana/wallet-adapter-base';
 import {
   buildLifinity,
   getPoolInfoByName,
@@ -9,7 +8,7 @@ import { PoolNames } from './poolList';
 import BigNumber from 'bignumber.js';
 import { findATAAddrSync } from '@utils/ataTools';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import { BN } from '@project-serum/anchor';
+import { BN, Wallet } from '@project-serum/anchor';
 
 const depositToPool = async ({
   connection,
@@ -23,7 +22,7 @@ const depositToPool = async ({
   connection: Connection;
   userTransferAuthority: PublicKey;
   poolName: PoolNames;
-  wallet: SignerWalletAdapter;
+  wallet: Wallet;
   maximumAmountTokenA: BigNumber;
   maximumAmountTokenB: BigNumber;
   amountLpToken: BigNumber;

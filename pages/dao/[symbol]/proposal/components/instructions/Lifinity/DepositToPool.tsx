@@ -12,6 +12,7 @@ import {
   poolLabels,
 } from '@tools/sdk/lifinity/lifinity';
 import { debounce } from '@utils/debounce';
+import { Wallet } from '@project-serum/anchor';
 
 const SLIPPAGE_OPTIONS = [0.5, 1, 2];
 
@@ -67,7 +68,7 @@ const DepositToPool = ({
 
         return depositToPool({
           connection,
-          wallet,
+          wallet: wallet as unknown as Wallet,
           userTransferAuthority: governedAccountPubkey,
           poolName: form.poolName!,
           maximumAmountTokenA,

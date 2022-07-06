@@ -14,6 +14,7 @@ import { notify } from '@utils/notifications';
 import { useEffect, useState } from 'react';
 import { debounce } from '@utils/debounce';
 import withdrawFromPool from '@tools/sdk/lifinity/withdrawFromPool';
+import { Wallet } from '@project-serum/anchor';
 
 const SLIPPAGE_OPTIONS = [0.5, 1, 2];
 
@@ -67,7 +68,7 @@ const WithdrawFromPool = ({
 
         return withdrawFromPool({
           connection,
-          wallet,
+          wallet: wallet as unknown as Wallet,
           poolName: form.poolName!,
           userTransferAuthority: governedAccountPubkey,
           lpTokenAmount,

@@ -57,7 +57,7 @@ const FriktionDeposit = ({
       const volt = friktionVolts[form.volt!];
       return depositToVolt({
         connection,
-        wallet,
+        wallet: wallet as any,
         voltVaultId: volt.voltVaultId,
         governancePubkey: governedAccountPubkey,
         sourceTokenAccount: new PublicKey(form.sourceAccount!),
@@ -69,7 +69,7 @@ const FriktionDeposit = ({
 
   const { friktionVolts } = useFriktionVolt({
     connection: connection.current,
-    wallet,
+    wallet: wallet as any,
     governedAccountPubkey,
   });
   const { ownedTokenAccountsInfo } = useGovernanceUnderlyingTokenAccounts(

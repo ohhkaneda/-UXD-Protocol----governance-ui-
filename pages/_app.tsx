@@ -95,6 +95,7 @@ function App({ Component, pageProps }) {
 
   useEffect(() => {
     console.log(title);
+
     document.title = title;
   }, [title]);
 

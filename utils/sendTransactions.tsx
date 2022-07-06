@@ -1,3 +1,4 @@
+import { WalletSigner } from '@solana/spl-governance';
 import {
   Commitment,
   Connection,
@@ -10,7 +11,6 @@ import {
   TransactionSignature,
   Keypair,
 } from '@solana/web3.js';
-import Wallet from '@project-serum/sol-wallet-adapter';
 
 // TODO: sendTransactions() was imported from Oyster as is and needs to be reviewed and updated
 // In particular common primitives should be unified with send.tsx and also ensure the same resiliency mechanism
@@ -18,11 +18,6 @@ import Wallet from '@project-serum/sol-wallet-adapter';
 
 const sleep = (ttl: number) =>
   new Promise((resolve) => setTimeout(() => resolve(true), ttl));
-
-export type WalletSigner = Pick<
-  Wallet,
-  'publicKey' | 'signTransaction' | 'signAllTransactions'
->;
 
 export function getWalletPublicKey(wallet: WalletSigner) {
   if (!wallet.publicKey) {

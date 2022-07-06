@@ -7,7 +7,12 @@ import {
 } from '@solana/web3.js';
 import BN from 'bn.js';
 import useRealm from '@hooks/useRealm';
-import { getProposal, Proposal, ProposalState } from '@solana/spl-governance';
+import {
+  getProposal,
+  Proposal,
+  ProposalState,
+  WalletSigner,
+} from '@solana/spl-governance';
 import { getUnrelinquishedVoteRecords } from '@models/api';
 import { withDepositGoverningTokens } from '@solana/spl-governance';
 import { withRelinquishVote } from '@solana/spl-governance';
@@ -165,7 +170,7 @@ const TokenDeposit = ({
 
     await sendTransaction({
       connection,
-      wallet,
+      wallet: wallet as WalletSigner,
       transaction,
       signers,
       sendingMessage: 'Depositing tokens',
@@ -262,7 +267,7 @@ const TokenDeposit = ({
         const transaction = new Transaction().add(...chunk);
         await sendTransaction({
           connection,
-          wallet,
+          wallet: wallet as WalletSigner,
           transaction,
           sendingMessage:
             index == ixChunks.length - 1

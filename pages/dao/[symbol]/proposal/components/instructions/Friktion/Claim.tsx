@@ -51,7 +51,7 @@ const Claim = ({
       const volt = friktionVolts[form.volt!];
       return claimPendingWithdrawal({
         connection,
-        wallet,
+        wallet: wallet as any,
         voltVaultId: volt.voltVaultId,
         governancePubkey: governedAccountPubkey,
       });
@@ -60,7 +60,7 @@ const Claim = ({
 
   const { friktionVolts } = useFriktionVolt({
     connection: connection.current,
-    wallet,
+    wallet: wallet as any,
     governedAccountPubkey,
   });
   const { ownedTokenAccountsInfo } = useGovernanceUnderlyingTokenAccounts(

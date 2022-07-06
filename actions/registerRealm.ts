@@ -13,15 +13,12 @@ import {
   SetRealmAuthorityAction,
   VoteThresholdPercentage,
   VoteTipping,
+  WalletSigner,
 } from '@solana/spl-governance';
 import { withCreateRealm } from '@solana/spl-governance';
 import { sendTransaction } from '../utils/send';
 
-import {
-  sendTransactions,
-  SequenceType,
-  WalletSigner,
-} from 'utils/sendTransactions';
+import { sendTransactions, SequenceType } from 'utils/sendTransactions';
 import { withCreateMint } from '@tools/sdk/splToken/withCreateMint';
 import { withCreateAssociatedTokenAccount } from '@tools/sdk/splToken/withCreateAssociatedTokenAccount';
 import { withMintTo } from '@tools/sdk/splToken/withMintTo';

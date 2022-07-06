@@ -1,4 +1,4 @@
-import Wallet from '@project-serum/sol-wallet-adapter';
+import { Wallet } from '@project-serum/anchor';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { findATAAddrSync } from '@utils/ataTools';
 import { buildVoltSDK } from '../friktion';

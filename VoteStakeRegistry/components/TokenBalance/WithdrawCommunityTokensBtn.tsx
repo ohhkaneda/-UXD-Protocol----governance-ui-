@@ -5,6 +5,7 @@ import { BN } from '@project-serum/anchor';
 import {
   getProposal,
   ProposalState,
+  WalletSigner,
   withFinalizeVote,
   withRelinquishVote,
 } from '@solana/spl-governance';
@@ -137,7 +138,7 @@ const WithDrawCommunityTokens = () => {
         const transaction = new Transaction().add(...chunk);
         await sendTransaction({
           connection,
-          wallet,
+          wallet: wallet as WalletSigner,
           transaction,
           sendingMessage:
             index == ixChunks.length - 1

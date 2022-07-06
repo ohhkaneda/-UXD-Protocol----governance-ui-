@@ -66,9 +66,9 @@ export default function useWallet() {
         };
         window.addEventListener('load', listener);
         return () => window.removeEventListener('load', listener);
-      } else {
-        updateWallet();
       }
+
+      updateWallet();
     }
   }, [provider, connection]);
 
