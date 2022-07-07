@@ -286,6 +286,12 @@ const TokenDeposit = ({
           continue;
         }
 
+        // In the voteRecords, council token votes and governing token votes are mixed up
+        // Gotta be sure here we deal only with the appropriate one
+        if (!depositMint!.equals(proposal.account.governingTokenMint)) {
+          continue;
+        }
+
         if (proposal.account.state === ProposalState.Voting) {
           // If the Proposal is in Voting state refetch it to make sure we have the latest state to avoid false positives
           proposal = await getProposal(connection, proposal.pubkey);

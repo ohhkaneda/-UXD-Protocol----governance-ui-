@@ -38,6 +38,7 @@ export type AccountsToVoteFor = AccountToVoteFor[];
 
 function decideOfExecutableActions(
   sortedAccounts: SortedAccounts,
+  isVoting: boolean,
 ): {
   showSync?: true;
   showWithdraw?: true;
@@ -46,7 +47,8 @@ function decideOfExecutableActions(
 } {
   if (
     sortedAccounts.accountsThatHaveAlreadyVoted.length > 0 &&
-    sortedAccounts.accountsReadyToVote.length > 0
+    sortedAccounts.accountsReadyToVote.length > 0 &&
+    isVoting
   ) {
     return {
       showSync: true,
@@ -54,7 +56,7 @@ function decideOfExecutableActions(
     };
   }
 
-  if (sortedAccounts.accountsReadyToVote.length > 0) {
+  if (sortedAccounts.accountsReadyToVote.length > 0 && isVoting) {
     return {
       showVoteNo: true,
       showVoteYes: true,
@@ -249,13 +251,17 @@ const VotePanel = () => {
   // If voteRecord.account.isRelinquished then the vote has been relinquished
   const sortedAccounts = sortAccountsToVoteFor(accountsToVoteFor);
 
+  const isVoting =
+    proposal?.account.state === EnhancedProposalState.Voting &&
+    !hasVoteTimeExpired;
+
   // Decide which options should be displayed to the end user for this proposal regarding the vote states
   const {
     showSync,
     showWithdraw,
     showVoteNo,
     showVoteYes,
-  } = decideOfExecutableActions(sortedAccounts);
+  } = decideOfExecutableActions(sortedAccounts, isVoting);
 
   // There are more power available to vote, when votes are already committed
   const submitSyncVotes = async () => {
@@ -371,10 +377,6 @@ const VotePanel = () => {
     await fetchRealm(programId, realmId);
   };
 
-  const isVoting =
-    proposal?.account.state === EnhancedProposalState.Voting &&
-    !hasVoteTimeExpired;
-
   const getActionLabel = () => {
     if (!isVoting) {
       return 'Release your tokens';
@@ -414,7 +416,7 @@ const VotePanel = () => {
       </div>
 
       <div className="items-center justify-center flex w-full gap-5">
-        {isVoting && showVoteYes ? (
+        {showVoteYes ? (
           <Button
             tooltipMessage="Vote yes with all the available voting power"
             className="w-1/2"
@@ -424,7 +426,7 @@ const VotePanel = () => {
           </Button>
         ) : null}
 
-        {isVoting && showVoteNo ? (
+        {showVoteNo ? (
           <Button
             tooltipMessage="Vote no with all the available voting power"
             className="w-1/2"
@@ -454,7 +456,7 @@ const VotePanel = () => {
           </Button>
         ) : null}
 
-        {isVoting && showSync ? (
+        {showSync ? (
           <Button
             tooltipMessage="Synchronize your voting power"
             className="w-1/2"
