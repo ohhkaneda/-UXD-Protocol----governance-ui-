@@ -428,9 +428,12 @@ const TokenDeposit = ({
             {availableTokens}
             {uiVotingPowerOfDelegatedAccounts > 0 ? (
               <Tooltip content="Voting power of delegated accounts">
-                <span className="text-primary-light ml-2">
-                  +{uiVotingPowerOfDelegatedAccounts.toString()}
-                </span>
+                <div className="flex items-center">
+                  <div className="text-fgd-3 h-6 w-1 bg-bkg-2 ml-2" />
+                  <span className="text-primary-light ml-2">
+                    {uiVotingPowerOfDelegatedAccounts.toString()}
+                  </span>
+                </div>
               </Tooltip>
             ) : null}
           </p>
